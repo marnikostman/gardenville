@@ -63,52 +63,76 @@ gameBoard[i][j] = {needTerraform: true, type: "blank", stage: 0, drawLayers: 0, 
 
 
 
-//draw function
-for(var i=0; i<length; i++){
-	for(var i=0; j<width; i++){
+function drawCell(x,y,id)
+{
+	$("#" + id).html("");
 
-		//needTerraform
-
-		if (gameboard(x,y).needTerraform == true){
-			//draw un_terraformed_dirt.png;
+	if (gameboard[x][y].needTerraform == true){
+		$("#" + id).append("terraformed_dirt.png");
+	}
+	else{
+		$("#" + id).append("un_terraformed_dirt.png");
+	}
+	if (gameboard[x][y].needWater != true){
+			$("#" + id).append("watered.png");
 		}
-		else{
-			//draw terraformed_dirt.png;
+	if (gameboard[x][y].needFertilizer == true){
+		$("#" + id).append("fertilized.png");
 		}
-
-		//need water
-
-		if (gameboard(x,y).needWater == true){
-			//don't draw water tile.
+	switch(gameboard[x][y].type){
+		case "blank"
+		$("#" + id).append(graphicId[0].state[0]);
+		break;
+		case "rose"
+		if(gameboard[x][y].stage==1){
+			$("#" + id).append(graphicId[1].state[0]);
 		}
-		else{
-			//draw dirt_pile.png;
+		else if (gameboard[x][y].stage==2) {
+			$("#" + id).append(graphicId[1].state[0]);
+			$("#" + id).append(graphicId[1].state[1]);
 		}
-
-		if (gameboard(x,y).needFertilizer == true){
-			//don't draw fertilizer tile.
+		else if (gameboard[x][y].stage==3) {
+			$("#" + id).append(graphicId[1].state[0]);
+			$("#" + id).append(graphicId[1].state[1]);
+			$("#" + id).append(graphicId[1].state[2]);
 		}
-		else{
-			//draw fertilizer.png;
+		break;
+		case "tulip"
+		if(gameboard[x][y].stage==1){
+			$("#" + id).append(graphicId[2].state[0]);
 		}
-
-		//draw flower and correct stage
-		switch (name){
-			case: graphicID[0].name
-				//draw graphicID[0].state[0]
-
-			case: graphicID[1].name
-
-			case: graphicID[2].name
-
-			case: graphicID[3].name
-
-			case: graphicID[4].name
+		else if (gameboard[x][y].stage==2) {
+			$("#" + id).append(graphicId[2].state[0]);
+			$("#" + id).append(graphicId[2].state[1]);
+		}
+		else if (gameboard[x][y].stage==3) {
+			$("#" + id).append(graphicId[2].state[0]);
+			$("#" + id).append(graphicId[2].state[1]);
+			$("#" + id).append(graphicId[2].state[2]);
+		}
+		break;
+		case "sunflower"
+		if(gameboard[x][y].stage==1){
+			$("#" + id).append(graphicId[3].state[0]);
+		}
+		else if (gameboard[x][y].stage==2) {
+			$("#" + id).append(graphicId[3].state[0]);
+			$("#" + id).append(graphicId[3].state[1]);
+		}
+		else if (gameboard[x][y].stage==3) {
+			$("#" + id).append(graphicId[3].state[0]);
+			$("#" + id).append(graphicId[3].state[1]);
+			$("#" + id).append(graphicId[3].state[2]);
+		}
+		break;
+		case "house"
+		$("#" + id).append(graphicId[4].state[0]);
+		break;
 		}
 
 		}
 	}
-
+}
 
 
 
