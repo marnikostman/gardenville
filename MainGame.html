@@ -3,50 +3,25 @@
   <head>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw=" crossorigin="anonymous"></script>
-    <style>
-    .cell
-    {
-      position: relative;
-      display: inline-block;
-      margin: 0px;
-      padding: 0px;
-      border: 0px;
-      width: 128px;
-      height: 128px;
-    }
-    .cell img
-    {
-      width: 35px;
-      image-rendering: pixelated;
-      position: absolute;
-      top: 0px;
-      left: 0px;
-      width: 128px;
-      height: 128px;
-    }
-    img
-    {
-      image-rendering: pixelated;
-      width: 128px;
-      height: 128px;
-    }
-    </style>
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
-    <div class="container">
-      <img src='./assets/house.png' id="house" data-id="house"><br>
-      <img src='./assets/spade.png' id="spade" data-id="spade">
+    <div class="toolbar">
+      <img src='./assets/house.png' id="house01" data-id="house"><br>
+      <img src='./assets/spade.png' id="spade01" data-id="spade">
       <div class="dropdown">
         <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Plants
           <span class="caret"></span></button>
           <ul class="dropdown-menu">
-            <li><a><img src='./assets/stage_3_tulip.png' class="dropdown-item" id="tulip" data-id="tulip"><br></a></li>
-            <li><a><img src='./assets/stage_3_sunflower.png' class="dropdown-item" id="sunflower" data-id="sunflower"></a></li>
-            <li><a><img src='./assets/stage_3_rose.png' class="dropdown-item" id="rose" data-id="rose"></a></li>
+            <li><a><img src='./assets/stage_3_tulip.png' class="dropdown-item" id="tulip01" data-id="tulip"><br></a></li>
+            <li><a><img src='./assets/stage_3_sunflower.png' class="dropdown-item" id="sunflower01" data-id="sunflower"></a></li>
+            <li><a><img src='./assets/stage_3_rose.png' class="dropdown-item" id="rose01" data-id="rose"></a></li>
           </ul>
         </div>
       </div>
-      <div class="gameboard"></div>
+      <div class="area">
+        <div class="gameboard"></div>
+      </div>
 
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
@@ -55,6 +30,32 @@
 ​
   var ticksPerMinute = 6000;
   var gameTick = 500;
+  var graphicId = [
+    {name:"blank", state:[]},
+    {name:"rose", state:[]},
+    {name:"tulip", state:[]},
+    {name:"sunflower", state:[]},
+    {name:"house", state:[]}];
+
+
+  //GraphicId[0].state[0] is the default which has nothing to layer at all.
+  graphicId[0].state[0] = "./assets/blank.png";
+
+  graphicId[1].state[0] = "./assets/stage_1_baby.png";
+  graphicId[1].state[1] = "./assets/stage_2_teen.png";
+  graphicId[1].state[2] = "./assets/stage_3_rose.png";
+
+  graphicId[2].state[0] = "./assets/stage_1_baby.png";
+  graphicId[2].state[1] = "./assets/stage_2_teen.png";
+  graphicId[2].state[2] = "./assets/stage_3_tulip.png";
+
+  graphicId[3].state[0] = "./assets/stage_1_baby.png";
+  graphicId[3].state[1] = "./assets/stage_2_teen.png";
+  graphicId[3].state[2] = "./assets/stage_3_sunflower.png";
+
+  graphicId[4].state[0] = "./assets/exclamation_alert.png";
+
+  graphicId[5].state[0] = "./assets/house.png";
 ​
   gameBoard = new Array(3);
   for (var i = 0; i < 3; i++) //This is essentially the model
@@ -79,7 +80,7 @@
 
       var id = getId(x, y);
       //alert(id);
-      $(".gameboard").append("<div style='display: inline-block' class='cell' id='" + id + "'></div>");
+      $(".gameboard").append("<div class='cell' id='" + id + "'></div>");
       //Fills in art layers for each cell.
       drawCell(x, y, id);
       //Gives each cell the attribute to have things able to be dropped on it.
@@ -131,43 +132,116 @@
         return x.toString() + "-" + y.toString();
       }
 
-      function drawCell(x, y, id)
-      {
-	       $("#" + id).html("");
-	        //var xy = $(gameBoard[x][y]);
-	        //alert(xy);
-          if (gameBoard[x][y].needWater == true)
-          {
-            $("#" + id).append("<img src='image0.png'>");
-          }
-          if (gameBoard[x][y].needWater == false)
-          {
-            $("#" + id).append("<img src='image0.png'>");
-            $("#" + id).append("<img src='image1.png'>");
-            gameBoard[x][y].nextWater = Date.now() + 5 * (ticksPerMinute);
-          }
-          if (gameBoard[x][y].plant == true)
-          {
-            $("#" + id).append("<img src='image2.png'>");
-          }
-        }
+      // function drawCell(x, y, id)
+      // {
+      //   //clears cell of any images
+	    //    $("#" + id).html("");
+	    //     //var xy = $(gameBoard[x][y]);
+	    //     //alert(xy);
+      //     if (gameBoard[x][y].needWater == true)
+      //     {
+      //       $("#" + id).append("<img src='image0.png'>");
+      //     }
+      //     if (gameBoard[x][y].needWater == false)
+      //     {
+      //       $("#" + id).append("<img src='image0.png'>");
+      //       $("#" + id).append("<img src='image1.png'>");
+      //       gameBoard[x][y].nextWater = Date.now() + 5 * (ticksPerMinute);
+      //     }
+      //     if (gameBoard[x][y].plant == true)
+      //     {
+      //       $("#" + id).append("<img src='image2.png'>");
+      //     }
+      //   }
+      function drawCell(x,y,id){
+      	$("#" + id).html("");
 
+      	if (gameBoard[x][y].needTerraform == true){
+      		$("#" + id).append("./assets/terraformed_dirt.png");
+      	}
+      	else{
+      		$("#" + id).append("./assets/un_terraformed_dirt.png");
+      	}
+
+      	if (gameBoard[x][y].needWater != true){
+      			$("#" + id).append("./assets/watered.png");
+      		}
+
+      	if (gameBoard[x][y].needFertilizer == true){
+      		$("#" + id).append("./assets/fertilized.png");
+      		}
+
+      	switch(gameBoard[x][y].type){
+      		case "blank"
+      		$("#" + id).append(graphicId[0].state[0]);
+      		break;
+
+      		case "rose"
+      		if(gameBoard[x][y].stage==1){
+      			$("#" + id).append(graphicId[1].state[0]);
+      		}
+      		else if (gameBoard[x][y].stage==2) {
+      			$("#" + id).append(graphicId[1].state[0]);
+      			$("#" + id).append(graphicId[1].state[1]);
+      		}
+      		else if (gameBoard[x][y].stage==3) {
+      			$("#" + id).append(graphicId[1].state[0]);
+      			$("#" + id).append(graphicId[1].state[1]);
+      			$("#" + id).append(graphicId[1].state[2]);
+      		}
+      		break;
+
+      		case "tulip"
+      		if(gameBoard[x][y].stage==1){
+      			$("#" + id).append(graphicId[2].state[0]);
+      		}
+      		else if (gameBoard[x][y].stage==2) {
+      			$("#" + id).append(graphicId[2].state[0]);
+      			$("#" + id).append(graphicId[2].state[1]);
+      		}
+      		else if (gameBoard[x][y].stage==3) {
+      			$("#" + id).append(graphicId[2].state[0]);
+      			$("#" + id).append(graphicId[2].state[1]);
+      			$("#" + id).append(graphicId[2].state[2]);
+      		}
+      		break;
+
+      		case "sunflower"
+      		if(gameBoard[x][y].stage==1){
+      			$("#" + id).append(graphicId[3].state[0]);
+      		}
+      		else if (gameBoard[x][y].stage==2) {
+      			$("#" + id).append(graphicId[3].state[0]);
+      			$("#" + id).append(graphicId[3].state[1]);
+      		}
+      		else if (gameBoard[x][y].stage==3) {
+      			$("#" + id).append(graphicId[3].state[0]);
+      			$("#" + id).append(graphicId[3].state[1]);
+      			$("#" + id).append(graphicId[3].state[2]);
+      		}
+      		break;
+
+      		case "house"
+      		$("#" + id).append(graphicId[4].state[0]);
+      		break;
+      		}
+      	}
 
         $("#water01").draggable({
           container: document,
           helper: waterHelper
         });
         function waterHelper(){
-          return "<img src='image1.png' class='dragged'>"
+          return "<img src='./assets/watered.png class='dragged'>"
         }
 
-        $("#dirt01").draggable({
+        $("#spade01").draggable({
           container: document,
-          helper: dirtHelper
+          helper: spadeHelper
         });
 
-        function dirtHelper(){
-          return "<img src='image0.png' class='dragged'>"
+        function spadeHelper(){
+          return "<img src='./assets/spade.png' class='dragged'>"
         }
 
         $("#tulip01").draggable({
@@ -176,25 +250,41 @@
         });
 
         function tulipHelper(){
-          return "<img src='image2.png' class='dragged'>"
+          return "<img src='graphicId[2].state[2] class='dragged'>"
+        }
+        $("#rose01").draggable({
+          container: document,
+          helper: roseHelper
+        });
+
+        function roseHelper(){
+          return "<img src='graphicId[1].state[2] class='dragged'>"
+        }
+        $("#sunflower01").draggable({
+          container: document,
+          helper: sunflowerHelper
+        });
+
+        function sunflowerHelper(){
+          return "<img src='graphicId[3].state[2] class='dragged'>"
         }
 
-        function gameLoop ()
-        {
-          for (var x = 0; x < 3; x++)
-          {
-            for (var y = 0; y < 3; y++)
-            {
-              if (gameBoard[x][y].nextWater < Date.now())
-              {
-                var id = x.toString() + "-" + y.toString();
-                gameBoard[x][y].needWater = true;
-                drawCell(x, y, id);
-              }
-            }
-          }
-          setTimeout(gameLoop, gameTick);
-        }
-        gameLoop();
+        // function gameLoop ()
+        // {
+        //   for (var x = 0; x < 3; x++)
+        //   {
+        //     for (var y = 0; y < 3; y++)
+        //     {
+        //       if (gameBoard[x][y].nextWater < Date.now())
+        //       {
+        //         var id = x.toString() + "-" + y.toString();
+        //         gameBoard[x][y].needWater = true;
+        //         drawCell(x, y, id);
+        //       }
+        //     }
+        //   }
+        //   setTimeout(gameLoop, gameTick);
+        // }
+        // gameLoop();
 </script>
 </html>
