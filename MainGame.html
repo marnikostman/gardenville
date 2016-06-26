@@ -1,39 +1,57 @@
 <!DOCTYPE HTML>
 <html>
   <head>
-  <style>
-  .cell
-  {
-    position: relative;
-    display: inline-block;
-    margin: 0px;
-    padding: 0px;
-    border: 0px;
-    width: 35px;
-    height: 35px;
-  }
-  .cell img
-  {
-	  width: 35px;
-    image-rendering: pixelated;
-    position: absolute;
-    top: 0px;
-    left: 0px;
-  }
-  </style>
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-​
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-  <script   src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
-​
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js" integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw=" crossorigin="anonymous"></script>
+    <style>
+    .cell
+    {
+      position: relative;
+      display: inline-block;
+      margin: 0px;
+      padding: 0px;
+      border: 0px;
+      width: 128px;
+      height: 128px;
+    }
+    .cell img
+    {
+      width: 35px;
+      image-rendering: pixelated;
+      position: absolute;
+      top: 0px;
+      left: 0px;
+      width: 128px;
+      height: 128px;
+    }
+    img
+    {
+      image-rendering: pixelated;
+      width: 128px;
+      height: 128px;
+    }
+    </style>
   </head>
   <body>
-    <img src='image0.png' id="dirt01" data-id="dirt">
-    <img src='image1.png' id="water01" data-id="water" >
-    <img src='image2.png' id="tulip01" data-id="tulip" >
-	   <div class="gameboard"></div>
-   </body>
-   <script>
+    <div class="container">
+      <img src='./assets/house.png' id="house" data-id="house"><br>
+      <img src='./assets/spade.png' id="spade" data-id="spade">
+      <div class="dropdown">
+        <button class="btn btn-primary dropdown-toggle" type="button" data-toggle="dropdown">Plants
+          <span class="caret"></span></button>
+          <ul class="dropdown-menu">
+            <li><a><img src='./assets/stage_3_tulip.png' class="dropdown-item" id="tulip" data-id="tulip"><br></a></li>
+            <li><a><img src='./assets/stage_3_sunflower.png' class="dropdown-item" id="sunflower" data-id="sunflower"></a></li>
+            <li><a><img src='./assets/stage_3_rose.png' class="dropdown-item" id="rose" data-id="rose"></a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="gameboard"></div>
+
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/js/bootstrap.min.js" integrity="sha384-vZ2WRJMwsjRMW/8U7i6PWi6AlO1L79snBrmgiDpgIWJ82z8eA5lenwvxbMV1PAh7" crossorigin="anonymous"></script>
+    </body>
+    <script>
 ​
   var ticksPerMinute = 6000;
   var gameTick = 500;
@@ -62,17 +80,21 @@
       var id = getId(x, y);
       //alert(id);
       $(".gameboard").append("<div style='display: inline-block' class='cell' id='" + id + "'></div>");
+      //Fills in art layers for each cell.
       drawCell(x, y, id);
+      //Gives each cell the attribute to have things able to be dropped on it.
       $("#" + id).droppable({
         drop: itemDropped, //drop is a function, when it's done, it calls the function John wrote
-        hoverClass: "dragHover"
+        hoverClass: "dragHover" //makes each cell "pop" out a bit for user?
       });
     }
-    $(".gameboard").append("<br/>");
+    $(".gameboard").append("<br/>"); // makes it so it's not a strip of land and a rectangular garden plot
   }
   function itemDropped(event, ui){
     var id = this.id
     var dropped = ui.draggable.attr("data-id");
+
+    //Splits the idea up into the coordinate locations in the array of arrays
     var location = id.split("-");
     var x = location[0];
     var y = location[1];

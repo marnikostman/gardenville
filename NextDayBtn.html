@@ -32,6 +32,7 @@ function updateGame(){
 		}
 	}
 }
+
 function nextDay(x,y){
 	var maxStage = 2;
 	var midStage = 1;
@@ -58,13 +59,7 @@ function nextDay(x,y){
 	}
 }
 
-
-gameBoard[i][j] = {needTerraform: true, type: "blank", stage: 0, drawLayers: 0,  needFertilizer: true, needWater: true, nextWater: Date.now() + 5 * (ticksPerMinute)};
-
-
-
-function drawCell(x,y,id)
-{
+function drawCell(x,y,id){
 	$("#" + id).html("");
 
 	if (gameboard[x][y].needTerraform == true){
@@ -73,16 +68,20 @@ function drawCell(x,y,id)
 	else{
 		$("#" + id).append("un_terraformed_dirt.png");
 	}
+
 	if (gameboard[x][y].needWater != true){
 			$("#" + id).append("watered.png");
 		}
+
 	if (gameboard[x][y].needFertilizer == true){
 		$("#" + id).append("fertilized.png");
 		}
+
 	switch(gameboard[x][y].type){
 		case "blank"
 		$("#" + id).append(graphicId[0].state[0]);
 		break;
+
 		case "rose"
 		if(gameboard[x][y].stage==1){
 			$("#" + id).append(graphicId[1].state[0]);
@@ -97,6 +96,7 @@ function drawCell(x,y,id)
 			$("#" + id).append(graphicId[1].state[2]);
 		}
 		break;
+
 		case "tulip"
 		if(gameboard[x][y].stage==1){
 			$("#" + id).append(graphicId[2].state[0]);
@@ -111,6 +111,7 @@ function drawCell(x,y,id)
 			$("#" + id).append(graphicId[2].state[2]);
 		}
 		break;
+
 		case "sunflower"
 		if(gameboard[x][y].stage==1){
 			$("#" + id).append(graphicId[3].state[0]);
@@ -125,41 +126,14 @@ function drawCell(x,y,id)
 			$("#" + id).append(graphicId[3].state[2]);
 		}
 		break;
+
 		case "house"
 		$("#" + id).append(graphicId[4].state[0]);
 		break;
 		}
-
-		}
 	}
-}
-
-
-
-
-
-
-	needWater = true
-
-
-
-
 
 //John says we need a game loop...that checks the state of the game...every 5 seconds or so.  and updates...
-
-
-
-
-
-
-
-
-
-</script>
-
-
-
-
 </script>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
