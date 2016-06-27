@@ -45,7 +45,8 @@ img {
     <img src='./assets/stage_3_tulip.png' id="tulip01" data-id="tulip" >
     <img src='./assets/stage_3_rose.png' id="rose01" data-id="rose" >
     <img src='./assets/stage_3_sunflower.png' id="sunflower01" data-id="sunflower" >
-    <img src='./assets/fertilized.png' id="fertilize01" data-id="fertilize" >
+    <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
+    <img src='./assets/butterfly_icon.png' id="butterfly01" data-id="butterfly" >
 	<div class="gameboard"></div>
 </body>
 <script>
@@ -59,7 +60,7 @@ for (var i = 0; i < 3; i++) //This is essentially the model
 	gameBoard[i] = new Array(3);
 	for (var j = 0; j < 3; j++)
 	{
-    gameBoard[i][j] = {needTerraform: true, type: "blank", drawLayers: 0, stage: 0, needFertilizer: true, growthPoints: 0, needWater: true, nextWater: Date.now() + 5 * (ticksPerMinute)};
+    gameBoard[i][j] = {needTerraform: true, type: "blank", drawLayers: 0, stage: 0, needFertilizer: true, growthPoints: 0, needWater: true, nextWater: Date.now() + 5 * (ticksPerMinute), effects: false};
 	}
 }
 
@@ -119,7 +120,13 @@ function itemDropped(event, ui){
                 break;
             case "fertilize":
                 FertilizePlant(x, y, id)
-                break;      
+                break;  
+            //effects like butterflies.gif should be an effect that randomly shows up on a tile if the tile has an adult plant on it. I just put it in as a 'draggable' so you could see the assets. 
+            case "butterfly":
+                gameBoard[x][y].effects = true;
+                PlayEffect(x, y, id)
+                break;  
+     
         }
         drawCell(x, y, id);
     }
@@ -165,6 +172,11 @@ function drawCell(x, y, id)
     {
         $("#" + id).append("<img src='./assets/fertilized.png'>");
     }
+    if (gameBoard[x][y].effects == true)
+    {
+        $("#" + id).append("<img src='./assets/butterflies.gif'>");
+    }
+    
 
 }
 
@@ -183,10 +195,10 @@ function drawCell(x, y, id)
     });
 
     function dirtHelper(){
-    	return "<img src='./assets/butterflies.gif' class='dragged'>"
+    	return "<img src='./assets/spade.png' class='dragged'>"
     }
 
-        $("#tulip01").draggable({
+    $("#tulip01").draggable({
         container: document,
         helper: tulipHelper
     });
@@ -194,6 +206,26 @@ function drawCell(x, y, id)
     function tulipHelper(){
     	return "<img src='./assets/stage_1_baby.png' class='dragged'>"
     }
+
+    $("#fertilize01").draggable({
+        container: document,
+        helper: fertilizerHelper
+    });
+
+    function fertilizerHelper(){
+        return "<img src='./assets/fertilizer_bag.png' class='dragged'>"
+    }
+
+    $("#butterfly01").draggable({
+        container: document,
+        helper: butterflyHelper
+    });
+
+    function butterflyHelper(){
+        return "<img src='./assets/butterflies.gif' class='dragged'>"
+    }
+
+
 
     function PlaceGraphic(x, y, id)
     {
@@ -216,6 +248,12 @@ function drawCell(x, y, id)
     {
         gameBoard[x][y].needTerraform = false;
         $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
+    }
+
+    function PlayEffect(x, y, id)
+    {
+        gameBoard[x][y].effects == "true";
+        $("#" + id).append("<img src='./assets/butterflies.gif'>");    
     }
 
 
