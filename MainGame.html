@@ -40,14 +40,15 @@ img {
 
 </head>
 <body>
+    <button onclick="updateGame();" id="nextday">Next Day</button>
     <img src='./assets/spade.png' id="dirt01" data-id="terraform" >
     <img src='./assets/waterCan.png' id="water01" data-id="water" >
-    <img src='./assets/stage_3_tulip.png' id="tulip01" data-id="tulip" >
-    <img src='./assets/stage_3_rose.png' id="rose01" data-id="rose" >
-    <img src='./assets/stage_3_sunflower.png' id="sunflower01" data-id="sunflower" >
+    <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
+    <img src='./assets/rose_icon.png' id="rose01" data-id="rose" >
+    <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" >
     <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
     <img src='./assets/butterfly_icon.png' id="butterfly01" data-id="butterfly" >
-	<div class="gameboard"></div>
+	<div class="gameboard"></div> 
 </body>
 <script>
 
@@ -163,9 +164,29 @@ function drawCell(x, y, id)
         gameBoard[x][y].nextWater = Date.now() + 5 * (ticksPerMinute);
 	}
 
-    if (gameBoard[x][y].type == "tulip" && gameBoard[x][y].stage == 1)
+    if ((gameBoard[x][y].type == "tulip" || gameBoard[x][y].type == "sunflower" || gameBoard[x][y].type == "rose") && gameBoard[x][y].stage == 1)
     {
         $("#" + id).append("<img src='./assets/stage_1_baby.png'>");
+    }
+
+    if ((gameBoard[x][y].type == "tulip" || gameBoard[x][y].type == "sunflower" || gameBoard[x][y].type == "rose")  && gameBoard[x][y].stage >= 2)
+    {
+        $("#" + id).append("<img src='./assets/stage_2_teen.png'>");
+    }
+
+    if (gameBoard[x][y].type == "tulip" && gameBoard[x][y].stage >= 3)
+    {
+        $("#" + id).append("<img src='./assets/stage_3_tulip.png'>");
+    }
+
+    if (gameBoard[x][y].type == "sunflower" && gameBoard[x][y].stage >= 3)
+    {
+        $("#" + id).append("<img src='./assets/stage_3_sunflower.png'>");
+    }
+
+    if (gameBoard[x][y].type == "rose" && gameBoard[x][y].stage >= 3)
+    {
+        $("#" + id).append("<img src='./assets/stage_3_rose.png'>");
     }
 
     if (gameBoard[x][y].needFertilizer == false)
@@ -212,6 +233,24 @@ function drawCell(x, y, id)
         helper: fertilizerHelper
     });
 
+    function sunflowerHelper(){
+        return "<img src='./assets/stage_1_baby.png' class='dragged'>"
+    }
+
+    $("#sunflower01").draggable({
+        container: document,
+        helper: sunflowerHelper
+    });
+
+    function roseHelper(){
+        return "<img src='./assets/stage_1_baby.png' class='dragged'>"
+    }
+
+    $("#rose01").draggable({
+        container: document,
+        helper: roseHelper
+    });
+
     function fertilizerHelper(){
         return "<img src='./assets/fertilizer_bag.png' class='dragged'>"
     }
@@ -248,6 +287,12 @@ function drawCell(x, y, id)
     {
         gameBoard[x][y].needTerraform = false;
         $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
+        gameBoard[x][y].type = "blank";
+        gameBoard[x][y].stage = 0;
+        gameBoard[x][y].needWater = true;
+        gameBoard[x][y].needFertilizer = true;
+        gameBoard[x][y].effects = false;
+        drawCell(x,y,id);
     }
 
     function PlayEffect(x, y, id)
@@ -256,7 +301,56 @@ function drawCell(x, y, id)
         $("#" + id).append("<img src='./assets/butterflies.gif'>");    
     }
 
+    function updateGame()
+    {
+        for(var i=0; i<3; i++)
+        {
+            for(var j=0; j<3; j++)
+            {
+                nextDay(i,j);
+            }
+        }
+            
+        
+    }
 
+      function nextDay(x,y){
+        var maxStage = 2;
+        var midStage = 1;
+        var teenPoints = 50;
+        var adultPoints = 100;
+        //refill energy
+        energy = 100;
+        //playTransition("");
+        //playSong("");
+        if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house")
+        {
+            
+            //for now, just a simple test:
+            gameBoard[x][y].stage += 1;
+            console.log("stage =" + gameBoard[x][y].stage);
+            gameBoard[x][y].needWater = true;
+            gameBoard[x][y].needFertilizer=true;
+            // gameBoard[x][y].needWater = true;
+            // if (gameBoard[x][y].stage < midStage && gameBoard[x][y].growthPoints >= teenPoints)
+            // {
+            //     //gameboard[i][j].stage = 1
+            //     gameBoard[x][y].stage=1;
+            //     //gameboard[i][j].needFertilizer = true
+            //     gameBoard[x][y].needFertilizer=true;
+            // }
+            // else if (gameBoard[x][y].stage < maxStage && gameBoard[x][y].growthPoints >= adultPoints)
+            // {
+            //     //gameboard[i][j].stage = 2
+            //     gameBoard[x][y].stage=2;
+            //     //gameboard[i][j].needFertilizer = true
+            //     gameBoard[x][y].needFertilizer=true;
+            // }
+        }
+        drawCell(x, y, "tulip");
+        console.log("hello!")
+
+      }
 
 function gameLoop ()
 {
