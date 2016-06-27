@@ -40,13 +40,12 @@ img {
 
 </head>
 <body>
-    <img src='./assets/terraformed_dirt.png' id="dirt01" data-id="terraform" >
-    <img src='./assets/watered.png' id="water01" data-id="water" >
+    <img src='./assets/spade.png' id="dirt01" data-id="terraform" >
+    <img src='./assets/waterCan.png' id="water01" data-id="water" >
     <img src='./assets/stage_3_tulip.png' id="tulip01" data-id="tulip" >
     <img src='./assets/stage_3_rose.png' id="rose01" data-id="rose" >
     <img src='./assets/stage_3_sunflower.png' id="sunflower01" data-id="sunflower" >
     <img src='./assets/fertilized.png' id="fertilize01" data-id="fertilize" >
-    <img src='./assets/stage_1_baby.png' id="baby01" data-id="baby" >
 	<div class="gameboard"></div>
 </body>
 <script>
@@ -60,7 +59,7 @@ for (var i = 0; i < 3; i++) //This is essentially the model
 	gameBoard[i] = new Array(3);
 	for (var j = 0; j < 3; j++)
 	{
-    gameBoard[i][j] = {needTerraform: true, type: "blank", drawLayers: 0, stage: 0, needFertilizer: true, growthPoints: 0, needWater: false, nextWater: Date.now() + 5 * (ticksPerMinute)};
+    gameBoard[i][j] = {needTerraform: true, type: "blank", drawLayers: 0, stage: 0, needFertilizer: true, growthPoints: 0, needWater: true, nextWater: Date.now() + 5 * (ticksPerMinute)};
 	}
 }
 
@@ -99,18 +98,24 @@ function itemDropped(event, ui){
                     {
                         gameBoard[x][y].stage = 1;
                         gameBoard[x][y].type = "tulip";
-                        PlaceGraphic(x, y, id)
+                        PlaceGraphic(x, y, id);
                     }
             	break;
             case "rose":
-                gameBoard[x][y].stage = 1;
-                gameBoard[x][y].type = "rose";
-                PlaceGraphic(x, y, id)
+                if (gameBoard[x][y].stage == 0)
+                    {
+                        gameBoard[x][y].stage = 1;
+                        gameBoard[x][y].type = "rose";
+                        PlaceGraphic(x, y, id);
+                    }
                 break;
             case "sunflower":
-                gameBoard[x][y].stage = 1;
-                gameBoard[x][y].type = "sunflower";
-                PlaceGraphic(x, y, id)
+                if (gameBoard[x][y].stage == 0)
+                    {
+                        gameBoard[x][y].stage = 1;
+                        gameBoard[x][y].type = "sunflower";
+                        PlaceGraphic(x, y, id);
+                    }
                 break;
             case "fertilize":
                 FertilizePlant(x, y, id)
@@ -140,7 +145,7 @@ function drawCell(x, y, id)
     {
         $("#" + id).append("<img src='./assets/un_terraformed_dirt.png'>");
     }
-    if (gameBoard[x][y].needTerraform == false && gameBoard[x][y].needWater == true )
+    if (gameBoard[x][y].needTerraform == false)
     {
         $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
     }
@@ -169,7 +174,7 @@ function drawCell(x, y, id)
     });
 
     function waterHelper(){
-    	return "<img src='image1.png' class='dragged'>"
+    	return "<img src='./assets/happy_cloud.gif' class='dragged'>"
     }
 
     $("#dirt01").draggable({
@@ -178,7 +183,7 @@ function drawCell(x, y, id)
     });
 
     function dirtHelper(){
-    	return "<img src='./assets/terraformed_dirt.png' class='dragged'>"
+    	return "<img src='./assets/butterflies.gif' class='dragged'>"
     }
 
         $("#tulip01").draggable({
@@ -205,6 +210,12 @@ function drawCell(x, y, id)
     {
         gameBoard[x][y].needFertilizer = false;
         $("#" + id).append("<img src='./assets/fertilized.png'>");
+    }
+
+    function TerraformCell(x, y, id)
+    {
+        gameBoard[x][y].needTerraform = false;
+        $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
     }
 
 
