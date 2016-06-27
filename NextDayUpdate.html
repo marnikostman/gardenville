@@ -1,0 +1,150 @@
+<!doctype html>
+<html>
+<head>
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+</head>
+
+<body>
+	<button onclick="watered(cellName);" id="x">Next Day</button>
+
+</body>
+
+<script type="text/javascript">
+	
+//next day button
+//switch all tiles that have plants to needing water
+
+// intialize tile
+gameBoard[i][j] = {needTerraform: true, type: "blank", drawLayers: 0, stage: 0, needFertilizer: true, growthPoints: 0, needWater: true, nextWater: Date.now() + 5 * (ticksPerMinute)};
+	
+
+//update function when NEXT DAY button is pushed
+
+maxStage = 2;
+teenPoints = 50;
+adultPoints = 100;
+
+
+//refill energy
+energy = 100
+//playTransition("");
+//playSong("");
+
+if (type != "blank" && type != "house"){
+	gameboard[i][j].needWater = true;
+
+	if (stage < maxStage && growthPoints >= adultPoints){
+		//gameboard[i][j].stage = 2
+		//gameboard[i][j].needFertilizer = true
+	}
+
+	else if (stage < maxStage && growthPoints >= teenPoints){
+		//gameboard[i][j].stage = 1
+		//gameboard[i][j].needFertilizer = true
+	}
+}
+
+
+
+
+
+
+}
+
+gameBoard[i][j] = {needTerraform: true, type: "blank", stage: 0, drawLayers: 0,  needFertilizer: true, needWater: true, nextWater: Date.now() + 5 * (ticksPerMinute)};
+
+
+
+
+
+
+
+
+//write to function
+for x
+	for y
+		gameboard(x,y).needTerraform = false;
+		gameboard(x,y).name = graphicID[2].name
+		gameboard(x,y).needWater = true;
+		gameboard(x,y).needFertilizer = true;
+		gameboard(x,y).stage = 1;
+
+
+//draw function
+	for x
+		for y
+
+
+
+//needTerraform
+
+if (gameboard(x,y).needTerraform == true){
+	//draw un_terraformed_dirt.png;
+}
+else{
+	//draw terraformed_dirt.png;
+}
+
+//need water
+
+if (gameboard(x,y).needWater == true){
+	//don't draw water tile.
+}
+else{
+	//draw dirt_pile.png;
+}
+
+if (gameboard(x,y).needFertilizer == true){
+	//don't draw fertilizer tile.
+}
+else{
+	//draw fertilizer.png;
+}
+
+//draw flower and correct stage
+switch (name)
+	case: graphicID[0].name
+		//draw graphicID[0].state[0]
+
+	case: graphicID[1].name
+
+	case: graphicID[2].name
+
+	case: graphicID[3].name
+
+	case: graphicID[4].name
+
+
+
+
+
+
+
+
+	needWater = true
+
+
+
+
+
+//John says we need a game loop...that checks the state of the game...every 5 seconds or so.  and updates...
+
+
+
+
+
+	
+
+	
+
+</script>
+
+
+
+
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+
+</html>
