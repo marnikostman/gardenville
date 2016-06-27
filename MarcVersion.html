@@ -54,6 +54,15 @@
 
     </body>
     <script>
+    var currency = {sunshine:10, energy:100}; //100 is the max energy
+    var actionEnergyAmount = 10;
+    var toDoListEnergy = 5;
+    var journalSunshine = 20;
+    var timedEnergy = 5;
+
+    var boardWidth = 5;
+    var boardLength = 3;
+
   var ticksPerMinute = 6000;
   var gameTick = 500;
   var graphicId = [
@@ -77,17 +86,17 @@
   graphicId[4].state[0] = "<img src='./assets/house.png'>";
   graphicId[5].state[0] = "<img src='./assets/exclamation_alert.png'>";
 
-  gameBoard = new Array(3);
-  for (var i = 0; i < 3; i++) //This is essentially the model
+  gameBoard = new Array(boardLength);
+  for (var i = 0; i < boardLength; i++) //This is essentially the model
   {
-    gameBoard[i] = new Array(3);
-    for (var j = 0; j < 3; j++)
+    gameBoard[i] = new Array(boardWidth);
+    for (var j = 0; j < boardWidth; j++)
     {
       gameBoard[i][j] = {
         needTerraform: true,
         type: "blank",
-        drawLayers: 0,
-        stage: 0,
+        objectId: 0,
+        stateId: 0,
         needFertilizer: true,
         growthPoints: 0,
         needWater: true,
@@ -96,8 +105,8 @@
       };
     }
   }
-  for (var x = 0; x < 3; x++){
-    for (var y = 0; y < 3; y++){
+  for (var x = 0; x < boardLength; x++){
+    for (var y = 0; y < boardWidth; y++){
       var id = getId(x, y);
       //alert(id);
       $(".gameboard").append("<div style='display: inline-block' class='cell' id='" + id + "'></div>");
@@ -171,23 +180,23 @@
         {
           if(dropped=="house"){
             gameBoard[x][y].type = "house";
-            gameBoard[x][y].drawLayers = 5;
-            gameBoard[x][y].stage = 0;
+            gameBoard[x][y].objectId = 5;
+            gameBoard[x][y].stateId = 0;
           }
           else if (dropped=="rose") {
             gameBoard[x][y].type = "rose";
-            gameBoard[x][y].drawLayers = 1;
-            gameBoard[x][y].stage = 0;
+            gameBoard[x][y].objectId = 1;
+            gameBoard[x][y].stateId = 0;
           }
           else if (dropped=="tulip") {
             gameBoard[x][y].type = "tulip";
-            gameBoard[x][y].drawLayers = 2;
-            gameBoard[x][y].stage = 0;
+            gameBoard[x][y].objectId = 2;
+            gameBoard[x][y].stateId = 0;
           }
           else if (dropped=="sunflower") {
             gameBoard[x][y].type = "sunflower";
-            gameBoard[x][y].drawLayers = 3;
-            gameBoard[x][y].stage = 0;
+            gameBoard[x][y].objectId = 3;
+            gameBoard[x][y].stateId = 0;
           }
         }
       }
@@ -206,8 +215,8 @@
       }
 
       function nextDay(x,y){
-      	var maxStage = 2;
-      	var midStage = 1;
+      	var maxstateId = 2;
+      	var midstateId = 1;
       	var teenPoints = 50;
       	var adultPoints = 100;
       	//refill energy
@@ -216,15 +225,15 @@
       	//playSong("");
       	if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house"){
       		gameBoard[x][y].needWater = true;
-      		if (gameBoard[x][y].stage < midStage && gameBoard[x][y].growthPoints >= teenPoints){
-      			//gameboard[i][j].stage = 1
-      			gameBoard[x][y].stage=1;
+      		if (gameBoard[x][y].stateId < midstateId && gameBoard[x][y].growthPoints >= teenPoints){
+      			//gameboard[i][j].stateId = 1
+      			gameBoard[x][y].stateId=1;
       			//gameboard[i][j].needFertilizer = true
       			gameBoard[x][y].needFertilizer=true;
       		}
-      		else if (gameBoard[x][y].stage < maxStage && gameBoard[x][y].growthPoints >= adultPoints){
-      			//gameboard[i][j].stage = 2
-      			gameBoard[x][y].stage=2;
+      		else if (gameBoard[x][y].stateId < maxstateId && gameBoard[x][y].growthPoints >= adultPoints){
+      			//gameboard[i][j].stateId = 2
+      			gameBoard[x][y].stateId=2;
       			//gameboard[i][j].needFertilizer = true
       			gameBoard[x][y].needFertilizer=true;
       		}
@@ -249,9 +258,9 @@
           }
         do {
           var i = 0;
-          $("#" + id).append(graphicId[gameBoard[x][y].drawLayers].state[i]);
+          $("#" + id).append(graphicId[gameBoard[x][y].objectId].state[i]);
           i++;
-        } while(i <= gameBoard[x][y].stage);
+        } while(i <= gameBoard[x][y].stateId);
           if (gameBoard[x][y].effects == true)
           {
             $("#" + id).append("<img src='./assets/butterflies.gif'>");
@@ -309,9 +318,9 @@
         }
         function gameLoop ()
         {
-          for (var x = 0; x < 3; x++)
+          for (var x = 0; x < boardLength; x++)
           {
-            for (var y = 0; y < 3; y++)
+            for (var y = 0; y < boardWidth; y++)
             {
               if (gameBoard[x][y].nextWater < Date.now())
               {
