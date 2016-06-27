@@ -157,7 +157,7 @@
       }
       function terraformCell(x,y,id) {
         //  if it's a house don't do it, or if it's already terraformed
-        if(gameBoard[x][y].type!="House" || gameBoard[x][y].needsTerraform==false)
+        if(gameBoard[x][y].type!="House" || gameBoard[x][y].needTerraform==false)
         {
           gameBoard[x][y].needTerraform = false;
         }
@@ -167,7 +167,7 @@
         gameBoard[x][y].effects == "true";
       }
       function placeGraphic(x,y,id, dropped){
-        if(gameBoard[x][y].needsTerraform==false && gameBoard[x][y].type=="blank")
+        if(gameBoard[x][y].needTerraform==false && gameBoard[x][y].type=="blank")
         {
           if(dropped=="house"){
             gameBoard[x][y].type = "house";
