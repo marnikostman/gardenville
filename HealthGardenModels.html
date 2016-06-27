@@ -34,7 +34,7 @@ graphicId[5].state[0] = "./assets/house.png";
 
 
 function waterPlant(x,y,id){
-  if(gameBoard[x][y].graphicId.state!="" && gameBoard[x][y].graphicId>0){
+  if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
     gameBoard[x][y].needWater=false;
   }
   else {
