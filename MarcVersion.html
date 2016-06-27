@@ -2,6 +2,10 @@
 <html>
   <head>
     <style>
+    .dragged {
+      z-index: 101;
+    }
+
     .cell
     {
         position: relative;
@@ -32,17 +36,18 @@
 
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
-    <script   src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
   </head>
   <body>
     <div class="toolbar">
-      <img src='./assets/stage_3_tulip.png' id="tulip01" data-id="tulip">
-      <img src='./assets/stage_3_sunflower.png' id="sunflower01" data-id="sunflower">
-      <img src='./assets/stage_3_rose.png' id="rose01" data-id="rose">
+      <button onclick="updateGame();" id="nextday">Next Day</button>
+      <img src='./assets/spade.png' id="spade01" data-id="terraform" >
       <img src='./assets/waterCan.png' id="water01" data-id="water" >
-      <img src='./assets/house.png' id="house01" data-id="house">
-      <img src='./assets/spade.png' id="spade01" data-id="terraform">
-      <button onclick="updateGame();">Next Day</button>
+      <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
+      <img src='./assets/rose_icon.png' id="rose01" data-id="rose" >
+      <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" >
+      <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
+      <img src='./assets/butterfly_icon.png' id="butterfly01" data-id="butterfly" >
     </div>
 
     <div class="gameboard"></div>
@@ -56,20 +61,22 @@
     {name:"rose", state:[]},
     {name:"tulip", state:[]},
     {name:"sunflower", state:[]},
-    {name:"house", state:[]}];
+    {name:"house", state:[]},
+    {name: "alert", state:[]}];
   //GraphicId[0].state[0] is the default which has nothing to layer at all.
-  graphicId[0].state[0] = "./assets/blank.png";
-  graphicId[1].state[0] = "./assets/stage_1_baby.png";
-  graphicId[1].state[1] = "./assets/stage_2_teen.png";
-  graphicId[1].state[2] = "./assets/stage_3_rose.png";
-  graphicId[2].state[0] = "./assets/stage_1_baby.png";
-  graphicId[2].state[1] = "./assets/stage_2_teen.png";
-  graphicId[2].state[2] = "./assets/stage_3_tulip.png";
-  graphicId[3].state[0] = "./assets/stage_1_baby.png";
-  graphicId[3].state[1] = "./assets/stage_2_teen.png";
-  graphicId[3].state[2] = "./assets/stage_3_sunflower.png";
-  //graphicId[4].state[0] = "./assets/exclamation_alert.png";
-  graphicId[4].state[0] = "./assets/house.png";
+  graphicId[0].state[0] = "<img src='./assets/blank.png'>";
+  graphicId[1].state[0] = "<img src='./assets/stage_1_baby.png'>";
+  graphicId[1].state[1] = "<img src='./assets/stage_2_teen.png'>";
+  graphicId[1].state[2] = "<img src='./assets/stage_3_rose.png'>";
+  graphicId[2].state[0] = "<img src='./assets/stage_1_baby.png'>";
+  graphicId[2].state[1] = "<img src='./assets/stage_2_teen.png'>";
+  graphicId[2].state[2] = "<img src='./assets/stage_3_tulip.png'>";
+  graphicId[3].state[0] = "<img src='./assets/stage_1_baby.png'>";
+  graphicId[3].state[1] = "<img src='./assets/stage_2_teen.png'>";
+  graphicId[3].state[2] = "<img src='./assets/stage_3_sunflower.png'>";
+  graphicId[4].state[0] = "<img src='./assets/house.png'>";
+  graphicId[5].state[0] = "<img src='./assets/exclamation_alert.png'>";
+
   gameBoard = new Array(3);
   for (var i = 0; i < 3; i++) //This is essentially the model
   {
@@ -84,8 +91,9 @@
         needFertilizer: true,
         growthPoints: 0,
         needWater: true,
-        nextWater: Date.now() + 5 * (ticksPerMinute)
-      }
+        nextWater: Date.now() + 5 * (ticksPerMinute),
+        effects: false
+      };
     }
   }
   for (var x = 0; x < 3; x++){
@@ -98,10 +106,10 @@
       //Gives each cell the attribute to have things able to be dropped on it.
       $("#" + id).droppable({
         drop: itemDropped, //drop is a function, when it's done, it calls the function John wrote
-        hoverClass: "dragHover" //makes each cell "pop" out a bit for user?
+        hoverClass: "dragHover" //makes each cell "pop" out a bit for user?; needs written or needs deleted
       });
     }
-    $(".gameboard").append("<br/>"); // makes it so it's not a strip of land and a rectangular garden plot
+    $(".gameboard").append("<br/>");
   }
 
   function itemDropped(event, ui){
@@ -140,8 +148,11 @@
         if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
           gameBoard[x][y].needWater=false;
         }
-        else {
-          gameBoard[x][y].needWater=true;
+      }
+      function fertilizePlant(x, y, id)
+      {
+        if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
+          gameBoard[x][y].needFertilizer = false;
         }
       }
       function terraformCell(x,y,id) {
@@ -150,6 +161,10 @@
         {
           gameBoard[x][y].needTerraform = false;
         }
+      }
+      function playEffect(x, y, id)
+      {
+        gameBoard[x][y].effects == "true";
       }
       function placeGraphic(x,y,id, dropped){
         if(gameBoard[x][y].needsTerraform==false && gameBoard[x][y].type=="blank")
@@ -176,10 +191,12 @@
           }
         }
       }
+
       function getId(x, y)
       {
         return x.toString() + "-" + y.toString();
       }
+
       function updateGame(){
       	for(var i=0; i<length; i++){
       		for(var i=0; j<width; i++){
@@ -219,66 +236,25 @@
       {
         $("#" + id).html("");
         if (gameBoard[x][y].needTerraform == true){
-          $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
+          $("#" + id).append("<img src='./assets/un_terraformed_dirt.png'>");
         }
         else{
-          $("#" + id).append("<img src='./assets/un_terraformed_dirt.png'>");
+          $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
         }
         if (gameBoard[x][y].needWater != true){
             $("#" + id).append("<img src='./assets/watered.png'>");
           }
-        if (gameBoard[x][y].needFertilizer == true){
+        if (gameBoard[x][y].needFertilizer != true){
           $("#" + id).append("<img src='./assets/fertilized.png'>");
           }
-        switch(gameBoard[x][y].type){
-          case "blank":
-          $("#" + id).append("<img src='./assets/blank.png'>");
-          break;
-          case "rose":
-          if(gameBoard[x][y].stage==1){
-            $("#" + id).append("<img src=graphicId[1].state[0]>");
-          }
-          else if (gameBoard[x][y].stage==2) {
-            $("#" + id).append("<img src=graphicId[1].state[0]>");
-            $("#" + id).append("<img src=graphicId[1].state[1]>");
-          }
-          else if (gameBoard[x][y].stage==3) {
-            $("#" + id).append("<img src=graphicId[1].state[0]>");
-            $("#" + id).append("<img src=graphicId[1].state[1]>");
-            $("#" + id).append("<img src=graphicId[1].state[2]>");
-          }
-          break;
-          case "tulip":
-          if(gameBoard[x][y].stage==1){
-            $("#" + id).append("<img src=graphicId[2].state[0]>");
-          }
-          else if (gameBoard[x][y].stage==2) {
-            $("#" + id).append("<img src=graphicId[2].state[0]>");
-            $("#" + id).append("<img src=graphicId[2].state[1]>");
-          }
-          else if (gameBoard[x][y].stage==3) {
-            $("#" + id).append("<img src=graphicId[2].state[0]>");
-            $("#" + id).append("<img src=graphicId[2].state[1]>");
-            $("#" + id).append("<img src=graphicId[2].state[2]>");
-          }
-          break;
-          case "sunflower":
-          if(gameBoard[x][y].stage==1){
-            $("#" + id).append("<img src=graphicId[3].state[0]>");
-          }
-          else if (gameBoard[x][y].stage==2) {
-            $("#" + id).append("<img src=graphicId[3].state[0]>");
-            $("#" + id).append("<img src=graphicId[3].state[1]>");
-          }
-          else if (gameBoard[x][y].stage==3) {
-            $("#" + id).append("<img src=graphicId[3].state[0]>");
-            $("#" + id).append("<img src=graphicId[3].state[1]>");
-            $("#" + id).append("<img src=graphicId[3].state[2]>");
-          }
-          break;
-          case "house":
-          $("#" + id).append("<img src='.assets/house.png'>");
-          break;
+        do {
+          var i = 0;
+          $("#" + id).append(graphicId[gameBoard[x][y].drawLayers].state[i]);
+          i++;
+        } while(i <= gameBoard[x][y].stage);
+          if (gameBoard[x][y].effects == true)
+          {
+            $("#" + id).append("<img src='./assets/butterflies.gif'>");
           }
         }
 
@@ -289,12 +265,19 @@
         function houseHelper(){
           return "<img src='./assets/house.png' class='dragged'>"
         }
+        $("#fertilize01").draggable({
+          container: document,
+          helper: fertilizerHelper
+        });
+        function fertilizerHelper(){
+          return "<img src='./assets/fertilizer_bag.png' class='dragged'>"
+        }
         $("#water01").draggable({
           container: document,
           helper: waterHelper
         });
         function waterHelper(){
-          return "<img src='./assets/waterCan.png' class='dragged'>"
+          return "<img src='./assets/happy_cloud.gif' class='dragged'>"
         }
         $("#spade01").draggable({
           container: document,
@@ -308,21 +291,21 @@
           helper: tulipHelper
         });
         function tulipHelper(){
-          return "<img src=graphicId[2].state[2] class='dragged'>"
+          return "<img src='./assets/stage_1_baby.png' class='dragged'>"
         }
         $("#rose01").draggable({
           container: document,
           helper: roseHelper
         });
         function roseHelper(){
-          return "<img src=graphicId[1].state[2] class='dragged'>"
+          return "<img src='./assets/stage_1_baby.png' class='dragged'>"
         }
         $("#sunflower01").draggable({
           container: document,
           helper: sunflowerHelper
         });
         function sunflowerHelper(){
-          return "<img src=graphicId[3].state[2] class='dragged'>"
+          return "<img src='./assets/stage_1_baby.png' class='dragged'>"
         }
         function gameLoop ()
         {
@@ -344,3 +327,10 @@
 
 </script>
 </html>
+
+<!--case "butterfly":
+                gameBoard[x][y].effects = true;
+                PlayEffect(x, y, id)
+                break;
+
+        }-->
