@@ -1,0 +1,40 @@
+#toDoField {
+  display: none;
+}
+
+#showToDo {
+  cursor: pointer;
+}
+
+.tile {
+  width: 150px;
+  height: 150px;
+  display: inline-block;
+  position: relative;
+}
+
+.tile img{
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 150px;
+  width: 150px;
+  image-rendering: pixelated;
+}
+
+.dirt {
+  background-image:url("image0.png");
+  background-repeat: no-repeat;
+  background-size: 150px 150px;
+}
+
+body {
+  padding: 20%;
+}
+
+body {
+  background-image:url("image4.png");
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  image-rendering: pixelated;
+}
