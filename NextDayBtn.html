@@ -1,0 +1,141 @@
+<!doctype html>
+<html>
+<head>
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+</head>
+
+<body>
+	<button onclick="updateGame();">Next Day</button>
+</body>
+
+<script type="text/javascript">
+//Setting the length and width of the gameboard here.
+//Easily changed if necessary
+var length = 3;
+var width = 3;
+//Initialize currency here.
+//coins are nothing to begin with. Energy is at the MAX of 100
+var currency = {coins:0, energy:100};
+//next day button
+//switch all tiles that have plants to needing water
+
+// intialize tile
+gameBoard[x][y] = {needTerraform: true, type: "blank", drawLayers: 0, stage: 0, needFertilizer: true,
+growthPoints: 0, needWater: true, nextWater: Date.now() + 5 * (ticksPerMinute)};
+
+
+//update function when NEXT DAY button is pushed
+function updateGame(){
+	for(var i=0; i<length; i++){
+		for(var i=0; j<width; i++){
+			nextDay(i,j)
+		}
+	}
+}
+
+function nextDay(x,y){
+	var maxStage = 2;
+	var midStage = 1;
+	var teenPoints = 50;
+	var adultPoints = 100;
+	//refill energy
+	energy = 100;
+	//playTransition("");
+	//playSong("");
+	if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house"){
+		gameBoard[x][y].needWater = true;
+		if (gameBoard[x][y].stage < midStage && gameBoard[x][y].growthPoints >= teenPoints){
+			//gameboard[i][j].stage = 1
+			gameBoard[x][y].stage=1;
+			//gameboard[i][j].needFertilizer = true
+			gameBoard[x][y].needFertilizer=true;
+		}
+		else if (gameBoard[x][y].stage < maxStage && gameBoard[x][y].growthPoints >= adultPoints){
+			//gameboard[i][j].stage = 2
+			gameBoard[x][y].stage=2;
+			//gameboard[i][j].needFertilizer = true
+			gameBoard[x][y].needFertilizer=true;
+		}
+	}
+}
+
+function drawCell(x,y,id){
+	$("#" + id).html("");
+
+	if (gameboard[x][y].needTerraform == true){
+		$("#" + id).append("terraformed_dirt.png");
+	}
+	else{
+		$("#" + id).append("un_terraformed_dirt.png");
+	}
+
+	if (gameboard[x][y].needWater != true){
+			$("#" + id).append("watered.png");
+		}
+
+	if (gameboard[x][y].needFertilizer == true){
+		$("#" + id).append("fertilized.png");
+		}
+
+	switch(gameboard[x][y].type){
+		case "blank"
+		$("#" + id).append(graphicId[0].state[0]);
+		break;
+
+		case "rose"
+		if(gameboard[x][y].stage==1){
+			$("#" + id).append(graphicId[1].state[0]);
+		}
+		else if (gameboard[x][y].stage==2) {
+			$("#" + id).append(graphicId[1].state[0]);
+			$("#" + id).append(graphicId[1].state[1]);
+		}
+		else if (gameboard[x][y].stage==3) {
+			$("#" + id).append(graphicId[1].state[0]);
+			$("#" + id).append(graphicId[1].state[1]);
+			$("#" + id).append(graphicId[1].state[2]);
+		}
+		break;
+
+		case "tulip"
+		if(gameboard[x][y].stage==1){
+			$("#" + id).append(graphicId[2].state[0]);
+		}
+		else if (gameboard[x][y].stage==2) {
+			$("#" + id).append(graphicId[2].state[0]);
+			$("#" + id).append(graphicId[2].state[1]);
+		}
+		else if (gameboard[x][y].stage==3) {
+			$("#" + id).append(graphicId[2].state[0]);
+			$("#" + id).append(graphicId[2].state[1]);
+			$("#" + id).append(graphicId[2].state[2]);
+		}
+		break;
+
+		case "sunflower"
+		if(gameboard[x][y].stage==1){
+			$("#" + id).append(graphicId[3].state[0]);
+		}
+		else if (gameboard[x][y].stage==2) {
+			$("#" + id).append(graphicId[3].state[0]);
+			$("#" + id).append(graphicId[3].state[1]);
+		}
+		else if (gameboard[x][y].stage==3) {
+			$("#" + id).append(graphicId[3].state[0]);
+			$("#" + id).append(graphicId[3].state[1]);
+			$("#" + id).append(graphicId[3].state[2]);
+		}
+		break;
+
+		case "house"
+		$("#" + id).append(graphicId[4].state[0]);
+		break;
+		}
+	}
+//John says we need a game loop...that checks the state of the game...every 5 seconds or so.  and updates...
+</script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<!-- Latest compiled and minified JavaScript -->
+
+</html>

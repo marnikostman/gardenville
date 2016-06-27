@@ -1,0 +1,55 @@
+//NEEDS ALL IMAGE PATHS UPDATED
+<script>
+//Should be a property of a user
+//Make a dummy user for demo
+var currency = {coins:0, energy:100};
+
+
+var graphicId = [
+  {name:"blank", state:[]},
+  {name:"rose", state:[]},
+  {name:"tulip", state:[]},
+  {name:"sunflower", state:[]},
+  {name:"house", state:[]}];
+
+
+//GraphicId[0].state[0] is the default which has nothing to layer at all.
+graphicId[0].state[0] = "./assets/blank.png";
+
+graphicId[1].state[0] = "./assets/stage_1_baby.png";
+graphicId[1].state[1] = "./assets/stage_2_teen.png";
+graphicId[1].state[2] = "./assets/stage_3_rose.png";
+
+graphicId[2].state[0] = "./assets/stage_1_baby.png";
+graphicId[2].state[1] = "./assets/stage_2_teen.png";
+graphicId[2].state[2] = "./assets/stage_3_tulip.png";
+
+graphicId[3].state[0] = "./assets/stage_1_baby.png";
+graphicId[3].state[1] = "./assets/stage_2_teen.png";
+graphicId[3].state[2] = "./assets/stage_3_sunflower.png";
+
+graphicId[4].state[0] = "./assets/exclamation_alert.png";
+
+graphicId[5].state[0] = "./assets/house.png";
+
+
+function waterPlant(x,y,id){
+  if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
+    gameBoard[x][y].needWater=false;
+  }
+  else {
+    gameBoard[x][y].needWater=true;
+  }
+}
+
+function terraformDirt(x,y,id){
+  var cell = gameBoard[x][y];
+  if(cell.isTerraformed==false && cell.graphicId.state!=[0][0] ){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+</script>

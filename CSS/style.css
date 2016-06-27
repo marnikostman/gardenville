@@ -1,0 +1,26 @@
+.cell
+{
+    position: relative;
+    display: inline-block;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    width: 128px;
+    height: 128px;
+}
+.cell img
+{
+	width: 35px;
+    image-rendering: pixelated;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 128px;
+    height: 128px;
+}
+
+img {
+    image-rendering: pixelated;
+    width: 128px;
+    height: 128px;
+}

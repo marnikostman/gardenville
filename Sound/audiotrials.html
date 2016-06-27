@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang=en>
+    <head>
+        <meta charset="UTF-8">
+        <title>Audio Tests</title>
+
+        <!-- CSS Goes Here -->
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
+
+        <!-- <link rel="stylesheet" href="style.css"> -->
+        <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script></head>
+
+        <!-- Tests for all the sound functions below!  -->
+    <body onload="loadSound();">
+      <button onclick='stopAllSound();'>Stop Sounds</button>
+      <button onclick='playSong("song1");'>Play 1st Song</button>
+      <button onclick='playSong("song2");'>Play Another Song</button>
+      <button onclick='playSound("water");'>Play water sound</button>
+      <button onclick='playSound("jingle");'>Play jingle sound</button>
+      <button onclick='playSound("rake");'>Play rake sound</button>
+      <button onclick='playSound("click");'>Play button click sound</button>
+      <button onclick='playTransition("jingle", "rake");'>Play transition</button>
+      <button onclick='muteSound();'>Mute Sound</button>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
+    </body>
+<script>
+function loadSound(){
+  createjs.Sound.registerSounds([{src:"watering-plants.wav", id:"water"}, {src:"dizzy-spells.mp3", id:"song1"}, {src:"hhavok-main.mp3", id:"song2"}, {src:"jingle-win.wav", id:"jingle"}, {src:"raking.wav", id:"rake"}, {src:"button-click.wav", id:"click"}]);
+};
+var isPlaying
+function playSong(songName){
+  createjs.Sound.stop();
+    isPlaying = createjs.Sound.play(songName, {loop: -1});
+    // Commented out below is the function to set the volume for each song.
+    // isPlaying.volume = isPlaying.volume * 1.0;
+  };
+function playSound(soundEffect){
+      createjs.Sound.play(soundEffect);
+    };
+function stopAllSound(){
+  createjs.Sound.stop();
+};
+
+function playTransition(soundEffect, songName){
+  createjs.Sound.stop();
+  var transition = createjs.Sound.play(soundEffect);
+  transition.on("complete", playSound(songName))
+}
+function muteSound(){
+  isPlaying.muted = !isPlaying.muted;
+}
+</script>
+</html>
