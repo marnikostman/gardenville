@@ -2,8 +2,16 @@
 <html>
   <head>
     <style>
+    #journalField {
+      display: none;
+    }
+
     #toDoField {
       display: none;
+    }
+
+    #journal {
+      cursor: pointer;
     }
 
     .dragged {
@@ -84,6 +92,7 @@
       <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
       <img src='./assets/house.png' id="house01" data-id="house">
       <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
+      <img src='./assets/journal.png' id="journal">
     </div>
 
     <div class="gameboard"></div>
@@ -97,17 +106,17 @@
       <p>Enter your journal entry below:</p>
       <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
       <label for="uneasiness">Uneasiness</label>
-      <input type="range" name="uneasiness" min="0" max="10">
+      <input type="range" name="uneasiness" min="0" max="10" id="uneasiness" class="stat">
       <label for="anger">Anger</label>
-      <input type="range" name="anger" min="0" max="10">
+      <input type="range" name="anger" min="0" max="10" id="anger" class="stat">
       <label for="anxiety">Anxiety</label>
-      <input type="range" name="anxiety" min="0" max="10">
+      <input type="range" name="anxiety" min="0" max="10" id="anxiety" class="stat">
       <label for="apathy">Apathy</label>
-      <input type="range" name="apathy" min="0" max="10">
+      <input type="range" name="apathy" min="0" max="10" id="apathy" class="stat">
       <label for="serenity">Serenity</label>
-      <input type="range" name="serenity" min="0" max="10">
+      <input type="range" name="serenity" min="0" max="10" id="serenity" class="stat">
       <label for="euphoria">Euphoria</label>
-      <input type="range" name="euphoria" min="0" max="10">
+      <input type="range" name="euphoria" min="0" max="10" id="euphoria" class="stat">
       <input type="submit" id="addJournal"><button id="hideJournal">Exit</button>
     </div>
 
@@ -565,6 +574,18 @@
           return false;
       }
 
+      function accomplish() {
+          var id = this.getAttribute('id');
+          var todos = get_todos();
+          todos.splice(id, 1);
+          localStorage.setItem('todo', JSON.stringify(todos));
+
+          show();
+
+          currency.energy+=toDoListEnergy;
+          return false;
+      }
+
       function show() {
           var todos = get_todos();
 
@@ -580,6 +601,10 @@
           for (var i=0; i < buttons.length; i++) {
               buttons[i].addEventListener('click', remove);
           };
+          var accomplishButtons = document.getElementsByClassName('accomplished');
+          for (var i=0; i < accomplishButtons.length; i++) {
+              accomplishButtons[i].addEventListener('click', accomplish);
+          };
       }
 
       document.getElementById('add').addEventListener('click', add);
@@ -594,31 +619,60 @@
           return entries;
       }
 
+      function get_full_entries(){
+        var fullEntries = new Array;
+        var fullEntryStr = localStorage.getItem('fullEntry');
+        if (fullEntryStr != null){
+          fullEntries = JSON.parse(fullEntryStr);
+        }
+        return fullEntries;
+      }
+
       function addJournal() {
           var entry = document.getElementById('entry').value;
+          var fullEntry = {};
+          fullEntry.entry = entry;
+          fullEntry.uneasiness = document.getElementById('uneasiness').value;
+          fullEntry.anger = document.getElementById('anger').value;
+          fullEntry.anxiety = document.getElementById('anxiety').value;
+          fullEntry.apathy = document.getElementById('apathy').value;
+          fullEntry.serenity = document.getElementById('serenity').value;
+          fullEntry.euphoria = document.getElementById('euphoria').value;
 
-          var entries = get_entries();
-          if (entry !== ""){
-            entries.push(entry);
+          var fullEntries = get_full_entries();
+          if (fullEntry.entry !== ""){
+            fullEntries.push(fullEntry);
+            currency.sunshine += journalSunshine;
+            localStorage.setItem('fullEntry', JSON.stringify(fullEntries));
           }
           else {
             alert("Invalid entry. No text entered.");
           }
-          localStorage.setItem('entry', JSON.stringify(entries));
+          document.getElementById('entry').value = "";
+          statsArray = document.getElementsByClassName('stat');
+          for (s = 0; s < statsArray.length; s++){
+            statsArray[s].value = "5";
+          }
           return false;
       }
 
       function createJournalArray(){
-        var entries = get_entries();
-        var entryArray = [];
+        console.log(get_entries());
+      }
 
-        for(var i = 0; i < entries.length; i++){
-          entryArray.push(entries[i]);
-        }
-        console.log(entryArray);
+      function createFullEntryArray(){
+        console.log(get_full_entries());
       }
 
       document.getElementById('addJournal').addEventListener('click', addJournal);
+
+      $("#hideJournal").click(function(){
+          $("#journalField").hide();
+      });
+
+      $("#journal").click(function(){
+          $("#journalField").show();
+      });
 </script>
 </html>
 
