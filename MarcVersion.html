@@ -44,7 +44,8 @@
       <img src='./assets/spade.png' id="spade01" data-id="terraform" >
       <img src='./assets/waterCan.png' id="water01" data-id="water" >
       <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
-      <img src='./assets/rose_icon.png' id="rose01" data-id="rose" >
+      <div id="hiddenRose"><img src='./assets/rose_icon.png' id="rose01" data-id="rose"></div>
+      <div id="lockedRose"><img src='./assets/rose_icon.png' id="rose" data-id="rose" onclick="unlock()"></div>
       <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" >
       <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
       <img src='./assets/butterfly_icon.png' id="butterfly01" data-id="butterfly" >
@@ -54,14 +55,32 @@
 
     </body>
     <script>
+
+
     var currency = {sunshine:10, energy:100}; //100 is the max energy
     var actionEnergyAmount = 10;
     var toDoListEnergy = 5;
     var journalSunshine = 20;
     var timedEnergy = 5;
+    var flowerCost = 5;
 
     var boardWidth = 5;
     var boardLength = 3;
+
+      function unlock(){
+        var id = this.id;
+        console.log(id);
+        if(currency.sunshine>=flowerCost){
+          currency.sunshine = currency.sunshine - flowerCost;
+          console.log(currency.sunshine);
+          $("#lockedRose").click(function(){
+            $("#hiddenRose").show();
+          });
+          $("#lockedRose").click(function(){
+              $("#lockedRose").hide();
+          });
+        }
+      }
 
   var ticksPerMinute = 6000;
   var gameTick = 500;
