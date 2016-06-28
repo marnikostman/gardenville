@@ -31,6 +31,14 @@
         width: 128px;
         height: 128px;
     }
+
+    button {
+      background-image: ./assets/next_day.png
+      width: 128px;
+      height: 128px;
+
+    }
+
     .lockedItem{
       display: none;
     }
@@ -70,7 +78,7 @@
       <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" class="lockedItem">
       <img src='./assets/sunflower_icon.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
       <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
-      <img src='./assets/butterfly_icon.png' id="butterfly01" data-id="butterfly" >
+      <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
     </div>
 
     <div class="gameboard"></div>
@@ -116,18 +124,18 @@
     var journalSunshine = 20;
     var timedEnergy = 5;
     var energyMax = 100;
-
     var boardWidth = 5;
     var boardLength = 3;
     var teenPoints = 20;
     var adultPoints = 50;
 
+<<<<<<< HEAD
       function unlockGraphic(lockedItemId, cost){
         var flowerCost = cost;
         if(currency.sunshine>=flowerCost){
           playSound("click")
           currency.sunshine = currency.sunshine - flowerCost;
-          console.log(currency.sunshine);
+          //console.log(currency.sunshine);
           $("#" + lockedItemId + "01").show();
           $("#" + lockedItemId).hide();
         }
@@ -167,9 +175,11 @@
         objectId: 0,
         stateId: 0,
         needFertilizer: true,
+        nextFertilizer: Date.now(),
+        harvest: false,
         growthPoints: 0,
         needWater: true,
-        nextWater: Date.now() + 5 * (ticksPerMinute),
+        nextWater: Date.now(),
         effects: false
       };
     }
@@ -197,6 +207,7 @@
     var location = id.split("-");
     var x = location[0];
     var y = location[1];
+    console.log(dropped)
     switch (dropped){
       case "terraform":
         terraformCell(x, y, id)
@@ -219,13 +230,28 @@
       case "house":
         placeGraphic(x, y, id, dropped)
           break;
+      case "harvest":
+        harvestPlant(x, y, id)
+        break;
         }
         drawCell(x, y, id);
+      }
+      function harvestPlant(x,y,id){
+        if(gameBoard[x][y].stateId==2){
+          gameBoard[x][y].type = "blank";
+          gameBoard[x][y].stateId = 0;
+          console.log(gameBoard[x][y].stateId);
+          console.log(gameBoard[x][y].type);
+          gameBoard[x][y].harvest = true;
+          currency.sunshine = 10;
+        }
+
       }
       function waterPlant(x,y,id){
         if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
           gameBoard[x][y].needWater=false;
           playSound("water")
+          gameBoard[x][y].nextWater=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
             { gameBoard[x][y].growthPoints += 1;}
           if (gameBoard[x][y].stateId == 1)
@@ -238,12 +264,11 @@
           gameBoard[x][y].needFertilizer = false;
           playSound("jingle")
           currency.energy = currency.energy - actionEnergyAmount;
+          gameBoard[x][y].nextFertilizer=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
           {gameBoard[x][y].growthPoints += 10;}
           if (gameBoard[x][y].stateId == 1)
           { gameBoard[x][y].growthPoints += 10;}
-        //console.log(gameBoard[x][y].growthPoints)
-        //console.log(gameBoard[x][y].stateId)
         }
       }
       function terraformCell(x,y,id) {
@@ -307,26 +332,29 @@
         var id = getId(x, y);
 
 
+
       	//refill energy
 
       	//playTransition("");
       	//playSong("");
       	if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house")
         {
-      		gameBoard[x][y].needWater = true;
+      		  gameBoard[x][y].needWater = true;
+            gameBoard[x][y].nextWater = Date.now();
+            gameBoard[x][y].needFertilizer=true;
+            gameBoard[x][y].nextFertilizer=Date.now();
       		if (gameBoard[x][y].stateId < midstateId && gameBoard[x][y].growthPoints >= teenPoints)
           {
       			//gameboard[i][j].stateId = 1
       			gameBoard[x][y].stateId=1;
       			//gameboard[i][j].needFertilizer = true
-      			gameBoard[x][y].needFertilizer=true;
+
             drawCell(x, y, id)
       		}
       		else if (gameBoard[x][y].stateId < maxstateId && gameBoard[x][y].growthPoints >= adultPoints){
       			//gameboard[i][j].stateId = 2
       			gameBoard[x][y].stateId=2;
       			//gameboard[i][j].needFertilizer = true
-      			gameBoard[x][y].needFertilizer=true;
             drawCell(x, y, id)
       		}
       	}
@@ -349,16 +377,19 @@
           $("#" + id).append("<img src='./assets/fertilized.png'>");
           }
 
+
           var i = 0;
         do {
           $("#" + id).append(graphicId[gameBoard[x][y].objectId].state[i]);
           i++;
         } while(i <= gameBoard[x][y].stateId);
-
-          if (gameBoard[x][y].effects == true)
-          {
+        
+          if (gameBoard[x][y].harvest == true){
+            $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
+            }
+          if (gameBoard[x][y].effects == true){
             $("#" + id).append("<img src='./assets/butterflies.gif'>");
-          }
+            }
         }
 
         $("#house01").draggable({
@@ -410,6 +441,13 @@
         function sunflowerHelper(){
           return "<img src='./assets/stage_1_baby.png' class='dragged'>"
         }
+        $("#harvest01").draggable({
+          container: document,
+          helper: harvestHelper
+        });
+        function harvestHelper(){
+          return "<img src='./assets/butterfly_icon.png' class='dragged'>"
+        }
         function gameLoop ()
         {
           for (var x = 0; x < boardLength; x++)
@@ -422,7 +460,12 @@
                 gameBoard[x][y].needWater = true;
                 drawCell(x, y, id);
                 gameBoard[x][y].nextWater = Date.now() + 5 * (ticksPerMinute);
-
+              }
+              if (gameBoard[x][y].nextFertilizer < Date.now() && gameBoard[x][y].needFertilizer == false)
+              {
+                var id = x.toString() + "-" + y.toString();
+                gameBoard[x][y].needFertilizer = true;
+                drawCell(x, y, id);
               }
             }
           }
