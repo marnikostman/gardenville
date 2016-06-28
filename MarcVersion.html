@@ -31,6 +31,9 @@
         width: 128px;
         height: 128px;
     }
+    #hiddenRose{
+      display: none;
+    }
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
@@ -45,7 +48,7 @@
       <img src='./assets/waterCan.png' id="water01" data-id="water" >
       <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
       <div id="hiddenRose"><img src='./assets/rose_icon.png' id="rose01" data-id="rose"></div>
-      <div id="lockedRose"><img src='./assets/rose_icon.png' id="rose" data-id="rose" onclick="unlock()"></div>
+      <div id="lockedRose"><img src='./assets/rose_icon.png' id="rose" data-id="rose" onclick="unlockGraphic()"></div>
       <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" >
       <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
       <img src='./assets/butterfly_icon.png' id="butterfly01" data-id="butterfly" >
@@ -68,12 +71,9 @@
     var boardWidth = 5;
     var boardLength = 3;
 
-      function unlock(){
-        var id = this.id;
-        console.log(id);
+      function unlockGraphic(){
         if(currency.sunshine>=flowerCost){
           currency.sunshine = currency.sunshine - flowerCost;
-          console.log(currency.sunshine);
           $("#lockedRose").click(function(){
             $("#hiddenRose").show();
           });
