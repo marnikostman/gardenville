@@ -74,13 +74,6 @@
   </head>
   <body onload="loadSound();">
     <button onclick='stopAllSound();'>Stop Sounds</button>
-    <button onclick='playSong("song1");'>Play 1st Song</button>
-    <button onclick='playSong("song2");'>Play Another Song</button>
-    <button onclick='playSound("water");'>Play water sound</button>
-    <button onclick='playSound("jingle");'>Play jingle sound</button>
-    <button onclick='playSound("rake");'>Play rake sound</button>
-    <button onclick='playSound("click");'>Play button click sound</button>
-    <button onclick='playTransition("jingle", "rake");'>Play transition</button>
     <button onclick='muteSound();'>Mute Sound</button>
     <div class="toolbar">
       <!--
@@ -109,7 +102,7 @@
     <p id = "energy"></p>
 
     <div class="gameboard"></div>
-    
+
     <div id="toDoField">
       <p>Enter to-do items below:</p>
       <input id="task" type="text"><button id="add">Add</button>
