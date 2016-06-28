@@ -52,22 +52,35 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
+    <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
   </head>
-  <body>
+  <body onload="loadSound();">
+    <button onclick='stopAllSound();'>Stop Sounds</button>
+    <button onclick='playSong("song1");'>Play 1st Song</button>
+    <button onclick='playSong("song2");'>Play Another Song</button>
+    <button onclick='playSound("water");'>Play water sound</button>
+    <button onclick='playSound("jingle");'>Play jingle sound</button>
+    <button onclick='playSound("rake");'>Play rake sound</button>
+    <button onclick='playSound("click");'>Play button click sound</button>
+    <button onclick='playTransition("jingle", "rake");'>Play transition</button>
+    <button onclick='muteSound();'>Mute Sound</button>
     <div class="toolbar">
       <!--
       The id associated with each graphic MUST be the name with "01" added at the end.
       The locked plants must be the name without the "01".
       This is necessary for unlockGraphic() to function correctly.
+
+      The parameters that unlockGraphic has are: the id of the plant that is locked (sunflower NOT sunflower01),
+      and the amount of sunshine it costs to buy that plant
     -->
       <button onclick="updateGame();" id="nextday">Next Day</button>
       <img src='./assets/spade.png' id="spade01" data-id="terraform" >
       <img src='./assets/waterCan.png' id="water01" data-id="water" >
       <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
       <img src='./assets/rose_icon.png' id="rose01" data-id="rose" class="lockedItem">
-      <img src='./assets/rose_icon.png' id="rose" data-id="rose" onclick="unlockGraphic('rose')">
+      <img src='./assets/rose_icon.png' id="rose" data-id="rose" onclick="unlockGraphic('rose', 10)">
       <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" class="lockedItem">
-      <img src='./assets/sunflower_icon.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower')">
+      <img src='./assets/sunflower_icon.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
       <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
       <img src='./assets/house.png' id="house01" data-id="house">
       <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
@@ -100,6 +113,37 @@
 
     </body>
     <script>
+    var isPlaying
+
+    function loadSound(){
+      createjs.Sound.registerSounds([{src:"./sound/watering-plants.wav", id:"water"}, {src:"./sound/dizzy-spells.mp3", id:"song1"}, {src:"./sound/hhavok-main.mp3", id:"song2"}, {src:"./sound/jingle-win.wav", id:"jingle"}, {src:"./sound/raking.wav", id:"rake"}, {src:"./sound/button-click.wav", id:"click"}]);
+    };
+
+    function playSong(songName){
+      createjs.Sound.stop();
+        isPlaying = createjs.Sound.play(songName, {loop: -1});
+        // Commented out below is the function to set the volume for each song.
+        // isPlaying.volume = isPlaying.volume * 1.0;
+      };
+
+    function playSound(soundEffect){
+          createjs.Sound.play(soundEffect);
+        };
+
+    function stopAllSound(){
+      createjs.Sound.stop();
+    };
+
+    function playTransition(soundEffect, songName){
+      createjs.Sound.stop();
+      var transition = createjs.Sound.play(soundEffect);
+      transition.on("complete", playSound(songName))
+    }
+
+    function muteSound(){
+      isPlaying.muted = !isPlaying.muted;
+    }
+
 
     var ticksPerMinute = 6000;
     var currency = {sunshine:10, energy:100, addEnergy: Date.now() + 2 * (ticksPerMinute)}; //100 is the max energy
@@ -107,16 +151,16 @@
     var toDoListEnergy = 5;
     var journalSunshine = 20;
     var timedEnergy = 5;
-    var flowerCost = 5;
     var energyMax = 100;
     var boardWidth = 5;
     var boardLength = 3;
     var teenPoints = 20;
     var adultPoints = 50;
 
-
-      function unlockGraphic(lockedItemId){
+      function unlockGraphic(lockedItemId, cost){
+        var flowerCost = cost;
         if(currency.sunshine>=flowerCost){
+          playSound("click")
           currency.sunshine = currency.sunshine - flowerCost;
           //console.log(currency.sunshine);
           $("#" + lockedItemId + "01").show();
@@ -233,6 +277,7 @@
       function waterPlant(x,y,id){
         if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
           gameBoard[x][y].needWater=false;
+          playSound("water")
           gameBoard[x][y].nextWater=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
             { gameBoard[x][y].growthPoints += 1;}
@@ -244,6 +289,7 @@
       {
         if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house")){
           gameBoard[x][y].needFertilizer = false;
+          playSound("jingle")
           currency.energy = currency.energy - actionEnergyAmount;
           gameBoard[x][y].nextFertilizer=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
@@ -257,6 +303,7 @@
         if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="House" || gameBoard[x][y].needTerraform==false))
         {
           gameBoard[x][y].needTerraform = false;
+          playSound("rake")
           currency.energy = currency.energy - actionEnergyAmount;
         }
       }
@@ -272,7 +319,13 @@
         }
         if(gameBoard[x][y].needTerraform==false && gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount)
         {
-          if (dropped=="rose") {
+          if(dropped=="house"){
+            playSound("jingle")
+            gameBoard[x][y].type = "house";
+            gameBoard[x][y].objectId = 5;
+            gameBoard[x][y].stateId = 0;
+          }
+          else if (dropped=="rose") {
             gameBoard[x][y].type = "rose";
             gameBoard[x][y].objectId = 1;
             gameBoard[x][y].stateId = 0;
@@ -362,6 +415,7 @@
           $("#" + id).append(graphicId[gameBoard[x][y].objectId].state[i]);
           i++;
         } while(i <= gameBoard[x][y].stateId);
+
           if (gameBoard[x][y].harvest == true){
             $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
             }
