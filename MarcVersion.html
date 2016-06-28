@@ -86,6 +86,8 @@
       <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
     </div>
 
+    <p id = "energy"></p>
+
     <div class="gameboard"></div>
     <div id="toDoField">
       <p>Enter to-do items below:</p>
@@ -113,6 +115,8 @@
 
     </body>
     <script>
+
+
     var isPlaying;
 
     function loadSound(){
@@ -262,6 +266,7 @@
         break;
         }
         drawCell(x, y, id);
+        gameBoard[x][y].harvest = false;
       }
       function harvestPlant(x,y,id){
         if(gameBoard[x][y].stateId==2){
@@ -270,7 +275,7 @@
           console.log(gameBoard[x][y].stateId);
           console.log(gameBoard[x][y].type);
           gameBoard[x][y].harvest = true;
-          currency.sunshine = 10;
+          currency.sunshine += 10;
         }
 
       }
@@ -312,20 +317,17 @@
         gameBoard[x][y].effects == "true";
       }
       function placeGraphic(x,y,id, dropped){
-        if(dropped=="house"){
-          gameBoard[x][y].type = "house";
-          gameBoard[x][y].objectId = 4;
-          gameBoard[x][y].stateId = 0;
+        if(gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount){
+          if(dropped=="house"){
+            gameBoard[x][y].type = "house";
+            playSound("jingle");
+            gameBoard[x][y].objectId = 4;
+            gameBoard[x][y].stateId = 0;
+          }
         }
         if(gameBoard[x][y].needTerraform==false && gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount)
         {
-          if(dropped=="house"){
-            playSound("jingle")
-            gameBoard[x][y].type = "house";
-            gameBoard[x][y].objectId = 5;
-            gameBoard[x][y].stateId = 0;
-          }
-          else if (dropped=="rose") {
+          if (dropped=="rose") {
             gameBoard[x][y].type = "rose";
             gameBoard[x][y].objectId = 1;
             gameBoard[x][y].stateId = 0;
@@ -484,6 +486,7 @@
         }
         function gameLoop ()
         {
+          document.getElementById("energy").innerHTML = "Energy: " + currency.energy + " | Sunshine: " + currency.sunshine;
           for (var x = 0; x < boardLength; x++)
           {
             for (var y = 0; y < boardWidth; y++)
