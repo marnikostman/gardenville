@@ -43,6 +43,11 @@
   </head>
   <body>
     <div class="toolbar">
+      <!--
+      The id associated with each graphic MUST be the name with "01" added at the end.
+      The locked plants must be the name without the "01".
+      This is necessary for unlockGraphic() to function correctly.
+    -->
       <button onclick="updateGame();" id="nextday">Next Day</button>
       <img src='./assets/spade.png' id="spade01" data-id="terraform" >
       <img src='./assets/waterCan.png' id="water01" data-id="water" >
