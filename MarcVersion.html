@@ -2,8 +2,16 @@
 <html>
   <head>
     <style>
+    #journalField {
+      display: none;
+    }
+
     #toDoField {
       display: none;
+    }
+
+    #journal {
+      cursor: pointer;
     }
 
     .dragged {
@@ -90,7 +98,10 @@
       <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
       <img src='./assets/house.png' id="house01" data-id="house">
       <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
+      <img src='./assets/journal.png' id="journal">
     </div>
+
+    <p id = "energy"></p>
 
     <div class="gameboard"></div>
     <div id="toDoField">
@@ -103,22 +114,24 @@
       <p>Enter your journal entry below:</p>
       <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
       <label for="uneasiness">Uneasiness</label>
-      <input type="range" name="uneasiness" min="0" max="10">
+      <input type="range" name="uneasiness" min="0" max="10" id="uneasiness" class="stat">
       <label for="anger">Anger</label>
-      <input type="range" name="anger" min="0" max="10">
+      <input type="range" name="anger" min="0" max="10" id="anger" class="stat">
       <label for="anxiety">Anxiety</label>
-      <input type="range" name="anxiety" min="0" max="10">
+      <input type="range" name="anxiety" min="0" max="10" id="anxiety" class="stat">
       <label for="apathy">Apathy</label>
-      <input type="range" name="apathy" min="0" max="10">
+      <input type="range" name="apathy" min="0" max="10" id="apathy" class="stat">
       <label for="serenity">Serenity</label>
-      <input type="range" name="serenity" min="0" max="10">
+      <input type="range" name="serenity" min="0" max="10" id="serenity" class="stat">
       <label for="euphoria">Euphoria</label>
-      <input type="range" name="euphoria" min="0" max="10">
+      <input type="range" name="euphoria" min="0" max="10" id="euphoria" class="stat">
       <input type="submit" id="addJournal"><button id="hideJournal">Exit</button>
     </div>
 
     </body>
     <script>
+
+
     var isPlaying;
     var test = true;
 
@@ -129,12 +142,16 @@
     function playSong(songName){
       createjs.Sound.stop();
         isPlaying = createjs.Sound.play(songName, {loop: -1});
-        // Commented out below is the function to set the volume for each song.
-        // isPlaying.volume = isPlaying.volume * 1.0;
+        // Below is the function to set the volume for each song.
+        // The volume is set between 0 and 1
+        isPlaying.volume = isPlaying.volume * .1;
       };
 
     function playSound(soundEffect){
-          createjs.Sound.play(soundEffect);
+          effectVolume = createjs.Sound.play(soundEffect);
+          if(soundEffect=="rake"){
+            effectVolume.volume = effectVolume.volume * .4;
+          }
         };
 
     function stopAllSound(){
@@ -269,6 +286,7 @@
         break;
         }
         drawCell(x, y, id);
+        gameBoard[x][y].harvest = false;
       }
       function harvestPlant(x,y,id){
         if(gameBoard[x][y].stateId==2){
@@ -277,7 +295,7 @@
           console.log(gameBoard[x][y].stateId);
           console.log(gameBoard[x][y].type);
           gameBoard[x][y].harvest = true;
-          currency.sunshine = 10;
+          currency.sunshine += 10;
         }
 
       }
@@ -307,7 +325,7 @@
       }
       function terraformCell(x,y,id) {
         //  if it's a house don't do it, or if it's already terraformed
-        if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="House" || gameBoard[x][y].needTerraform==false))
+        if(currency.energy >= actionEnergyAmount && gameBoard[x][y].type!="House" && gameBoard[x][y].needTerraform==true)
         {
           gameBoard[x][y].needTerraform = false;
           playSound("rake")
@@ -319,20 +337,17 @@
         gameBoard[x][y].effects == "true";
       }
       function placeGraphic(x,y,id, dropped){
-        if(dropped=="house"){
-          gameBoard[x][y].type = "house";
-          gameBoard[x][y].objectId = 4;
-          gameBoard[x][y].stateId = 0;
+        if(gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount){
+          if(dropped=="house"){
+            gameBoard[x][y].type = "house";
+            playSound("jingle");
+            gameBoard[x][y].objectId = 4;
+            gameBoard[x][y].stateId = 0;
+          }
         }
         if(gameBoard[x][y].needTerraform==false && gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount)
         {
-          if(dropped=="house"){
-            playSound("jingle")
-            gameBoard[x][y].type = "house";
-            gameBoard[x][y].objectId = 5;
-            gameBoard[x][y].stateId = 0;
-          }
-          else if (dropped=="rose") {
+          if (dropped=="rose") {
             gameBoard[x][y].type = "rose";
             gameBoard[x][y].objectId = 1;
             gameBoard[x][y].stateId = 0;
@@ -496,6 +511,7 @@
         }
         function gameLoop ()
         {
+          document.getElementById("energy").innerHTML = "Energy: " + currency.energy + " | Sunshine: " + currency.sunshine;
           for (var x = 0; x < boardLength; x++)
           {
             for (var y = 0; y < boardWidth; y++)
@@ -577,6 +593,18 @@
           return false;
       }
 
+      function accomplish() {
+          var id = this.getAttribute('id');
+          var todos = get_todos();
+          todos.splice(id, 1);
+          localStorage.setItem('todo', JSON.stringify(todos));
+
+          show();
+
+          currency.energy+=toDoListEnergy;
+          return false;
+      }
+
       function show() {
           var todos = get_todos();
 
@@ -592,6 +620,10 @@
           for (var i=0; i < buttons.length; i++) {
               buttons[i].addEventListener('click', remove);
           };
+          var accomplishButtons = document.getElementsByClassName('accomplished');
+          for (var i=0; i < accomplishButtons.length; i++) {
+              accomplishButtons[i].addEventListener('click', accomplish);
+          };
       }
 
       document.getElementById('add').addEventListener('click', add);
@@ -606,31 +638,60 @@
           return entries;
       }
 
+      function get_full_entries(){
+        var fullEntries = new Array;
+        var fullEntryStr = localStorage.getItem('fullEntry');
+        if (fullEntryStr != null){
+          fullEntries = JSON.parse(fullEntryStr);
+        }
+        return fullEntries;
+      }
+
       function addJournal() {
           var entry = document.getElementById('entry').value;
+          var fullEntry = {};
+          fullEntry.entry = entry;
+          fullEntry.uneasiness = document.getElementById('uneasiness').value;
+          fullEntry.anger = document.getElementById('anger').value;
+          fullEntry.anxiety = document.getElementById('anxiety').value;
+          fullEntry.apathy = document.getElementById('apathy').value;
+          fullEntry.serenity = document.getElementById('serenity').value;
+          fullEntry.euphoria = document.getElementById('euphoria').value;
 
-          var entries = get_entries();
-          if (entry !== ""){
-            entries.push(entry);
+          var fullEntries = get_full_entries();
+          if (fullEntry.entry !== ""){
+            fullEntries.push(fullEntry);
+            currency.sunshine += journalSunshine;
+            localStorage.setItem('fullEntry', JSON.stringify(fullEntries));
           }
           else {
             alert("Invalid entry. No text entered.");
           }
-          localStorage.setItem('entry', JSON.stringify(entries));
+          document.getElementById('entry').value = "";
+          statsArray = document.getElementsByClassName('stat');
+          for (s = 0; s < statsArray.length; s++){
+            statsArray[s].value = "5";
+          }
           return false;
       }
 
       function createJournalArray(){
-        var entries = get_entries();
-        var entryArray = [];
+        console.log(get_entries());
+      }
 
-        for(var i = 0; i < entries.length; i++){
-          entryArray.push(entries[i]);
-        }
-        console.log(entryArray);
+      function createFullEntryArray(){
+        console.log(get_full_entries());
       }
 
       document.getElementById('addJournal').addEventListener('click', addJournal);
+
+      $("#hideJournal").click(function(){
+          $("#journalField").hide();
+      });
+
+      $("#journal").click(function(){
+          $("#journalField").show();
+      });
 </script>
 </html>
 
