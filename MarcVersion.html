@@ -18,6 +18,12 @@
       z-index: 101;
     }
 
+    .dragHover {
+      -webkit-transform: scale(1.2);
+      transform: scale(1.2);
+      z-index:100;
+    }
+
     .cell
     {
         position: relative;
@@ -295,6 +301,7 @@
           console.log(gameBoard[x][y].stateId);
           console.log(gameBoard[x][y].type);
           gameBoard[x][y].harvest = true;
+          gameBoard[x][y].growthPoints = 0;
           currency.sunshine += 10;
         }
 
