@@ -2,6 +2,10 @@
 <html>
   <head>
     <style>
+    #toDoField {
+      display: none;
+    }
+
     .dragged {
       z-index: 101;
     }
@@ -53,30 +57,99 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
+    <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
   </head>
-  <body>
+  <body onload="loadSound();">
+    <button onclick='stopAllSound();'>Stop Sounds</button>
+    <button onclick='playSong("song1");'>Play 1st Song</button>
+    <button onclick='playSong("song2");'>Play Another Song</button>
+    <button onclick='playSound("water");'>Play water sound</button>
+    <button onclick='playSound("jingle");'>Play jingle sound</button>
+    <button onclick='playSound("rake");'>Play rake sound</button>
+    <button onclick='playSound("click");'>Play button click sound</button>
+    <button onclick='playTransition("jingle", "rake");'>Play transition</button>
+    <button onclick='muteSound();'>Mute Sound</button>
     <div class="toolbar">
       <!--
       The id associated with each graphic MUST be the name with "01" added at the end.
       The locked plants must be the name without the "01".
       This is necessary for unlockGraphic() to function correctly.
+
+      The parameters that unlockGraphic has are: the id of the plant that is locked (sunflower NOT sunflower01),
+      and the amount of sunshine it costs to buy that plant
     -->
+
       <button class="clock" onclick="updateGame();" id="nextday"><strong>Next Day</strong></button>
       <img src='./assets/spade.png' id="spade01" data-id="terraform" >
       <img src='./assets/waterCan.png' id="water01" data-id="water" >
       <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
       <img src='./assets/rose_icon.png' id="rose01" data-id="rose" class="lockedItem">
-      <img src='./assets/rose_icon.png' id="rose" data-id="rose" onclick="unlockGraphic('rose')">
+      <img src='./assets/rose_icon.png' id="rose" data-id="rose" onclick="unlockGraphic('rose', 10)">
       <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" class="lockedItem">
-      <img src='./assets/sunflower_icon.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower')">
+      <img src='./assets/sunflower_icon.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
       <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
-      <img src='./assets/butterfly_icon.png' id="butterfly01" data-id="butterfly" >
+      <img src='./assets/house.png' id="house01" data-id="house">
+      <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
     </div>
 
     <div class="gameboard"></div>
+    <div id="toDoField">
+      <p>Enter to-do items below:</p>
+      <input id="task" type="text"><button id="add">Add</button>
+      <div id="todos"></div>
+      <button id="hideToDo">Exit list</button>
+    </div>
+    <div id="journalField">
+      <p>Enter your journal entry below:</p>
+      <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
+      <label for="uneasiness">Uneasiness</label>
+      <input type="range" name="uneasiness" min="0" max="10">
+      <label for="anger">Anger</label>
+      <input type="range" name="anger" min="0" max="10">
+      <label for="anxiety">Anxiety</label>
+      <input type="range" name="anxiety" min="0" max="10">
+      <label for="apathy">Apathy</label>
+      <input type="range" name="apathy" min="0" max="10">
+      <label for="serenity">Serenity</label>
+      <input type="range" name="serenity" min="0" max="10">
+      <label for="euphoria">Euphoria</label>
+      <input type="range" name="euphoria" min="0" max="10">
+      <input type="submit" id="addJournal"><button id="hideJournal">Exit</button>
+    </div>
 
     </body>
     <script>
+    var isPlaying;
+
+    function loadSound(){
+      createjs.Sound.registerSounds([{src:"./sound/watering-plants.wav", id:"water"}, {src:"./sound/dizzy-spells.mp3", id:"song1"}, {src:"./sound/hhavok-main.mp3", id:"song2"}, {src:"./sound/jingle-win.wav", id:"jingle"}, {src:"./sound/raking.wav", id:"rake"}, {src:"./sound/button-click.wav", id:"click"}]);
+    };
+
+    function playSong(songName){
+      createjs.Sound.stop();
+        isPlaying = createjs.Sound.play(songName, {loop: -1});
+        // Commented out below is the function to set the volume for each song.
+        // isPlaying.volume = isPlaying.volume * 1.0;
+      };
+
+    function playSound(soundEffect){
+          createjs.Sound.play(soundEffect);
+        };
+
+    function stopAllSound(){
+      createjs.Sound.stop();
+    };
+
+    function playTransition(soundEffect, songName){
+      createjs.Sound.stop();
+      var transition = createjs.Sound.play(soundEffect);
+      transition.on("complete", playSound(songName))
+    }
+
+    function muteSound(){
+      isPlaying.muted = !isPlaying.muted;
+    }
+
 
     var ticksPerMinute = 6000;
     var currency = {sunshine:10, energy:100, addEnergy: Date.now() + 2 * (ticksPerMinute)}; //100 is the max energy
@@ -84,18 +157,18 @@
     var toDoListEnergy = 5;
     var journalSunshine = 20;
     var timedEnergy = 5;
-    var flowerCost = 5;
     var energyMax = 100;
     var boardWidth = 5;
     var boardLength = 3;
     var teenPoints = 20;
     var adultPoints = 50;
 
-
-      function unlockGraphic(lockedItemId){
+      function unlockGraphic(lockedItemId, cost){
+        var flowerCost = cost;
         if(currency.sunshine>=flowerCost){
+          playSound("click")
           currency.sunshine = currency.sunshine - flowerCost;
-          console.log(currency.sunshine);
+          //console.log(currency.sunshine);
           $("#" + lockedItemId + "01").show();
           $("#" + lockedItemId).hide();
         }
@@ -136,6 +209,7 @@
         stateId: 0,
         needFertilizer: true,
         nextFertilizer: Date.now(),
+        harvest: false,
         growthPoints: 0,
         needWater: true,
         nextWater: Date.now(),
@@ -166,6 +240,7 @@
     var location = id.split("-");
     var x = location[0];
     var y = location[1];
+    console.log(dropped)
     switch (dropped){
       case "terraform":
         terraformCell(x, y, id)
@@ -188,12 +263,27 @@
       case "house":
         placeGraphic(x, y, id, dropped)
           break;
+      case "harvest":
+        harvestPlant(x, y, id)
+        break;
         }
         drawCell(x, y, id);
+      }
+      function harvestPlant(x,y,id){
+        if(gameBoard[x][y].stateId==2){
+          gameBoard[x][y].type = "blank";
+          gameBoard[x][y].stateId = 0;
+          console.log(gameBoard[x][y].stateId);
+          console.log(gameBoard[x][y].type);
+          gameBoard[x][y].harvest = true;
+          currency.sunshine = 10;
+        }
+
       }
       function waterPlant(x,y,id){
         if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
           gameBoard[x][y].needWater=false;
+          playSound("water")
           gameBoard[x][y].nextWater=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
             { gameBoard[x][y].growthPoints += 1;}
@@ -205,14 +295,13 @@
       {
         if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house")){
           gameBoard[x][y].needFertilizer = false;
+          playSound("jingle")
           currency.energy = currency.energy - actionEnergyAmount;
           gameBoard[x][y].nextFertilizer=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
           {gameBoard[x][y].growthPoints += 10;}
           if (gameBoard[x][y].stateId == 1)
           { gameBoard[x][y].growthPoints += 10;}
-        //console.log(gameBoard[x][y].growthPoints)
-        //console.log(gameBoard[x][y].stateId)
         }
       }
       function terraformCell(x,y,id) {
@@ -220,6 +309,7 @@
         if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="House" || gameBoard[x][y].needTerraform==false))
         {
           gameBoard[x][y].needTerraform = false;
+          playSound("rake")
           currency.energy = currency.energy - actionEnergyAmount;
         }
       }
@@ -228,9 +318,15 @@
         gameBoard[x][y].effects == "true";
       }
       function placeGraphic(x,y,id, dropped){
+        if(dropped=="house"){
+          gameBoard[x][y].type = "house";
+          gameBoard[x][y].objectId = 4;
+          gameBoard[x][y].stateId = 0;
+        }
         if(gameBoard[x][y].needTerraform==false && gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount)
         {
           if(dropped=="house"){
+            playSound("jingle")
             gameBoard[x][y].type = "house";
             gameBoard[x][y].objectId = 5;
             gameBoard[x][y].stateId = 0;
@@ -319,17 +415,22 @@
           $("#" + id).append("<img src='./assets/fertilized.png'>");
           }
 
+
           var i = 0;
         do {
           $("#" + id).append(graphicId[gameBoard[x][y].objectId].state[i]);
           i++;
         } while(i <= gameBoard[x][y].stateId);
-          
-          if (gameBoard[x][y].effects == true)
-          {
+
+          if (gameBoard[x][y].harvest == true){
+            $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
+            }
+          if (gameBoard[x][y].effects == true){
             $("#" + id).append("<img src='./assets/butterflies.gif'>");
           }
-        }
+          addToDoToHouse(x,y);
+      }
+
 
         $("#house01").draggable({
           container: document,
@@ -380,6 +481,13 @@
         function sunflowerHelper(){
           return "<img src='./assets/stage_1_baby.png' class='dragged'>"
         }
+        $("#harvest01").draggable({
+          container: document,
+          helper: harvestHelper
+        });
+        function harvestHelper(){
+          return "<img src='./assets/butterfly_icon.png' class='dragged'>"
+        }
         function gameLoop ()
         {
           for (var x = 0; x < boardLength; x++)
@@ -397,7 +505,6 @@
               {
                 var id = x.toString() + "-" + y.toString();
                 gameBoard[x][y].needFertilizer = true;
-                console.log(id + " needs fertilizer badly");
                 drawCell(x, y, id);
               }
             }
@@ -412,6 +519,112 @@
 
         gameLoop();
 
+      function addToDoToHouse(x,y){
+        if (gameBoard[x][y].objectId == 4){
+          $(".toolbar #house01").remove();
+          var id = ".gameboard #" + x + "-" + y;
+          $(id).addClass("house01");
+          $(".house01").click(function(){
+              $("#toDoField").show();
+          });
+          $(".house01").css({ cursor: "pointer" });
+        }
+      }
+
+      $("#hideToDo").click(function(){
+          $("#toDoField").hide();
+      });
+
+      function get_todos() {
+          var todos = new Array;
+          var todos_str = localStorage.getItem('todo');
+          if (todos_str !== null) {
+              todos = JSON.parse(todos_str);
+          }
+          return todos;
+      }
+
+      function add() {
+          var task = document.getElementById('task').value;
+
+          var todos = get_todos();
+          if (task !== ""){
+            todos.push(task);
+          }
+          else {
+            alert("Invalid entry. No text entered.");
+          }
+          localStorage.setItem('todo', JSON.stringify(todos));
+
+          show();
+          return false;
+      }
+
+      function remove() {
+          var id = this.getAttribute('id');
+          var todos = get_todos();
+          todos.splice(id, 1);
+          localStorage.setItem('todo', JSON.stringify(todos));
+
+          show();
+
+          return false;
+      }
+
+      function show() {
+          var todos = get_todos();
+
+          var html = '<ul>';
+          for(var i=0; i<todos.length; i++) {
+              html += '<li>' + todos[i] + '<button class="remove" id="' + i  + '">x</button>' + '<button class="accomplished" id="' + i + '">&#10003;</button>' + '</li>';
+          };
+          html += '</ul>';
+
+          document.getElementById('todos').innerHTML = html;
+
+          var buttons = document.getElementsByClassName('remove');
+          for (var i=0; i < buttons.length; i++) {
+              buttons[i].addEventListener('click', remove);
+          };
+      }
+
+      document.getElementById('add').addEventListener('click', add);
+      show();
+
+      function get_entries() {
+          var entries = new Array;
+          var entry_str = localStorage.getItem('entry');
+          if (entry_str !== null) {
+              entries = JSON.parse(entry_str);
+          }
+          return entries;
+      }
+
+      function addJournal() {
+          var entry = document.getElementById('entry').value;
+
+          var entries = get_entries();
+          if (entry !== ""){
+            entries.push(entry);
+          }
+          else {
+            alert("Invalid entry. No text entered.");
+          }
+          localStorage.setItem('entry', JSON.stringify(entries));
+          return false;
+      }
+
+      function createJournalArray(){
+        var entries = get_entries();
+        var entryArray = [];
+
+        for(var i = 0; i < entries.length; i++){
+          entryArray.push(entries[i]);
+        }
+        console.log(entryArray);
+      }
+
+      document.getElementById('addJournal').addEventListener('click', addJournal);
 </script>
 </html>
 
@@ -421,3 +634,5 @@
                 break;
 
         }-->
+
+<!--onload, localStorage.clear()?-->
