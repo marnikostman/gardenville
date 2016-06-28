@@ -2,6 +2,10 @@
 <html>
   <head>
     <style>
+    #toDoField {
+      display: none;
+    }
+
     .dragged {
       z-index: 101;
     }
@@ -48,9 +52,33 @@
       <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" >
       <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
       <img src='./assets/butterfly_icon.png' id="butterfly01" data-id="butterfly" >
+      <img src='./assets/house.png' id="house01" data-id="house">
     </div>
 
     <div class="gameboard"></div>
+    <div id="toDoField">
+      <p>Enter to-do items below:</p>
+      <input id="task" type="text"><button id="add">Add</button>
+      <div id="todos"></div>
+      <button id="hideToDo">Exit list</button>
+    </div>
+    <div id="journalField">
+      <p>Enter your journal entry below:</p>
+      <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
+      <label for="uneasiness">Uneasiness</label>
+      <input type="range" name="uneasiness" min="0" max="10">
+      <label for="anger">Anger</label>
+      <input type="range" name="anger" min="0" max="10">
+      <label for="anxiety">Anxiety</label>
+      <input type="range" name="anxiety" min="0" max="10">
+      <label for="apathy">Apathy</label>
+      <input type="range" name="apathy" min="0" max="10">
+      <label for="serenity">Serenity</label>
+      <input type="range" name="serenity" min="0" max="10">
+      <label for="euphoria">Euphoria</label>
+      <input type="range" name="euphoria" min="0" max="10">
+      <input type="submit" id="addJournal"><button id="hideJournal">Exit</button>
+    </div>
 
     </body>
     <script>
@@ -176,14 +204,14 @@
         gameBoard[x][y].effects == "true";
       }
       function placeGraphic(x,y,id, dropped){
+        if(dropped=="house"){
+          gameBoard[x][y].type = "house";
+          gameBoard[x][y].objectId = 4;
+          gameBoard[x][y].stateId = 0;
+        }
         if(gameBoard[x][y].needTerraform==false && gameBoard[x][y].type=="blank")
         {
-          if(dropped=="house"){
-            gameBoard[x][y].type = "house";
-            gameBoard[x][y].objectId = 5;
-            gameBoard[x][y].stateId = 0;
-          }
-          else if (dropped=="rose") {
+          if (dropped=="rose") {
             gameBoard[x][y].type = "rose";
             gameBoard[x][y].objectId = 1;
             gameBoard[x][y].stateId = 0;
@@ -265,7 +293,8 @@
           {
             $("#" + id).append("<img src='./assets/butterflies.gif'>");
           }
-        }
+          addToDoToHouse(x,y);
+      }
 
         $("#house01").draggable({
           container: document,
@@ -334,6 +363,112 @@
         }
         gameLoop();
 
+      function addToDoToHouse(x,y){
+        if (gameBoard[x][y].objectId == 4){
+          $(".toolbar #house01").remove();
+          var id = ".gameboard #" + x + "-" + y;
+          $(id).addClass("house01");
+          $(".house01").click(function(){
+              $("#toDoField").show();
+          });
+          $(".house01").css({ cursor: "pointer" });
+        }
+      }
+
+      $("#hideToDo").click(function(){
+          $("#toDoField").hide();
+      });
+
+      function get_todos() {
+          var todos = new Array;
+          var todos_str = localStorage.getItem('todo');
+          if (todos_str !== null) {
+              todos = JSON.parse(todos_str);
+          }
+          return todos;
+      }
+
+      function add() {
+          var task = document.getElementById('task').value;
+
+          var todos = get_todos();
+          if (task !== ""){
+            todos.push(task);
+          }
+          else {
+            alert("Invalid entry. No text entered.");
+          }
+          localStorage.setItem('todo', JSON.stringify(todos));
+
+          show();
+          return false;
+      }
+
+      function remove() {
+          var id = this.getAttribute('id');
+          var todos = get_todos();
+          todos.splice(id, 1);
+          localStorage.setItem('todo', JSON.stringify(todos));
+
+          show();
+
+          return false;
+      }
+
+      function show() {
+          var todos = get_todos();
+
+          var html = '<ul>';
+          for(var i=0; i<todos.length; i++) {
+              html += '<li>' + todos[i] + '<button class="remove" id="' + i  + '">x</button>' + '<button class="accomplished" id="' + i + '">&#10003;</button>' + '</li>';
+          };
+          html += '</ul>';
+
+          document.getElementById('todos').innerHTML = html;
+
+          var buttons = document.getElementsByClassName('remove');
+          for (var i=0; i < buttons.length; i++) {
+              buttons[i].addEventListener('click', remove);
+          };
+      }
+
+      document.getElementById('add').addEventListener('click', add);
+      show();
+
+      function get_entries() {
+          var entries = new Array;
+          var entry_str = localStorage.getItem('entry');
+          if (entry_str !== null) {
+              entries = JSON.parse(entry_str);
+          }
+          return entries;
+      }
+
+      function addJournal() {
+          var entry = document.getElementById('entry').value;
+
+          var entries = get_entries();
+          if (entry !== ""){
+            entries.push(entry);
+          }
+          else {
+            alert("Invalid entry. No text entered.");
+          }
+          localStorage.setItem('entry', JSON.stringify(entries));
+          return false;
+      }
+
+      function createJournalArray(){
+        var entries = get_entries();
+        var entryArray = [];
+
+        for(var i = 0; i < entries.length; i++){
+          entryArray.push(entries[i]);
+        }
+        console.log(entryArray);
+      }
+
+      document.getElementById('addJournal').addEventListener('click', addJournal);
 </script>
 </html>
 
@@ -343,3 +478,5 @@
                 break;
 
         }-->
+
+<!--onload, localStorage.clear()?-->
