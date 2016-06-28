@@ -73,11 +73,11 @@
     var timedEnergy = 5;
     var flowerCost = 5;
     var energyMax = 100;
-
     var boardWidth = 5;
     var boardLength = 3;
     var teenPoints = 20;
     var adultPoints = 50;
+
 
       function unlockGraphic(lockedItemId){
         if(currency.sunshine>=flowerCost){
@@ -122,9 +122,10 @@
         objectId: 0,
         stateId: 0,
         needFertilizer: true,
+        nextFertilizer: Date.now(),
         growthPoints: 0,
         needWater: true,
-        nextWater: Date.now() + 5 * (ticksPerMinute),
+        nextWater: Date.now(),
         effects: false
       };
     }
@@ -180,6 +181,7 @@
       function waterPlant(x,y,id){
         if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
           gameBoard[x][y].needWater=false;
+          gameBoard[x][y].nextWater=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
             { gameBoard[x][y].growthPoints += 1;}
           if (gameBoard[x][y].stateId == 1)
@@ -191,6 +193,7 @@
         if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house")){
           gameBoard[x][y].needFertilizer = false;
           currency.energy = currency.energy - actionEnergyAmount;
+          gameBoard[x][y].nextFertilizer=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
           {gameBoard[x][y].growthPoints += 10;}
           if (gameBoard[x][y].stateId == 1)
@@ -258,26 +261,29 @@
         var id = getId(x, y);
 
 
+
       	//refill energy
 
       	//playTransition("");
       	//playSong("");
       	if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house")
         {
-      		gameBoard[x][y].needWater = true;
+      		  gameBoard[x][y].needWater = true;
+            gameBoard[x][y].nextWater = Date.now();
+            gameBoard[x][y].needFertilizer=true;
+            gameBoard[x][y].nextFertilizer=Date.now();
       		if (gameBoard[x][y].stateId < midstateId && gameBoard[x][y].growthPoints >= teenPoints)
           {
       			//gameboard[i][j].stateId = 1
       			gameBoard[x][y].stateId=1;
       			//gameboard[i][j].needFertilizer = true
-      			gameBoard[x][y].needFertilizer=true;
+
             drawCell(x, y, id)
       		}
       		else if (gameBoard[x][y].stateId < maxstateId && gameBoard[x][y].growthPoints >= adultPoints){
       			//gameboard[i][j].stateId = 2
       			gameBoard[x][y].stateId=2;
       			//gameboard[i][j].needFertilizer = true
-      			gameBoard[x][y].needFertilizer=true;
             drawCell(x, y, id)
       		}
       	}
@@ -373,7 +379,13 @@
                 gameBoard[x][y].needWater = true;
                 drawCell(x, y, id);
                 gameBoard[x][y].nextWater = Date.now() + 5 * (ticksPerMinute);
-
+              }
+              if (gameBoard[x][y].nextFertilizer < Date.now() && gameBoard[x][y].needFertilizer == false)
+              {
+                var id = x.toString() + "-" + y.toString();
+                gameBoard[x][y].needFertilizer = true;
+                console.log(id + " needs fertilizer badly");
+                drawCell(x, y, id);
               }
             }
           }
