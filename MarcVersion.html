@@ -36,10 +36,15 @@
         height: 128px;
     }
 
-    .clock {
-      background-image: ./assets/next_day.png
+   .clock {
+      image-rendering: pixelated;
+      background:url(./assets/next_day.png) no-repeat;
+      background-size: 128px 128px;
       width: 128px;
       height: 128px;
+      border: none;
+      color: black;
+      padding: 50px 0px 0px 0px;
 
     }
 
@@ -73,7 +78,8 @@
       The parameters that unlockGraphic has are: the id of the plant that is locked (sunflower NOT sunflower01),
       and the amount of sunshine it costs to buy that plant
     -->
-      <button class="clock" onclick="updateGame();" id="nextday">Next Day</button>
+
+      <button class="clock" onclick="updateGame();" id="nextday"><strong>Next Day</strong></button>
       <img src='./assets/spade.png' id="spade01" data-id="terraform" >
       <img src='./assets/waterCan.png' id="water01" data-id="water" >
       <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
