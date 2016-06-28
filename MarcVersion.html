@@ -58,6 +58,11 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
     <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
+    <script>
+    function loadSound(){
+      createjs.Sound.registerSounds([{src:"./sound/hhavok-main.mp3", id:"song2"}, {src:"./sound/watering-plants.wav", id:"water"}, {src:"./sound/dizzy-spells.mp3", id:"song1"}, {src:"./sound/jingle-win.wav", id:"jingle"}, {src:"./sound/raking.wav", id:"rake"}, {src:"./sound/button-click.wav", id:"click"}]);
+    };
+    </script>
   </head>
   <body onload="loadSound();">
     <button onclick='stopAllSound();'>Stop Sounds</button>
@@ -92,7 +97,7 @@
       <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
     </div>
 
-    <div class="gameboard"></div>
+    <div class="gameboard" onload="playSong('song2')"></div>
     <div id="toDoField">
       <p>Enter to-do items below:</p>
       <input id="task" type="text"><button id="add">Add</button>
@@ -120,11 +125,14 @@
     </body>
     <script>
     var isPlaying;
+    var startSong = 0;
 
-    function loadSound(){
-      createjs.Sound.registerSounds([{src:"./sound/watering-plants.wav", id:"water"}, {src:"./sound/dizzy-spells.mp3", id:"song1"}, {src:"./sound/hhavok-main.mp3", id:"song2"}, {src:"./sound/jingle-win.wav", id:"jingle"}, {src:"./sound/raking.wav", id:"rake"}, {src:"./sound/button-click.wav", id:"click"}]);
-    };
-
+    createjs.Sound.addEventListener("fileload", handleLoad);
+    function handleLoad(event){
+      if(event.id=="song2"){
+        playSong("song2");
+      }
+    }
     function playSong(songName){
       createjs.Sound.stop();
         isPlaying = createjs.Sound.play(songName, {loop: -1});
@@ -360,6 +368,7 @@
       }
 
       function updateGame(){
+        playTransition("jingle", "song1");
         currency.energy = 100;
       	for(var i=0; i<boardLength; i++){
       		for(var j=0; j<boardWidth; j++){
@@ -629,6 +638,7 @@
       }
 
       document.getElementById('addJournal').addEventListener('click', addJournal);
+
 </script>
 </html>
 
