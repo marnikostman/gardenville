@@ -44,10 +44,15 @@
         height: 128px;
     }
 
-    button {
-      background-image: ./assets/next_day.png
+   .clock {
+      image-rendering: pixelated;
+      background:url(./assets/next_day.png) no-repeat;
+      background-size: 128px 128px;
       width: 128px;
       height: 128px;
+      border: none;
+      color: black;
+      padding: 50px 0px 0px 0px;
 
     }
 
@@ -81,7 +86,8 @@
       The parameters that unlockGraphic has are: the id of the plant that is locked (sunflower NOT sunflower01),
       and the amount of sunshine it costs to buy that plant
     -->
-      <button onclick="updateGame();" id="nextday">Next Day</button>
+
+      <button class="clock" onclick="updateGame();" id="nextday"><strong>Next Day</strong></button>
       <img src='./assets/spade.png' id="spade01" data-id="terraform" >
       <img src='./assets/waterCan.png' id="water01" data-id="water" >
       <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
@@ -94,6 +100,8 @@
       <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
       <img src='./assets/journal.png' id="journal">
     </div>
+
+    <p id = "energy"></p>
 
     <div class="gameboard"></div>
     <div id="toDoField">
@@ -122,7 +130,9 @@
 
     </body>
     <script>
-    var isPlaying
+
+
+    var isPlaying;
 
     function loadSound(){
       createjs.Sound.registerSounds([{src:"./sound/watering-plants.wav", id:"water"}, {src:"./sound/dizzy-spells.mp3", id:"song1"}, {src:"./sound/hhavok-main.mp3", id:"song2"}, {src:"./sound/jingle-win.wav", id:"jingle"}, {src:"./sound/raking.wav", id:"rake"}, {src:"./sound/button-click.wav", id:"click"}]);
@@ -131,12 +141,16 @@
     function playSong(songName){
       createjs.Sound.stop();
         isPlaying = createjs.Sound.play(songName, {loop: -1});
-        // Commented out below is the function to set the volume for each song.
-        // isPlaying.volume = isPlaying.volume * 1.0;
+        // Below is the function to set the volume for each song.
+        // The volume is set between 0 and 1
+        isPlaying.volume = isPlaying.volume * .1;
       };
 
     function playSound(soundEffect){
-          createjs.Sound.play(soundEffect);
+          effectVolume = createjs.Sound.play(soundEffect);
+          if(soundEffect=="rake"){
+            effectVolume.volume = effectVolume.volume * .4;
+          }
         };
 
     function stopAllSound(){
@@ -271,6 +285,7 @@
         break;
         }
         drawCell(x, y, id);
+        gameBoard[x][y].harvest = false;
       }
       function harvestPlant(x,y,id){
         if(gameBoard[x][y].stateId==2){
@@ -279,7 +294,7 @@
           console.log(gameBoard[x][y].stateId);
           console.log(gameBoard[x][y].type);
           gameBoard[x][y].harvest = true;
-          currency.sunshine = 10;
+          currency.sunshine += 10;
         }
 
       }
@@ -309,7 +324,7 @@
       }
       function terraformCell(x,y,id) {
         //  if it's a house don't do it, or if it's already terraformed
-        if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="House" || gameBoard[x][y].needTerraform==false))
+        if(currency.energy >= actionEnergyAmount && gameBoard[x][y].type!="House" && gameBoard[x][y].needTerraform==true)
         {
           gameBoard[x][y].needTerraform = false;
           playSound("rake")
@@ -321,20 +336,17 @@
         gameBoard[x][y].effects == "true";
       }
       function placeGraphic(x,y,id, dropped){
-        if(dropped=="house"){
-          gameBoard[x][y].type = "house";
-          gameBoard[x][y].objectId = 4;
-          gameBoard[x][y].stateId = 0;
+        if(gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount){
+          if(dropped=="house"){
+            gameBoard[x][y].type = "house";
+            playSound("jingle");
+            gameBoard[x][y].objectId = 4;
+            gameBoard[x][y].stateId = 0;
+          }
         }
         if(gameBoard[x][y].needTerraform==false && gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount)
         {
-          if(dropped=="house"){
-            playSound("jingle")
-            gameBoard[x][y].type = "house";
-            gameBoard[x][y].objectId = 5;
-            gameBoard[x][y].stateId = 0;
-          }
-          else if (dropped=="rose") {
+          if (dropped=="rose") {
             gameBoard[x][y].type = "rose";
             gameBoard[x][y].objectId = 1;
             gameBoard[x][y].stateId = 0;
@@ -493,6 +505,7 @@
         }
         function gameLoop ()
         {
+          document.getElementById("energy").innerHTML = "Energy: " + currency.energy + " | Sunshine: " + currency.sunshine;
           for (var x = 0; x < boardLength; x++)
           {
             for (var y = 0; y < boardWidth; y++)
