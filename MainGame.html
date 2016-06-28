@@ -1,0 +1,374 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+.cell
+{
+    position: relative;
+    display: inline-block;
+    margin: 0px;
+    padding: 0px;
+    border: 0px;
+    width: 128px;
+    height: 128px;
+}
+.cell img
+{
+	width: 35px;
+    image-rendering: pixelated;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    width: 128px;
+    height: 128px;
+}
+
+img {
+    image-rendering: pixelated; 
+    width: 128px;
+    height: 128px;   
+}
+
+
+
+
+</style>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script   src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
+
+</head>
+<body>
+    <button onclick="updateGame();" id="nextday">Next Day</button>
+    <img src='./assets/spade.png' id="dirt01" data-id="terraform" >
+    <img src='./assets/waterCan.png' id="water01" data-id="water" >
+    <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
+    <img src='./assets/rose_icon.png' id="rose01" data-id="rose" >
+    <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" >
+    <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
+    <img src='./assets/butterfly_icon.png' id="butterfly01" data-id="butterfly" >
+	<div class="gameboard"></div> 
+</body>
+<script>
+
+var ticksPerMinute = 6000;
+var gameTick = 500;
+
+gameBoard = new Array(3);
+for (var i = 0; i < 3; i++) //This is essentially the model
+{
+	gameBoard[i] = new Array(3);
+	for (var j = 0; j < 3; j++)
+	{
+    gameBoard[i][j] = {needTerraform: true, type: "blank", drawLayers: 0, stage: 0, needFertilizer: true, growthPoints: 0, needWater: true, nextWater: Date.now() + 5 * (ticksPerMinute), effects: false};
+	}
+}
+
+for (var x = 0; x < 3; x++)
+{
+    for (var y = 0; y < 3; y++)
+    {
+        var id = getId(x, y);
+        //alert(id);
+        $(".gameboard").append("<div style='display: inline-block' class='cell' id='" + id + "' ></div>");
+        drawCell(x, y, id);
+        $("#" + id).droppable({
+            drop: itemDropped, //drop is a function, when it's done, it calls the function John wrote
+            hoverClass: "dragHover"
+        });
+    }
+    $(".gameboard").append("<br/>");
+}
+
+function itemDropped(event, ui){
+	var id = this.id
+	var dropped = ui.draggable.attr("data-id");
+        var location = id.split("-");
+        var x = location[0];
+        var y = location[1];    
+        
+        switch (dropped){
+            case "terraform": 
+                TerraformCell(x, y, id)
+                break;
+            case "water":
+                WaterPlant(x, y, id)
+                break;
+            case "tulip":
+                if (gameBoard[x][y].stage == 0)
+                    {
+                        gameBoard[x][y].stage = 1;
+                        gameBoard[x][y].type = "tulip";
+                        PlaceGraphic(x, y, id);
+                    }
+            	break;
+            case "rose":
+                if (gameBoard[x][y].stage == 0)
+                    {
+                        gameBoard[x][y].stage = 1;
+                        gameBoard[x][y].type = "rose";
+                        PlaceGraphic(x, y, id);
+                    }
+                break;
+            case "sunflower":
+                if (gameBoard[x][y].stage == 0)
+                    {
+                        gameBoard[x][y].stage = 1;
+                        gameBoard[x][y].type = "sunflower";
+                        PlaceGraphic(x, y, id);
+                    }
+                break;
+            case "fertilize":
+                FertilizePlant(x, y, id)
+                break;  
+            //effects like butterflies.gif should be an effect that randomly shows up on a tile if the tile has an adult plant on it. I just put it in as a 'draggable' so you could see the assets. 
+            case "butterfly":
+                gameBoard[x][y].effects = true;
+                PlayEffect(x, y, id)
+                break;  
+     
+        }
+        drawCell(x, y, id);
+    }
+
+function WaterPlant(x,y, id){
+
+       gameBoard[x][y].needWater=false;
+
+}
+
+
+function getId(x, y)
+{
+return x.toString() + "-" + y.toString();
+}
+
+function drawCell(x, y, id)
+{
+	$("#" + id).html("");
+	//var xy = $(gameBoard[x][y]);
+	//alert(xy);
+    if (gameBoard[x][y].needTerraform == true)
+    {
+        $("#" + id).append("<img src='./assets/un_terraformed_dirt.png'>");
+    }
+    if (gameBoard[x][y].needTerraform == false)
+    {
+        $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
+    }
+
+	if (gameBoard[x][y].needWater == false)
+	{
+        $("#" + id).append("<img src='./assets/watered.png'>");
+        gameBoard[x][y].nextWater = Date.now() + 5 * (ticksPerMinute);
+	}
+
+    if ((gameBoard[x][y].type == "tulip" || gameBoard[x][y].type == "sunflower" || gameBoard[x][y].type == "rose") && gameBoard[x][y].stage == 1)
+    {
+        $("#" + id).append("<img src='./assets/stage_1_baby.png'>");
+    }
+
+    if ((gameBoard[x][y].type == "tulip" || gameBoard[x][y].type == "sunflower" || gameBoard[x][y].type == "rose")  && gameBoard[x][y].stage >= 2)
+    {
+        $("#" + id).append("<img src='./assets/stage_2_teen.png'>");
+    }
+
+    if (gameBoard[x][y].type == "tulip" && gameBoard[x][y].stage >= 3)
+    {
+        $("#" + id).append("<img src='./assets/stage_3_tulip.png'>");
+    }
+
+    if (gameBoard[x][y].type == "sunflower" && gameBoard[x][y].stage >= 3)
+    {
+        $("#" + id).append("<img src='./assets/stage_3_sunflower.png'>");
+    }
+
+    if (gameBoard[x][y].type == "rose" && gameBoard[x][y].stage >= 3)
+    {
+        $("#" + id).append("<img src='./assets/stage_3_rose.png'>");
+    }
+
+    if (gameBoard[x][y].needFertilizer == false)
+    {
+        $("#" + id).append("<img src='./assets/fertilized.png'>");
+    }
+    if (gameBoard[x][y].effects == true)
+    {
+        $("#" + id).append("<img src='./assets/butterflies.gif'>");
+    }
+    
+
+}
+
+        $("#water01").draggable({
+        container: document,
+        helper: waterHelper
+    });
+
+    function waterHelper(){
+    	return "<img src='./assets/happy_cloud.gif' class='dragged'>"
+    }
+
+    $("#dirt01").draggable({
+        container: document,
+        helper: dirtHelper
+    });
+
+    function dirtHelper(){
+    	return "<img src='./assets/spade.png' class='dragged'>"
+    }
+
+    $("#tulip01").draggable({
+        container: document,
+        helper: tulipHelper
+    });
+
+    function tulipHelper(){
+    	return "<img src='./assets/stage_1_baby.png' class='dragged'>"
+    }
+
+    $("#fertilize01").draggable({
+        container: document,
+        helper: fertilizerHelper
+    });
+
+    function sunflowerHelper(){
+        return "<img src='./assets/stage_1_baby.png' class='dragged'>"
+    }
+
+    $("#sunflower01").draggable({
+        container: document,
+        helper: sunflowerHelper
+    });
+
+    function roseHelper(){
+        return "<img src='./assets/stage_1_baby.png' class='dragged'>"
+    }
+
+    $("#rose01").draggable({
+        container: document,
+        helper: roseHelper
+    });
+
+    function fertilizerHelper(){
+        return "<img src='./assets/fertilizer_bag.png' class='dragged'>"
+    }
+
+    $("#butterfly01").draggable({
+        container: document,
+        helper: butterflyHelper
+    });
+
+    function butterflyHelper(){
+        return "<img src='./assets/butterflies.gif' class='dragged'>"
+    }
+
+
+
+    function PlaceGraphic(x, y, id)
+    {
+        
+        //this should check stage and place the right image.
+        if (gameBoard[x][y].type == "tulip")
+            {
+                $("#" + id).append("<img src='./assets/stage_1_baby.png'>");    
+            }
+
+    }
+
+    function FertilizePlant(x, y, id)
+    {
+        gameBoard[x][y].needFertilizer = false;
+        $("#" + id).append("<img src='./assets/fertilized.png'>");
+    }
+
+    function TerraformCell(x, y, id)
+    {
+        gameBoard[x][y].needTerraform = false;
+        $("#" + id).append("<img src='./assets/terraformed_dirt.png'>");
+        gameBoard[x][y].type = "blank";
+        gameBoard[x][y].stage = 0;
+        gameBoard[x][y].needWater = true;
+        gameBoard[x][y].needFertilizer = true;
+        gameBoard[x][y].effects = false;
+        drawCell(x,y,id);
+    }
+
+    function PlayEffect(x, y, id)
+    {
+        gameBoard[x][y].effects == "true";
+        $("#" + id).append("<img src='./assets/butterflies.gif'>");    
+    }
+
+    function updateGame()
+    {
+        for(var i=0; i<3; i++)
+        {
+            for(var j=0; j<3; j++)
+            {
+                nextDay(i,j);
+            }
+        }
+            
+        
+    }
+
+      function nextDay(x,y){
+        var maxStage = 2;
+        var midStage = 1;
+        var teenPoints = 50;
+        var adultPoints = 100;
+        //refill energy
+        energy = 100;
+        //playTransition("");
+        //playSong("");
+        if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house")
+        {
+            
+            //for now, just a simple test:
+            gameBoard[x][y].stage += 1;
+            console.log("stage =" + gameBoard[x][y].stage);
+            gameBoard[x][y].needWater = true;
+            gameBoard[x][y].needFertilizer=true;
+            // gameBoard[x][y].needWater = true;
+            // if (gameBoard[x][y].stage < midStage && gameBoard[x][y].growthPoints >= teenPoints)
+            // {
+            //     //gameboard[i][j].stage = 1
+            //     gameBoard[x][y].stage=1;
+            //     //gameboard[i][j].needFertilizer = true
+            //     gameBoard[x][y].needFertilizer=true;
+            // }
+            // else if (gameBoard[x][y].stage < maxStage && gameBoard[x][y].growthPoints >= adultPoints)
+            // {
+            //     //gameboard[i][j].stage = 2
+            //     gameBoard[x][y].stage=2;
+            //     //gameboard[i][j].needFertilizer = true
+            //     gameBoard[x][y].needFertilizer=true;
+            // }
+        }
+        drawCell(x, y, "tulip");
+        console.log("hello!")
+
+      }
+
+function gameLoop ()
+{
+	for (var x = 0; x < 3; x++)
+	{
+		for (var y = 0; y < 3; y++)
+		{
+			if (gameBoard[x][y].nextWater < Date.now())
+			{
+				var id = x.toString() + "-" + y.toString();
+				gameBoard[x][y].needWater = true;
+				drawCell(x, y, id);
+			}
+		}
+	}
+    setTimeout(gameLoop, gameTick);
+}
+
+gameLoop();
+</script>
+</html>
