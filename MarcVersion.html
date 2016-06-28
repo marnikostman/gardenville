@@ -122,12 +122,16 @@
     function playSong(songName){
       createjs.Sound.stop();
         isPlaying = createjs.Sound.play(songName, {loop: -1});
-        // Commented out below is the function to set the volume for each song.
-        // isPlaying.volume = isPlaying.volume * 1.0;
+        // Below is the function to set the volume for each song.
+        // The volume is set between 0 and 1
+        isPlaying.volume = isPlaying.volume * .1;
       };
 
     function playSound(soundEffect){
-          createjs.Sound.play(soundEffect);
+          effectVolume = createjs.Sound.play(soundEffect);
+          if(soundEffect=="rake"){
+            effectVolume.volume = effectVolume.volume * .4;
+          }
         };
 
     function stopAllSound(){
@@ -300,7 +304,7 @@
       }
       function terraformCell(x,y,id) {
         //  if it's a house don't do it, or if it's already terraformed
-        if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="House" || gameBoard[x][y].needTerraform==false))
+        if(currency.energy >= actionEnergyAmount && gameBoard[x][y].type!="House" && gameBoard[x][y].needTerraform==true)
         {
           gameBoard[x][y].needTerraform = false;
           playSound("rake")
