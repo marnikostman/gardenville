@@ -56,13 +56,14 @@
     </body>
     <script>
 
-
-    var currency = {sunshine:10, energy:100}; //100 is the max energy
+    var ticksPerMinute = 6000;
+    var currency = {sunshine:10, energy:100, addEnergy: Date.now() + 2 * (ticksPerMinute)}; //100 is the max energy
     var actionEnergyAmount = 10;
     var toDoListEnergy = 5;
     var journalSunshine = 20;
     var timedEnergy = 5;
     var flowerCost = 5;
+    var energyMax = 100;
 
     var boardWidth = 5;
     var boardLength = 3;
@@ -82,7 +83,6 @@
         }
       }
 
-  var ticksPerMinute = 6000;
   var gameTick = 500;
   var graphicId = [
     {name:"blank", state:[]},
@@ -179,15 +179,17 @@
       }
       function fertilizePlant(x, y, id)
       {
-        if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
+        if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house")){
           gameBoard[x][y].needFertilizer = false;
+          currency.energy = currency.energy - actionEnergyAmount;
         }
       }
       function terraformCell(x,y,id) {
         //  if it's a house don't do it, or if it's already terraformed
-        if(gameBoard[x][y].type!="House" || gameBoard[x][y].needTerraform==false)
+        if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="House" || gameBoard[x][y].needTerraform==false))
         {
           gameBoard[x][y].needTerraform = false;
+          currency.energy = currency.energy - actionEnergyAmount;
         }
       }
       function playEffect(x, y, id)
@@ -195,7 +197,7 @@
         gameBoard[x][y].effects == "true";
       }
       function placeGraphic(x,y,id, dropped){
-        if(gameBoard[x][y].needTerraform==false && gameBoard[x][y].type=="blank")
+        if(gameBoard[x][y].needTerraform==false && gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount)
         {
           if(dropped=="house"){
             gameBoard[x][y].type = "house";
@@ -217,6 +219,7 @@
             gameBoard[x][y].objectId = 3;
             gameBoard[x][y].stateId = 0;
           }
+          currency.energy = currency.energy - actionEnergyAmount;
         }
       }
 
@@ -226,6 +229,7 @@
       }
 
       function updateGame(){
+        currency.energy = 100;
       	for(var i=0; i<length; i++){
       		for(var i=0; j<width; i++){
       			nextDay(i,j)
@@ -239,7 +243,7 @@
       	var teenPoints = 50;
       	var adultPoints = 100;
       	//refill energy
-      	energy = 100;
+
       	//playTransition("");
       	//playSong("");
       	if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house"){
@@ -349,8 +353,15 @@
               }
             }
           }
+
+          if (currency.addEnergy < Date.now() && currency.energy < energyMax)
+              {
+                currency.energy++;
+                console.log(currency.energy);
+              }
           setTimeout(gameLoop, gameTick);
         }
+
         gameLoop();
 
 </script>
