@@ -64,6 +64,9 @@
 
     var boardWidth = 5;
     var boardLength = 3;
+    var teenPoints = 20;
+    var adultPoints = 50;
+    var
 
 
   var gameTick = 500;
@@ -158,6 +161,10 @@
       function waterPlant(x,y,id){
         if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
           gameBoard[x][y].needWater=false;
+          if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
+            { gameBoard[x][y].growthPoints += 1;}
+          if (gameBoard[x][y].stateId == 1)
+            { gameBoard[x][y].growthPoints += 1;}
         }
       }
       function fertilizePlant(x, y, id)
@@ -165,6 +172,12 @@
         if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house")){
           gameBoard[x][y].needFertilizer = false;
           currency.energy = currency.energy - actionEnergyAmount;
+          if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
+          {gameBoard[x][y].growthPoints += 10;}
+          if (gameBoard[x][y].stateId == 1)
+          { gameBoard[x][y].growthPoints += 10;}
+        //console.log(gameBoard[x][y].growthPoints)
+        //console.log(gameBoard[x][y].stateId)
         }
       }
       function terraformCell(x,y,id) {
@@ -213,8 +226,8 @@
 
       function updateGame(){
         currency.energy = 100;
-      	for(var i=0; i<length; i++){
-      		for(var i=0; j<width; i++){
+      	for(var i=0; i<boardLength; i++){
+      		for(var j=0; j<boardWidth; j++){
       			nextDay(i,j)
       		}
       	}
@@ -223,25 +236,30 @@
       function nextDay(x,y){
       	var maxstateId = 2;
       	var midstateId = 1;
-      	var teenPoints = 50;
-      	var adultPoints = 100;
+        var id = getId(x, y);
+
+
       	//refill energy
 
       	//playTransition("");
       	//playSong("");
-      	if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house"){
+      	if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house")
+        {
       		gameBoard[x][y].needWater = true;
-      		if (gameBoard[x][y].stateId < midstateId && gameBoard[x][y].growthPoints >= teenPoints){
+      		if (gameBoard[x][y].stateId < midstateId && gameBoard[x][y].growthPoints >= teenPoints)
+          {
       			//gameboard[i][j].stateId = 1
       			gameBoard[x][y].stateId=1;
       			//gameboard[i][j].needFertilizer = true
       			gameBoard[x][y].needFertilizer=true;
+            drawCell(x, y, id)
       		}
       		else if (gameBoard[x][y].stateId < maxstateId && gameBoard[x][y].growthPoints >= adultPoints){
       			//gameboard[i][j].stateId = 2
       			gameBoard[x][y].stateId=2;
       			//gameboard[i][j].needFertilizer = true
       			gameBoard[x][y].needFertilizer=true;
+            drawCell(x, y, id)
       		}
       	}
       }
@@ -262,11 +280,13 @@
         if (gameBoard[x][y].needFertilizer != true){
           $("#" + id).append("<img src='./assets/fertilized.png'>");
           }
-        do {
+
           var i = 0;
+        do {
           $("#" + id).append(graphicId[gameBoard[x][y].objectId].state[i]);
           i++;
         } while(i <= gameBoard[x][y].stateId);
+          
           if (gameBoard[x][y].effects == true)
           {
             $("#" + id).append("<img src='./assets/butterflies.gif'>");
@@ -328,11 +348,13 @@
           {
             for (var y = 0; y < boardWidth; y++)
             {
-              if (gameBoard[x][y].nextWater < Date.now())
+              if (gameBoard[x][y].nextWater < Date.now() && gameBoard[x][y].needWater == false)
               {
                 var id = x.toString() + "-" + y.toString();
                 gameBoard[x][y].needWater = true;
                 drawCell(x, y, id);
+                gameBoard[x][y].nextWater = Date.now() + 5 * (ticksPerMinute);
+
               }
             }
           }
@@ -340,7 +362,6 @@
           if (currency.addEnergy < Date.now() && currency.energy < energyMax)
               {
                 currency.energy++;
-                console.log(currency.energy);
               }
           setTimeout(gameLoop, gameTick);
         }
