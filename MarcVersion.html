@@ -190,7 +190,19 @@
   <body onload="loadSound();">
     <div class="leftside"><button class="clock" onclick="updateGame();" id="nextday"><strong>Next Day</strong></button></div>
     <p id = "energy"></p>
-    <div class="toolbar">
+
+       <div class="section toolbar">
+      <div class="corner tl">
+        <div class="a"></div>
+        <div class="b"></div>
+        <div class="c"></div>
+      </div>
+      <div class="corner tr">
+        <div class="a"></div>
+        <div class="b"></div>
+        <div class="c"></div>
+      </div>
+    
       <!--
       The id associated with each graphic MUST be the name with "01" added at the end.
       The locked plants must be the name without the "01".
@@ -210,6 +222,16 @@
       <img class="toolbarItems" src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
       <img class="toolbarItems" src='./assets/hand.png' id="harvest01" data-id="harvest" >
       <a class="fancybox" href="#journalField"><img src='./assets/journal.png' class="toolbarItems" id="journal"></a>
+      <div class="corner bl">
+        <div class="a"></div>
+        <div class="c"></div>
+        <div class="b"></div>
+      </div>
+      <div class="corner br">
+        <div class="a"></div>
+        <div class="c"></div>
+        <div class="b"></div>
+      </div>
     </div>
 
     <div class="section">
