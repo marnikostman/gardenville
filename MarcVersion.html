@@ -326,7 +326,9 @@
           currency.energy = currency.energy - actionEnergyAmount;
           gameBoard[x][y].nextFertilizer=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
-          {gameBoard[x][y].growthPoints += 10;}
+          {gameBoard[x][y].growthPoints += 10;
+
+          }
           if (gameBoard[x][y].stateId == 1)
           { gameBoard[x][y].growthPoints += 10;}
         }
@@ -380,7 +382,7 @@
       }
 
       function updateGame(){
-        playTransition("jingle", "song1");
+        //playTransition("jingle", "song1");
         currency.energy = 100;
       	for(var i=0; i<boardLength; i++){
       		for(var j=0; j<boardWidth; j++){
@@ -609,8 +611,10 @@
           localStorage.setItem('todo', JSON.stringify(todos));
 
           show();
-
           currency.energy+=toDoListEnergy;
+          if (currency.energy > energyMax){
+            currency.energy = energyMax;
+          }
           return false;
       }
 
