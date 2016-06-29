@@ -91,6 +91,70 @@
     .lockedItem{
       display: none;
     }
+
+    .section{  
+    float: left; 
+    border: 10px solid #FF6600; 
+    background: #fff; 
+    position: relative; 
+    }
+    .section_content{ 
+    display: block; 
+    padding: 10px; 
+    overflow: hidden; 
+    }
+    .corner{ 
+    width: 15px; 
+    position: absolute; 
+    z-index: 9; 
+    }
+    .tl{ 
+    top: -10px; 
+    left: -10px; 
+    }
+    .tr{ 
+    top: -10px; 
+    right: -10px; 
+    }
+    .bl{ 
+    bottom: -10px; 
+    left: -10px; 
+    }
+    .br{ 
+    bottom: -10px; 
+    right: -10px; 
+    }
+    .corner .a{ 
+    width: 5px; 
+    height: 10px; 
+    float: left; 
+    display: block; 
+    background: #fff; 
+    }
+    .corner .b{ 
+    width: 5px; 
+    height: 5px; 
+    float: left; 
+    display: block; 
+    background: #fff; 
+    }
+    .corner .c{ 
+    width: 10px; 
+    height: 10px; 
+    float: left; 
+    display: block; 
+    background: #FF6600; 
+    }
+    .tr .a, .tr .b, 
+    .tr .c, .br .a, 
+    .br .b, .br .c{ 
+    float: right; 
+    }
+    .bl .a, 
+    .br .a{ 
+    border-top: 5px solid #FF6600; 
+    }
+
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
@@ -105,7 +169,31 @@
     </script>
   </head>
   <body onload="loadSound();">
-    <button onclick='muteSound();' id="mute">Mute Sound</button>
+    <div class="section">
+      <div class="corner tl">
+        <div class="a"></div>
+        <div class="b"></div>
+        <div class="c"></div>
+      </div>
+      <div class="corner tr">
+        <div class="a"></div>
+        <div class="b"></div>
+        <div class="c"></div>
+      </div>
+
+      <button class="section_content" onclick='muteSound();' id="mute">Mute Sound</button>
+
+      <div class="corner bl">
+        <div class="a"></div>
+        <div class="c"></div>
+        <div class="b"></div>
+      </div>
+      <div class="corner br">
+        <div class="a"></div>
+        <div class="c"></div>
+        <div class="b"></div>
+      </div>
+    </div>
     <div class="toolbar">
       <!--
       The id associated with each graphic MUST be the name with "01" added at the end.
@@ -126,7 +214,7 @@
       <img src='./assets/rose_icon_locked.png' id="rose" data-id="rose" onclick="unlockGraphic('rose', 10)">
       <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" class="lockedItem">
       <img src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
-      <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
+      <img src='./assets/hand.png' id="harvest01" data-id="harvest" >
       <img src='./assets/journal.png' id="journal">
     </div>
 
@@ -540,7 +628,7 @@
     helper: harvestHelper
   });
   function harvestHelper(){
-    return "<img src='./assets/butterfly_icon.png' class='dragged'>"
+    return "<img src='./assets/hand.png' class='dragged'>"
   }
 
   function gameLoop ()
