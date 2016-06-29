@@ -79,19 +79,17 @@
       image-rendering: pixelated;
       background:url(./assets/next_day.png) no-repeat;
       background-size: 128px 128px;
+      background-position: center;
       width: 128px;
       height: 128px;
-      border: none;
       color: black;
       padding: 50px 0px 0px 0px;
       cursor: url('./assets/hand.png'), default;
-
+      border: none;
     }
-
     .lockedItem{
       display: none;
     }
-
     .section{  
     float: left; 
     border: 10px solid #FF6600; 
@@ -154,6 +152,23 @@
     .br .a{ 
     border-top: 5px solid #FF6600; 
     }
+    .leftside{
+      padding-top: 15px;
+      width: 10%;
+      float: left;
+    }
+    .toolbar{
+      height: auto;
+      margin-left: 10%;
+      margin-bottom: 10px;
+      border-style: solid;
+      background-color: red;
+      width: 50%;
+    }
+    .toolbarItems{
+      height: 60px;
+      width: 60px;
+    }
 
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
@@ -162,6 +177,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
     <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
+    <script type="text/javascript" src="./fancyBox/jquery.mousewheel.pack.js"></script>
+    <link rel="stylesheet" href="./fancyBox/jquery.fancybox.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="./fancyBox/jquery.fancybox.pack.js"></script>
+
     <script>
     function loadSound(){
       createjs.Sound.registerSounds([{src:"./sound/hhavok-main.mp3", id:"song2"}, {src:"./sound/watering-plants.wav", id:"water"}, {src:"./sound/dizzy-spells.mp3", id:"song1"}, {src:"./sound/jingle-win.wav", id:"jingle"}, {src:"./sound/raking.wav", id:"rake"}, {src:"./sound/button-click.wav", id:"click"}]);
@@ -169,6 +188,30 @@
     </script>
   </head>
   <body onload="loadSound();">
+    <div class="leftside"><button class="clock" onclick="updateGame();" id="nextday"><strong>Next Day</strong></button></div>
+    <p id = "energy"></p>
+    <div class="toolbar">
+      <!--
+      The id associated with each graphic MUST be the name with "01" added at the end.
+      The locked plants must be the name without the "01".
+      This is necessary for unlockGraphic() to function correctly.
+
+      The parameters that unlockGraphic has are: the id of the plant that is locked (sunflower NOT sunflower01),
+      and the amount of sunshine it costs to buy that plant
+    -->
+      <img class="toolbarItems" src='./assets/house.png' id="house01" data-id="house">
+      <img class="toolbarItems" src='./assets/spade.png' id="spade01" data-id="terraform" >
+      <img class="toolbarItems" src='./assets/waterCan.png' id="water01" data-id="water" >
+      <img class="toolbarItems" src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
+      <img class="toolbarItems" src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
+      <img class="toolbarItems lockedItem" src='./assets/rose_icon.png' id="rose01" data-id="rose">
+      <img class="toolbarItems" src='./assets/rose_icon_locked.png' id="rose" data-id="rose" onclick="unlockGraphic('rose', 10)">
+      <img class="toolbarItems lockedItem" src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower">
+      <img class="toolbarItems" src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
+      <img class="toolbarItems" src='./assets/hand.png' id="harvest01" data-id="harvest" >
+      <a class="fancybox" href="#journalField"><img src='./assets/journal.png' class="toolbarItems" id="journal"></a>
+    </div>
+
     <div class="section">
       <div class="corner tl">
         <div class="a"></div>
@@ -194,31 +237,6 @@
         <div class="b"></div>
       </div>
     </div>
-    <div class="toolbar">
-      <!--
-      The id associated with each graphic MUST be the name with "01" added at the end.
-      The locked plants must be the name without the "01".
-      This is necessary for unlockGraphic() to function correctly.
-
-      The parameters that unlockGraphic has are: the id of the plant that is locked (sunflower NOT sunflower01),
-      and the amount of sunshine it costs to buy that plant
-    -->
-
-      <button class="clock" onclick="updateGame();" id="nextday"><strong>Next Day</strong></button>
-      <img src='./assets/house.png' id="house01" data-id="house">
-      <img src='./assets/spade.png' id="spade01" data-id="terraform" >
-      <img src='./assets/waterCan.png' id="water01" data-id="water" >
-      <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
-      <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
-      <img src='./assets/rose_icon.png' id="rose01" data-id="rose" class="lockedItem">
-      <img src='./assets/rose_icon_locked.png' id="rose" data-id="rose" onclick="unlockGraphic('rose', 10)">
-      <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" class="lockedItem">
-      <img src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
-      <img src='./assets/hand.png' id="harvest01" data-id="harvest" >
-      <img src='./assets/journal.png' id="journal">
-    </div>
-
-    <p id = "energy"></p>
 
     <div class="gameboard"></div>
 
@@ -226,9 +244,8 @@
       <p>Enter to-do items below:</p>
       <input id="task" type="text"><button id="add">Add</button>
       <div id="todos"></div>
-      <button id="hideToDo">Exit list</button>
     </div>
-    <div id="journalField">
+    <form id="journalField">
       <p>Enter your journal entry below:</p>
       <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
       <label for="uneasiness">Uneasiness</label>
@@ -243,10 +260,14 @@
       <input type="range" name="serenity" min="0" max="10" id="serenity" class="stat">
       <label for="euphoria">Euphoria</label>
       <input type="range" name="euphoria" min="0" max="10" id="euphoria" class="stat">
-      <input type="submit" id="addJournal"><button id="hideJournal">Exit</button>
-    </div>
+      <input type="button" id="addJournal" value="Submit">
+    </form>
   </body>
   <script>
+  $(document).ready(function() {
+  		$(".fancybox").fancybox();
+  });
+
   var isPlaying;
   var test = true;
 
@@ -275,11 +296,12 @@
     createjs.Sound.stop();
   };
 
-  // function playTransition(soundEffect, songName){
-  //   createjs.Sound.stop();
-  //   var transition = createjs.Sound.play(soundEffect);
-  //   transition.on("complete", playSong(songName));
-  // }
+  function playTransition(soundEffect, songName){
+    createjs.Sound.stop();
+    console.log(soundEffect + " " + songName);
+    var transition = createjs.Sound.play(soundEffect);
+    transition.on("complete", function () { playSong(songName); });
+  }
 
   function muteSound(){
     console.log("hi");
@@ -376,7 +398,6 @@
     var location = id.split("-");
     var x = location[0];
     var y = location[1];
-    console.log(dropped)
     switch (dropped){
       case "terraform":
         terraformCell(x, y, id)
@@ -466,6 +487,7 @@
   function placeGraphic(x,y,id, dropped){
     if(gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount){
       if(dropped=="house"){
+        $(".toolbar").css("width", "45%");
         gameBoard[x][y].type = "house";
         playSound("jingle");
         gameBoard[x][y].objectId = 4;
@@ -500,7 +522,7 @@
   }
 
   function updateGame(){
-    // playTransition("jingle", "song1");
+    playTransition("jingle", "song1");
     currency.energy = 100;
   	for(var i=0; i<boardLength; i++){
   		for(var j=0; j<boardWidth; j++){
@@ -513,8 +535,6 @@
     var maxstateId = 2;
   	var midstateId = 1;
     var id = getId(x, y);
-  	//playTransition("");
-  	//playSong("");
   	if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house")
     {
   		  gameBoard[x][y].needWater = true;
@@ -674,7 +694,9 @@
       });
       $(".house01").css('cursor', 'url(./assets/hand.png), auto');
     } 
-  }
+      $(id).wrap("<a class='fancybox' href='#toDoField'></div>");
+      $(".house01").css('cursor', 'url(./assets/hand.png), auto');
+    }
         function waterHelper(){
           return "<img src='./assets/happy_cloud.gif' class='dragged'>"
         }
@@ -743,10 +765,6 @@
               }
           setTimeout(gameLoop, gameTick);
         }
-
-  $("#hideToDo").click(function(){
-      $("#toDoField").hide();
-  });
 
   function get_todos() {
       var todos = new Array;
@@ -879,13 +897,6 @@
 
   document.getElementById('addJournal').addEventListener('click', addJournal);
 
-  $("#hideJournal").click(function(){
-      $("#journalField").hide();
-  });
-
-  $("#journal").click(function(){
-      $("#journalField").show();
-  });
 </script>
 </html>
 
