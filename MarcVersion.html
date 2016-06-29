@@ -112,7 +112,7 @@
 
     <script>
     function loadSound(){
-      createjs.Sound.registerSounds([{src:"./sound/hhavok-main.mp3", id:"song2"}, {src:"./sound/watering-plants.wav", id:"water"}, {src:"./sound/dizzy-spells.mp3", id:"song1"}, {src:"./sound/jingle-win.wav", id:"jingle"}, {src:"./sound/raking.wav", id:"rake"}, {src:"./sound/button-click.wav", id:"click"}]);
+      createjs.Sound.registerSounds([{src:"./sound/hhavok-main.mp3", id:"song2"}, {src:"./sound/watering-plants.wav", id:"water"}, {src:"./sound/healthyMuzak.mp3", id:"song1"}, {src:"./sound/jingle-win.wav", id:"jingle"}, {src:"./sound/raking.wav", id:"rake"}, {src:"./sound/button-click.wav", id:"click"}]);
     };
     </script>
   </head>
@@ -178,8 +178,8 @@
 
   createjs.Sound.addEventListener("fileload", handleLoad);
   function handleLoad(event){
-    if(event.id=="song2"){
-      playSong("song2");
+    if(event.id=="song1"){
+      playSong("song1");
     }
   }
   function playSong(songName){
