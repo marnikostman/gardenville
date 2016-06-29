@@ -65,6 +65,14 @@
     .lockedItem{
       display: none;
     }
+    .toolbar{
+      border-style: solid;
+      background-color: red;
+    }
+    .toolbarItems{
+      height: 60px;
+      width: 60px;
+    }
     </style>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
@@ -79,8 +87,8 @@
     </script>
   </head>
   <body onload="loadSound();">
-    <button onclick='muteSound();'>Mute Sound</button>
     <div class="toolbar">
+      <button onclick='muteSound();'>Mute Sound</button>
       <!--
       The id associated with each graphic MUST be the name with "01" added at the end.
       The locked plants must be the name without the "01".
@@ -89,19 +97,18 @@
       The parameters that unlockGraphic has are: the id of the plant that is locked (sunflower NOT sunflower01),
       and the amount of sunshine it costs to buy that plant
     -->
-
       <button class="clock" onclick="updateGame();" id="nextday"><strong>Next Day</strong></button>
-      <img src='./assets/house.png' id="house01" data-id="house">
-      <img src='./assets/spade.png' id="spade01" data-id="terraform" >
-      <img src='./assets/waterCan.png' id="water01" data-id="water" >
-      <img src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
-      <img src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
-      <img src='./assets/rose_icon.png' id="rose01" data-id="rose" class="lockedItem">
-      <img src='./assets/rose_icon_locked.png' id="rose" data-id="rose" onclick="unlockGraphic('rose', 10)">
-      <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" class="lockedItem">
-      <img src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
-      <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
-      <img src='./assets/journal.png' id="journal">
+      <img class="toolbarItems" src='./assets/house.png' id="house01" data-id="house">
+      <img class="toolbarItems" src='./assets/spade.png' id="spade01" data-id="terraform" >
+      <img class="toolbarItems" src='./assets/waterCan.png' id="water01" data-id="water" >
+      <img class="toolbarItems" src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
+      <img class="toolbarItems" src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
+      <img class="toolbarItems" src='./assets/rose_icon.png' id="rose01" data-id="rose" class="lockedItem">
+      <img class="toolbarItems" src='./assets/rose_icon_locked.png' id="rose" data-id="rose" onclick="unlockGraphic('rose', 10)">
+      <img class="toolbarItems" src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" class="lockedItem">
+      <img class="toolbarItems" src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
+      <img class="toolbarItems" src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
+      <img class="toolbarItems" src='./assets/journal.png' id="journal">
     </div>
 
     <p id = "energy"></p>
@@ -161,11 +168,11 @@
     createjs.Sound.stop();
   };
 
-  // function playTransition(soundEffect, songName){
-  //   createjs.Sound.stop();
-  //   var transition = createjs.Sound.play(soundEffect);
-  //   transition.on("complete", playSong(songName));
-  // }
+  function playTransition(soundEffect, songName){
+    createjs.Sound.stop();
+    var transition = createjs.Sound.play(soundEffect);
+    transition.on("complete", playSong(songName));
+  }
 
   function muteSound(){
     console.log("hi");
@@ -263,7 +270,6 @@
     var location = id.split("-");
     var x = location[0];
     var y = location[1];
-    console.log(dropped)
     switch (dropped){
       case "terraform":
         terraformCell(x, y, id)
@@ -387,7 +393,7 @@
   }
 
   function updateGame(){
-    // playTransition("jingle", "song1");
+    playTransition("jingle", "song1");
     currency.energy = 100;
   	for(var i=0; i<boardLength; i++){
   		for(var j=0; j<boardWidth; j++){
@@ -400,8 +406,6 @@
     var maxstateId = 2;
   	var midstateId = 1;
     var id = getId(x, y);
-  	//playTransition("");
-  	//playSong("");
   	if (gameBoard[x][y].type != "blank" && gameBoard[x][y].type != "house")
     {
   		  gameBoard[x][y].needWater = true;
