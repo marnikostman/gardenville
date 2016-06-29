@@ -9,7 +9,7 @@ var toDoListEnergy = 5;
 var journalSunshine = 20;
 var timedEnergy = 5;
 var energyMax = 100;
-var boardWidth = 5;
+var boardWidth = 6;
 var boardLength = 3;
 var teenPoints = 20;
 var adultPoints = 50;
@@ -427,7 +427,7 @@ function addToDoToHouse(x,y){
         helper: harvestHelper
       });
       function harvestHelper(){
-        return "<img src='./assets/butterfly_icon.png' class='dragged'>"
+        return "<img src='./assets/hand.png' class='dragged'>"
       }
       function gameLoop ()
       {
