@@ -72,6 +72,10 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
     <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
+    <script type="text/javascript" src="./fancyBox/jquery.mousewheel.pack.js"></script>
+    <link rel="stylesheet" href="./fancyBox/jquery.fancybox.css" type="text/css" media="screen" />
+    <script type="text/javascript" src="./fancyBox/jquery.fancybox.pack.js"></script>
+
     <script>
     function loadSound(){
       createjs.Sound.registerSounds([{src:"./sound/hhavok-main.mp3", id:"song2"}, {src:"./sound/watering-plants.wav", id:"water"}, {src:"./sound/dizzy-spells.mp3", id:"song1"}, {src:"./sound/jingle-win.wav", id:"jingle"}, {src:"./sound/raking.wav", id:"rake"}, {src:"./sound/button-click.wav", id:"click"}]);
@@ -101,7 +105,7 @@
       <img src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower" class="lockedItem">
       <img src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
       <img src='./assets/butterfly_icon.png' id="harvest01" data-id="harvest" >
-      <img src='./assets/journal.png' id="journal">
+      <a class="fancybox" href="#journalField"><img src='./assets/journal.png' id="journal"></a>
     </div>
 
     <p id = "energy"></p>
@@ -112,9 +116,8 @@
       <p>Enter to-do items below:</p>
       <input id="task" type="text"><button id="add">Add</button>
       <div id="todos"></div>
-      <button id="hideToDo">Exit list</button>
     </div>
-    <div id="journalField">
+    <form id="journalField">
       <p>Enter your journal entry below:</p>
       <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
       <label for="uneasiness">Uneasiness</label>
@@ -129,10 +132,14 @@
       <input type="range" name="serenity" min="0" max="10" id="serenity" class="stat">
       <label for="euphoria">Euphoria</label>
       <input type="range" name="euphoria" min="0" max="10" id="euphoria" class="stat">
-      <input type="submit" id="addJournal"><button id="hideJournal">Exit</button>
-    </div>
+      <input type="submit" id="addJournal">
+    </form>
   </body>
   <script>
+  $(document).ready(function() {
+  		$(".fancybox").fancybox();
+  });
+
   var isPlaying;
   var test = true;
 
@@ -555,16 +562,10 @@
       $(".toolbar #house01").remove();
       var id = ".gameboard #" + x + "-" + y;
       $(id).addClass("house01");
-      $(".house01").click(function(){
-          $("#toDoField").show();
-      });
+      $(id).wrap("<a class='fancybox' href='#toDoField'></div>");
       $(".house01").css({ cursor: "pointer" });
     }
   }
-
-  $("#hideToDo").click(function(){
-      $("#toDoField").hide();
-  });
 
   function get_todos() {
       var todos = new Array;
@@ -696,13 +697,6 @@
 
   document.getElementById('addJournal').addEventListener('click', addJournal);
 
-  $("#hideJournal").click(function(){
-      $("#journalField").hide();
-  });
-
-  $("#journal").click(function(){
-      $("#journalField").show();
-  });
 </script>
 </html>
 
