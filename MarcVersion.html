@@ -2,6 +2,22 @@
 <html>
   <head>
     <style>
+
+    @font-face {
+    font-family: pixelated;
+    src: url(04B_30__.TTF);
+    }
+
+    #energy {
+      font-family: pixelated;
+      font-size: 60px;
+    }
+
+    body {
+
+      cursor: url('./assets/cursor.png'), default;
+    }
+
     #journalField {
       display: none;
     }
@@ -177,7 +193,7 @@
 
 
     var ticksPerMinute = 6000;
-    var currency = {sunshine:10, energy:100, addEnergy: Date.now() + 2 * (ticksPerMinute)}; //100 is the max energy
+    var currency = {sunshine:10, energy:100, addEnergy: Date.now()}; //100 is the max energy
     var actionEnergyAmount = 10;
     var toDoListEnergy = 5;
     var journalSunshine = 20;
@@ -199,7 +215,7 @@
         }
       }
 
-  var gameTick = 500;
+  var gameTick = 6000;
   var graphicId = [
     {name:"blank", state:[]},
     {name:"rose", state:[]},
@@ -528,6 +544,7 @@
         function gameLoop ()
         {
           document.getElementById("energy").innerHTML = "Energy: " + currency.energy + " | Sunshine: " + currency.sunshine;
+          document.getElementById("energy").style.fontFamily = "pixelated";
           for (var x = 0; x < boardLength; x++)
           {
             for (var y = 0; y < boardWidth; y++)
