@@ -159,11 +159,11 @@
       createjs.Sound.stop();
     };
 
-    function playTransition(soundEffect, songName){
-      createjs.Sound.stop();
-      var transition = createjs.Sound.play(soundEffect);
-      transition.on("complete", playSound(songName))
-    }
+    // function playTransition(soundEffect, songName){
+    //   createjs.Sound.stop();
+    //   var transition = createjs.Sound.play(soundEffect);
+    //   transition.on("complete", playSound(songName));
+    // }
 
     function muteSound(){
       isPlaying.muted = !isPlaying.muted;
@@ -319,7 +319,8 @@
           currency.energy = currency.energy - actionEnergyAmount;
           gameBoard[x][y].nextFertilizer=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
-          {gameBoard[x][y].growthPoints += 10;}
+          {
+            gameBoard[x][y].growthPoints += 10;}
           if (gameBoard[x][y].stateId == 1)
           { gameBoard[x][y].growthPoints += 10;}
         }
@@ -403,6 +404,7 @@
       		if (gameBoard[x][y].stateId < midstateId && gameBoard[x][y].growthPoints >= teenPoints)
           {
       			//gameboard[i][j].stateId = 1
+            console.log("hi");
       			gameBoard[x][y].stateId=1;
       			//gameboard[i][j].needFertilizer = true
 
