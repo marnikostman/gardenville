@@ -18,10 +18,7 @@ font-family: pixelated;
 
 body {
   font-family: pixelated;
-  /*
-  NOT WORKING. NEED WORKED ON!
-  background-image: url(../assets/grass.png);
-  */
+  background-image: url(../assets/grass_tile.png);
   cursor: url('../assets/cursor.png'), default;
 }
 
@@ -88,6 +85,9 @@ img {
   cursor: url('../assets/hand.png'), default;
   border: none;
 }
+button:focus{
+  outline: 0;
+}
 .lockedItem{
   display: none;
 }
@@ -128,14 +128,15 @@ width: 5px;
 height: 10px;
 float: left;
 display: block;
-background: #fff;
+background-image: url(../assets/grass_tile.png);
 }
 .corner .b{
 width: 5px;
 height: 5px;
 float: left;
 display: block;
-background: #fff;
+background-image: url(../assets/grass_tile.png);
+
 }
 .corner .c{
 width: 10px;
@@ -155,12 +156,12 @@ border-top: 5px solid #FF6600;
 }
 .leftside{
   padding-top: 15px;
-  width: 10%;
+  width: 15%;
   float: left;
 }
 .toolbar{
   height: auto;
-  margin-right: 20px;
+  margin-right: 100px;
   margin-bottom: 10px;
   border-style: solid;
   background-color: red;
@@ -171,5 +172,5 @@ border-top: 5px solid #FF6600;
   width: 60px;
 }
 .wholeMenuArea{
-  padding-left: 100px;
+  padding-left: 60px;
 }
