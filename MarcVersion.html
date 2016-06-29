@@ -8,13 +8,21 @@
     src: url(04B_30__.TTF);
     }
 
-    #energy {
+    button {
       font-family: pixelated;
+    }
+
+    #energy {
       font-size: 60px;
     }
 
-    body {
+    #mute {
+    font-size: 20px;
+    font-family: pixelated;
+    }
 
+    body {
+      font-family: pixelated;
       cursor: url('./assets/cursor.png'), default;
     }
 
@@ -27,11 +35,12 @@
     }
 
     #journal {
-      cursor: pointer;
+      cursor: url('./assets/hand.png'), default;
     }
 
     .dragged {
       z-index: 101;
+      cursor: url('./assets/cursor.png'), default;
     }
 
     .dragHover {
@@ -75,6 +84,7 @@
       border: none;
       color: black;
       padding: 50px 0px 0px 0px;
+      cursor: url('./assets/hand.png'), default;
 
     }
 
@@ -95,7 +105,7 @@
     </script>
   </head>
   <body onload="loadSound();">
-    <button onclick='muteSound();'>Mute Sound</button>
+    <button onclick='muteSound();' id="mute">Mute Sound</button>
     <div class="toolbar">
       <!--
       The id associated with each graphic MUST be the name with "01" added at the end.
@@ -572,9 +582,10 @@
       $(id).addClass("house01");
       $(".house01").click(function(){
           $("#toDoField").show();
+          $(".house01").css('cursor', 'url(./assets/hand.png), auto');
       });
-      $(".house01").css({ cursor: "pointer" });
-    }
+      $(".house01").css('cursor', 'url(./assets/hand.png), auto');
+    } 
   }
         function waterHelper(){
           return "<img src='./assets/happy_cloud.gif' class='dragged'>"
@@ -664,6 +675,7 @@
       var todos = get_todos();
       if (task !== ""){
         todos.push(task);
+        document.getElementById('task').value=''; //clears out the form text field after task is added.
       }
       else {
         alert("Invalid entry. No text entered.");
