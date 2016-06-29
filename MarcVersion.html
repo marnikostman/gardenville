@@ -18,6 +18,12 @@
       z-index: 101;
     }
 
+    .dragHover {
+      -webkit-transform: scale(1.2);
+      transform: scale(1.2);
+      z-index:100;
+    }
+
     .cell
     {
         position: relative;
@@ -296,6 +302,7 @@
           console.log(gameBoard[x][y].stateId);
           console.log(gameBoard[x][y].type);
           gameBoard[x][y].harvest = true;
+          gameBoard[x][y].growthPoints = 0;
           currency.sunshine += 10;
         }
 
@@ -320,7 +327,12 @@
           gameBoard[x][y].nextFertilizer=Date.now() + 5 * (ticksPerMinute);
           if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
           {
-            gameBoard[x][y].growthPoints += 10;}
+            gameBoard[x][y].growthPoints += 10;
+            if (gameBoard[x][y].growthPoints > teenPoints)
+            {
+              gameBoard[x][y].growthPoints = teenPoints;
+            }
+          }
           if (gameBoard[x][y].stateId == 1)
           { gameBoard[x][y].growthPoints += 10;}
         }
@@ -374,7 +386,7 @@
       }
 
       function updateGame(){
-        playTransition("jingle", "song1");
+        //playTransition("jingle", "song1");
         currency.energy = 100;
       	for(var i=0; i<boardLength; i++){
       		for(var j=0; j<boardWidth; j++){
@@ -604,8 +616,10 @@
           localStorage.setItem('todo', JSON.stringify(todos));
 
           show();
-
           currency.energy+=toDoListEnergy;
+          if (currency.energy > energyMax){
+            currency.energy = energyMax;
+          }
           return false;
       }
 
