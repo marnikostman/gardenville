@@ -46,6 +46,7 @@ body {
 }
 .gameboard{
   margin-left: 15%;
+  font-size: 0;
 }
 .cell
 {
