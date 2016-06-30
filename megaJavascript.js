@@ -165,7 +165,7 @@ function terraformCell(x,y,id) {
     playSound("rake")
     currency.energy = currency.energy - actionEnergyAmount;
   }
-  else if(currency.energy>= actionEnergyAmount && gameBoard[x][y].type!= "blank" && gameBoard[x][y].usable == true){
+  else if(currency.energy>= actionEnergyAmount && gameBoard[x][y].type!= "blank" && gameBoard[x][y].usable == true && gameBoard[x][y].stateId != 2){
     gameBoard[x][y].objectId = 0;
     gameBoard[x][y].stateId = 0;
     gameBoard[x][y].needWater = true;
@@ -405,6 +405,7 @@ function get_todos() {
 
 function add() {
     var task = document.getElementById('task').value;
+    var errors = 0;
 
     var todos = get_todos();
     if (task !== ""){
@@ -412,12 +413,20 @@ function add() {
       document.getElementById('task').value=''; //clears out the form text field after task is added.
     }
     else {
-      alert("Invalid entry. No text entered.");
+      errors += 1;
     }
+
+    if(errors > 0){
+        $('#task_error').text("All fields are required");
+    }
+    else {
+        $('#task_error').text("");
+    }
+
     localStorage.setItem('todo', JSON.stringify(todos));
 
     show();
-    return false;
+    event.preventDefault();
 }
 
 function remove() {
@@ -428,7 +437,7 @@ function remove() {
 
     show();
 
-    return false;
+    event.preventDefault();
 }
 
 function accomplish() {
@@ -499,14 +508,24 @@ function addJournal() {
     fullEntry.euphoria = document.getElementById('euphoria').value;
 
     var fullEntries = get_full_entries();
+    var errors = 0;
+
     if (fullEntry.entry !== ""){
       fullEntries.push(fullEntry);
       currency.sunshine += journalSunshine;
       localStorage.setItem('fullEntry', JSON.stringify(fullEntries));
     }
     else {
-      alert("Invalid entry. No text entered.");
+      errors += 1;
     }
+
+    if(errors > 0){
+        $('#entry_error').text("All fields are required");
+    }
+    else {
+        $('#entry_error').text("");
+    }
+
     document.getElementById('entry').value = "";
     statsArray = document.getElementsByClassName('stat');
     for (s = 0; s < statsArray.length; s++){
