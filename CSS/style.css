@@ -32,6 +32,7 @@ body {
   font-family: pixelated;
   cursor: url('../assets/cursor.png'), default;
   min-width: 1270px;
+  border: 10px solid green;
 }
 
 #journalField {
@@ -52,8 +53,8 @@ body {
 }
 
 .dragHover {
-  -webkit-transform: scale(1.2);
-  transform: scale(1.2);
+  -webkit-transform: scale(1.05);
+  transform: scale(1.05);
   z-index:100;
 }
 .gameboard{

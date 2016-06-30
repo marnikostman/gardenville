@@ -8,132 +8,133 @@
 
   <body onload="loadSound();">
     <div class="gameArea">
-    <div class="wholeMenuArea">
-      <div class="leftside"><button class="clock" onclick="updateGame();" id="nextday"><strong>Next Day</strong></button></div>
-      <p id = "energy"></p>
-      <p class="h"></p>
+      <div class="wholeMenuArea">
+        <div class="leftside"><button class="clock" onclick="updateGame();" id="nextday"><strong>Next Day</strong></button></div>
+        <p id = "energy"></p>
+        <p class="h"></p>
 
-      <div class="section toolbar">
-        <div class="corner tl">
-          <div class="a"></div>
-          <div class="b"></div>
-          <div class="c"></div>
-        </div>
-        <div class="corner tr">
-          <div class="a"></div>
-          <div class="b"></div>
-          <div class="c"></div>
-        </div>
+        <div class="section toolbar">
+          <div class="corner tl">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+          <div class="corner tr">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
 
-        <!--
-        The id associated with each graphic MUST be the name with "01" added at the end.
-        The locked plants must be the name without the "01".
-        This is necessary for unlockGraphic() to function correctly.
+          <!--
+          The id associated with each graphic MUST be the name with "01" added at the end.
+          The locked plants must be the name without the "01".
+          This is necessary for unlockGraphic() to function correctly.
 
-        The parameters that unlockGraphic has are: the id of the plant that is locked (sunflower NOT sunflower01),
-        and the amount of sunshine it costs to buy that plant
-      -->
-        <img class="toolbarItems" src='./assets/house.png' id="house01" data-id="house">
-        <img class="toolbarItems" src='./assets/spade.png' id="spade01" data-id="terraform" >
-        <img class="toolbarItems" src='./assets/waterCan.png' id="water01" data-id="water" >
-        <img class="toolbarItems" src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
-        <img class="toolbarItems" src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
-        <img class="toolbarItems lockedItem" src='./assets/rose_icon.png' id="rose01" data-id="rose">
-        <img class="toolbarItems" src='./assets/rose_icon_locked.png' id="rose" data-id="rose" onclick="unlockGraphic('rose', 10)">
-        <img class="toolbarItems lockedItem" src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower">
-        <img class="toolbarItems" src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
-        <img class="toolbarItems" src='./assets/hand.png' id="harvest01" data-id="harvest" >
-        <a class="fancybox" href="#journalField"><img src='./assets/journal.png' class="toolbarItems" id="journal"></a>
-        <div class="corner bl">
-          <div class="a"></div>
-          <div class="c"></div>
-          <div class="b"></div>
+          The parameters that unlockGraphic has are: the id of the plant that is locked (sunflower NOT sunflower01),
+          and the amount of sunshine it costs to buy that plant
+        -->
+          <img class="toolbarItems" src='./assets/house.png' id="house01" data-id="house">
+          <img class="toolbarItems" src='./assets/spade.png' id="spade01" data-id="terraform" >
+          <img class="toolbarItems" src='./assets/waterCan.png' id="water01" data-id="water" >
+          <img class="toolbarItems" src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
+          <img class="toolbarItems" src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
+          <img class="toolbarItems lockedItem" src='./assets/rose_icon.png' id="rose01" data-id="rose">
+          <img class="toolbarItems" src='./assets/rose_icon_locked.png' id="rose" data-id="rose" onclick="unlockGraphic('rose', 10)">
+          <img class="toolbarItems lockedItem" src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower">
+          <img class="toolbarItems" src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
+          <img class="toolbarItems" src='./assets/glove.png' id="harvest01" data-id="harvest" >
+          <a class="fancybox" href="#journalField"><img src='./assets/journal.png' class="toolbarItems" id="journal"></a>
+          <div class="corner bl">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
+          <div class="corner br">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
         </div>
-        <div class="corner br">
-          <div class="a"></div>
-          <div class="c"></div>
-          <div class="b"></div>
+        <div class="section betweenBtns">
+          <div class="corner tl">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+          <div class="corner tr">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+
+          <button class="section_content" onclick='muteSound();' id="mute">Mute Music</button>
+
+          <div class="corner bl">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
+          <div class="corner br">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
         </div>
+        <div class="section">
+          <div class="corner tl">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+          <div class="corner tr">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+
+          <button class="section_content" onclick='muteEffects();' id="mute">Mute FX</button>
+
+          <div class="corner bl">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
+          <div class="corner br">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
+        </div>
+        <div style="clear: left;"></div>
+        <div class="gameboard"></div>
+        <div class="extraspace"></div>
+
+        <div id="toDoField">
+          <p>Enter to-do items below:</p>
+          <input id="task" type="text"><button id="add">Add</button>
+          <div id="todos"></div>
+        </div>
+        <form id="journalField">
+          <p>Enter your journal entry below:</p>
+          <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
+          <label for="uneasiness">Uneasiness</label>
+          <input type="range" name="uneasiness" min="0" max="10" id="uneasiness" class="stat">
+          <label for="anger">Anger</label>
+          <input type="range" name="anger" min="0" max="10" id="anger" class="stat">
+          <label for="anxiety">Anxiety</label>
+          <input type="range" name="anxiety" min="0" max="10" id="anxiety" class="stat">
+          <label for="apathy">Apathy</label>
+          <input type="range" name="apathy" min="0" max="10" id="apathy" class="stat">
+          <label for="serenity">Serenity</label>
+          <input type="range" name="serenity" min="0" max="10" id="serenity" class="stat">
+          <label for="euphoria">Euphoria</label>
+          <input type="range" name="euphoria" min="0" max="10" id="euphoria" class="stat">
+          <input type="button" id="addJournal" value="Submit" onclick="playSound('tada')">
+        </form>
       </div>
-      <div class="section betweenBtns">
-        <div class="corner tl">
-          <div class="a"></div>
-          <div class="b"></div>
-          <div class="c"></div>
-        </div>
-        <div class="corner tr">
-          <div class="a"></div>
-          <div class="b"></div>
-          <div class="c"></div>
-        </div>
-
-        <button class="section_content" onclick='muteSound();' id="mute">Mute Music</button>
-
-        <div class="corner bl">
-          <div class="a"></div>
-          <div class="c"></div>
-          <div class="b"></div>
-        </div>
-        <div class="corner br">
-          <div class="a"></div>
-          <div class="c"></div>
-          <div class="b"></div>
-        </div>
-      </div>
-      <div class="section">
-        <div class="corner tl">
-          <div class="a"></div>
-          <div class="b"></div>
-          <div class="c"></div>
-        </div>
-        <div class="corner tr">
-          <div class="a"></div>
-          <div class="b"></div>
-          <div class="c"></div>
-        </div>
-
-        <button class="section_content" onclick='muteEffects();' id="mute">Mute FX</button>
-
-        <div class="corner bl">
-          <div class="a"></div>
-          <div class="c"></div>
-          <div class="b"></div>
-        </div>
-        <div class="corner br">
-          <div class="a"></div>
-          <div class="c"></div>
-          <div class="b"></div>
-        </div>
-      </div>
-      <div style="clear: left;"></div>
-    <div class="gameboard"></div>
-    <div class="extraspace"></div>
-
-      <div id="toDoField">
-        <p>Enter to-do items below:</p>
-        <input id="task" type="text"><button id="add">Add</button>
-        <div id="todos"></div>
-      </div>
-      <form id="journalField">
-        <p>Enter your journal entry below:</p>
-        <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
-        <label for="uneasiness">Uneasiness</label>
-        <input type="range" name="uneasiness" min="0" max="10" id="uneasiness" class="stat">
-        <label for="anger">Anger</label>
-        <input type="range" name="anger" min="0" max="10" id="anger" class="stat">
-        <label for="anxiety">Anxiety</label>
-        <input type="range" name="anxiety" min="0" max="10" id="anxiety" class="stat">
-        <label for="apathy">Apathy</label>
-        <input type="range" name="apathy" min="0" max="10" id="apathy" class="stat">
-        <label for="serenity">Serenity</label>
-        <input type="range" name="serenity" min="0" max="10" id="serenity" class="stat">
-        <label for="euphoria">Euphoria</label>
-        <input type="range" name="euphoria" min="0" max="10" id="euphoria" class="stat">
-        <input type="button" id="addJournal" value="Submit" onclick="playSound('tada')">
-      </form>
     </div>
-  </div>
   </body>
+
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
   <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
   <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
@@ -143,12 +144,3 @@
   <script type="text/javascript" src="./megaJavascript.js"></script>
   <script type="text/javascript" src="./fadeIn.js"></script>
 </html>
-
-<!--case "butterfly":
-                gameBoard[x][y].effects = true;
-                PlayEffect(x, y, id)
-                break;
-
-        }-->
-
-<!--onload, localStorage.clear()?-->
