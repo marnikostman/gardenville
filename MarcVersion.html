@@ -148,11 +148,13 @@
     <div id="toDoField">
       <p>Enter to-do items below:</p>
       <input id="task" type="text"><button id="add">Add</button>
+      <span class="error"><p id="task_error"></p></span>
       <div id="todos"></div>
     </div>
     <form id="journalField">
       <p>Enter your journal entry below:</p>
       <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
+      <span class="error"><p id="entry_error"></p></span>
       <label for="uneasiness">Uneasiness</label>
       <input type="range" name="uneasiness" min="0" max="10" id="uneasiness" class="stat">
       <label for="anger">Anger</label>
