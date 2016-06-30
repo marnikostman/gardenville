@@ -47,7 +47,8 @@
           <img class="toolbarItems lockedItem" src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower">
           <img class="toolbarItems" src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
           <img class="toolbarItems" src='./assets/glove.png' id="harvest01" data-id="harvest" >
-          
+          <a class="fancybox" href="#journalField"><img src='./assets/journal.png' class="toolbarItems" id="journal" onclick="playSound('book')"></a>
+
           <div class="corner bl">
             <div class="a"></div>
             <div class="c"></div>
@@ -115,12 +116,14 @@
 
         <div id="toDoField">
           <p>Enter to-do items below:</p>
+          <span class="errors"><p id="task_error"></p></span>
           <input id="task" type="text"><button id="add">Add</button>
           <div id="todos"></div>
         </div>
         <form id="journalField">
           <p>Enter your journal entry below:</p>
           <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
+          <span class="errors"><p id="entry_error"></p></span>
           <label for="uneasiness">Uneasiness</label>
           <input type="range" name="uneasiness" min="0" max="10" id="uneasiness" class="stat">
           <label for="anger">Anger</label>
@@ -133,7 +136,7 @@
           <input type="range" name="serenity" min="0" max="10" id="serenity" class="stat">
           <label for="euphoria">Euphoria</label>
           <input type="range" name="euphoria" min="0" max="10" id="euphoria" class="stat">
-          <input type="button" id="addJournal" value="Submit" onclick="playSound('tada')">
+          <input type="button" id="addJournal" value="Submit">
         </form>
       </div>
     </div>

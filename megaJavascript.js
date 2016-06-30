@@ -514,6 +514,7 @@ function addJournal() {
       fullEntries.push(fullEntry);
       currency.sunshine += journalSunshine;
       localStorage.setItem('fullEntry', JSON.stringify(fullEntries));
+      playSound('tada');
     }
     else {
       errors += 1;

@@ -37,10 +37,12 @@ body {
 
 #journalField {
   display: none;
+  font-family: pixelated;
 }
 
 #toDoField {
   display: none;
+  font-family: pixelated;
 }
 
 #journal {
