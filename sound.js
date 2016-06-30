@@ -10,9 +10,7 @@ function handleLoad(event){
     playSong("song1");
   }
 }
-function functionName() {
 
-}
 function playSong(songName){
   createjs.Sound.stop();
     isPlaying = createjs.Sound.play(songName, {loop: -1});
