@@ -165,7 +165,7 @@ function terraformCell(x,y,id) {
     playSound("rake")
     currency.energy = currency.energy - actionEnergyAmount;
   }
-  else if(currency.energy>= actionEnergyAmount && gameBoard[x][y].type!= "blank" && gameBoard[x][y].usable == true){
+  else if(currency.energy>= actionEnergyAmount && gameBoard[x][y].type!= "blank" && gameBoard[x][y].usable == true && gameBoard[x][y].stateId != 2){
     gameBoard[x][y].objectId = 0;
     gameBoard[x][y].stateId = 0;
     gameBoard[x][y].needWater = true;
