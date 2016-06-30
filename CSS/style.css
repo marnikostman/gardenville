@@ -94,6 +94,9 @@ button:focus{
 .lockedItem{
   display: none;
 }
+.betweenBtns{
+  margin-right: 10px;
+}
 .section{
 float: left;
 border: 10px solid #FF6600;
