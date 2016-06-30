@@ -1,3 +1,56 @@
+@font-face {
+font-family: pixelated;
+src: url(04B_30__.TTF);
+}
+
+button {
+  font-family: pixelated;
+}
+
+#energy {
+  font-size: 40px;
+  width: 85%;
+  float: right;
+}
+
+#mute {
+font-size: 20px;
+font-family: pixelated;
+}
+
+body {
+  padding-top: 20px;
+  font-family: pixelated;
+  background-image: url(../assets/grass_tile.png);
+  cursor: url('../assets/cursor.png'), default;
+  min-width: 1270px;
+}
+
+#journalField {
+  display: none;
+}
+
+#toDoField {
+  display: none;
+}
+
+#journal {
+  cursor: url('../assets/hand.png'), default;
+}
+
+.dragged {
+  z-index: 101;
+  cursor: url('../assets/cursor.png'), default;
+}
+
+.dragHover {
+  -webkit-transform: scale(1.2);
+  transform: scale(1.2);
+  z-index:100;
+}
+.gameboard{
+  font-size: 0;
+}
 .cell
 {
     position: relative;
@@ -10,7 +63,7 @@
 }
 .cell img
 {
-	width: 35px;
+  width: 35px;
     image-rendering: pixelated;
     position: absolute;
     top: 0px;
@@ -18,9 +71,113 @@
     width: 128px;
     height: 128px;
 }
-
 img {
     image-rendering: pixelated;
     width: 128px;
     height: 128px;
+}
+
+.clock {
+  image-rendering: pixelated;
+  background:url(../assets/next_day.png) no-repeat;
+  background-size: 128px 128px;
+  background-position: center;
+  width: 128px;
+  height: 128px;
+  color: black;
+  padding: 50px 0px 0px 0px;
+  cursor: url('../assets/hand.png'), default;
+  border: none;
+}
+button:focus{
+  outline: 0;
+}
+.lockedItem{
+  display: none;
+}
+.betweenBtns{
+  margin-right: 10px;
+}
+.section{
+float: left;
+border: 10px solid #FF6600;
+background: #fff;
+position: relative;
+}
+.section_content{
+display: block;
+padding: 10px;
+overflow: hidden;
+}
+.corner{
+width: 15px;
+position: absolute;
+z-index: 9;
+}
+.tl{
+top: -10px;
+left: -10px;
+}
+.tr{
+top: -10px;
+right: -10px;
+}
+.bl{
+bottom: -10px;
+left: -10px;
+}
+.br{
+bottom: -10px;
+right: -10px;
+}
+.corner .a{
+width: 5px;
+height: 10px;
+float: left;
+display: block;
+background-image: url(../assets/grass_tile.png);
+}
+.corner .b{
+width: 5px;
+height: 5px;
+float: left;
+display: block;
+background-image: url(../assets/grass_tile.png);
+
+}
+.corner .c{
+width: 10px;
+height: 10px;
+float: left;
+display: block;
+background: #FF6600;
+}
+.tr .a, .tr .b,
+.tr .c, .br .a,
+.br .b, .br .c{
+float: right;
+}
+.bl .a,
+.br .a{
+border-top: 5px solid #FF6600;
+}
+.leftside{
+  padding-top: 15px;
+  width: 12%;
+  float: left;
+}
+.toolbar{
+  height: auto;
+  margin-right: 50px;
+  margin-bottom: 10px;
+  border-style: solid;
+  background-color: #87CEEB;
+  width: 60%;
+}
+.toolbarItems{
+  height: 60px;
+  width: 60px;
+}
+.wholeMenuArea{
+  padding-left: 60px;
 }
