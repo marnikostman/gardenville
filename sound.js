@@ -2,7 +2,7 @@ var isPlaying;
 var allMute = false;
 function loadSound(){
   createjs.Sound.registerSounds([{src:"./sound/healthyMuzak.mp3", id:"song1"}, {src:"./sound/pop.wav", id:"pop"}, {src:"./sound/bookpages.wav", id:"book"}, {src:"./sound/watering-plants.wav", id:"water"}, {src:"./sound/jingle-win.wav", id:"jingle"}, {src:"./sound/raking.wav", id:"rake"}]);
-  createjs.Sound.registerSounds([{src:"./sound/rooster_crow.wav", id:"rooster"}, {src:"./sound/button-click.wav", id:"click"}, {src:"./sound/ta_da.wav", id:"tada"}]);
+  createjs.Sound.registerSounds([{src:"./sound/rooster_crow.wav", id:"rooster"}, {src:"./sound/button-click.wav", id:"click"}, {src:"./sound/ta_da.wav", id:"tada"}, {src:"./sound/checkmarkSound.mp3", id:"checkmark"}]);
 };
 createjs.Sound.addEventListener("fileload", handleLoad);
 function handleLoad(event){
