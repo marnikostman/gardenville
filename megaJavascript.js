@@ -9,8 +9,8 @@ var toDoListEnergy = 5;
 var journalSunshine = 20;
 var timedEnergy = 5;
 var energyMax = 100;
-var boardWidth = 6;
-var boardLength = 3;
+var boardWidth = 7;
+var boardLength = 4;
 var teenPoints = 20;
 var adultPoints = 50;
 
@@ -182,7 +182,7 @@ function playEffect(x, y, id)
 function placeGraphic(x,y,id, dropped){
   if(gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount){
     if(dropped=="house"){
-      $(".toolbar").css("width", "45%");
+      $(".toolbar").css("width", "50%");
       gameBoard[x][y].type = "house";
       playSound("jingle");
       gameBoard[x][y].objectId = 4;

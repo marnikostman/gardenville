@@ -9,7 +9,8 @@ button {
 
 #energy {
   font-size: 40px;
-  width: 75%;
+  width: 85%;
+  float: right;
 }
 
 #mute {
@@ -22,6 +23,7 @@ body {
   font-family: pixelated;
   background-image: url(../assets/grass_tile.png);
   cursor: url('../assets/cursor.png'), default;
+  min-width: 1270px;
 }
 
 #journalField {
@@ -47,7 +49,6 @@ body {
   z-index:100;
 }
 .gameboard{
-  margin-left: 15%;
   font-size: 0;
 }
 .cell
@@ -162,7 +163,7 @@ border-top: 5px solid #FF6600;
 }
 .leftside{
   padding-top: 15px;
-  width: 15%;
+  width: 12%;
   float: left;
 }
 .toolbar{
@@ -170,8 +171,8 @@ border-top: 5px solid #FF6600;
   margin-right: 50px;
   margin-bottom: 10px;
   border-style: solid;
-  background-color: red;
-  width: 50%;
+  background-color: #87CEEB;
+  width: 60%;
 }
 .toolbarItems{
   height: 60px;
