@@ -10,6 +10,9 @@ function handleLoad(event){
     playSong("song1");
   }
 }
+function functionName() {
+
+}
 function playSong(songName){
   createjs.Sound.stop();
     isPlaying = createjs.Sound.play(songName, {loop: -1});
@@ -35,6 +38,7 @@ function playSound(soundEffect){
       if(allMute==true){
         effectVolume.volume = effectVolume.volume * 0;
       }
+
     };
 
 function stopAllSound(){
