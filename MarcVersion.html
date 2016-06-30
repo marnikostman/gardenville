@@ -65,7 +65,32 @@
           <div class="c"></div>
         </div>
 
-        <button class="section_content" onclick='muteSound();' id="mute">Mute Sound</button>
+        <button class="section_content" onclick='muteSound();' id="mute">Mute Music</button>
+
+        <div class="corner bl">
+          <div class="a"></div>
+          <div class="c"></div>
+          <div class="b"></div>
+        </div>
+        <div class="corner br">
+          <div class="a"></div>
+          <div class="c"></div>
+          <div class="b"></div>
+        </div>
+      </div>
+      <div class="section">
+        <div class="corner tl">
+          <div class="a"></div>
+          <div class="b"></div>
+          <div class="c"></div>
+        </div>
+        <div class="corner tr">
+          <div class="a"></div>
+          <div class="b"></div>
+          <div class="c"></div>
+        </div>
+
+        <button class="section_content" onclick='muteEffects();' id="mute">Mute FX</button>
 
         <div class="corner bl">
           <div class="a"></div>
@@ -101,7 +126,7 @@
         <input type="range" name="serenity" min="0" max="10" id="serenity" class="stat">
         <label for="euphoria">Euphoria</label>
         <input type="range" name="euphoria" min="0" max="10" id="euphoria" class="stat">
-        <input type="button" id="addJournal" value="Submit">
+        <input type="button" id="addJournal" value="Submit" onclick="playSound('tada')">
       </form>
     </div>
   </body>

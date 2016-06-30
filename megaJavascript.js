@@ -115,6 +115,7 @@ function itemDropped(event, ui){
 
 function harvestPlant(x,y,id){
   if(gameBoard[x][y].stateId==2){
+    playSound("pop");
     gameBoard[x][y].type = "blank";
     gameBoard[x][y].stateId = 0;
     console.log(gameBoard[x][y].stateId);
@@ -216,7 +217,7 @@ function getId(x, y)
 }
 
 function updateGame(){
-  playTransition("jingle", "song1");
+  playTransition("rooster", "song1");
   currency.energy = 100;
   for(var i=0; i<boardLength; i++){
     for(var j=0; j<boardWidth; j++){

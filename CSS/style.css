@@ -9,6 +9,7 @@ button {
 
 #energy {
   font-size: 40px;
+  width: 75%;
 }
 
 #mute {
@@ -17,6 +18,7 @@ font-family: pixelated;
 }
 
 body {
+  padding-top: 20px;
   font-family: pixelated;
   background-image: url(../assets/grass_tile.png);
   cursor: url('../assets/cursor.png'), default;
@@ -162,7 +164,7 @@ border-top: 5px solid #FF6600;
 }
 .toolbar{
   height: auto;
-  margin-right: 100px;
+  margin-right: 50px;
   margin-bottom: 10px;
   border-style: solid;
   background-color: red;
