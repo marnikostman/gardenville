@@ -19,9 +19,17 @@ font-family: pixelated;
 }
 
 body {
+  background-color: black;
+  opacity: 1;
+}
+.extraspace{
+  min-width: 100%;
+  min-height: 40px;
+}
+.gameArea{
   padding-top: 20px;
-  font-family: pixelated;
   background-image: url(../assets/grass_tile.png);
+  font-family: pixelated;
   cursor: url('../assets/cursor.png'), default;
   min-width: 1270px;
 }
@@ -50,6 +58,7 @@ body {
 }
 .gameboard{
   font-size: 0;
+  margin-bottom: 20px;
 }
 .cell
 {
