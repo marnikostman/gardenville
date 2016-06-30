@@ -1,1 +1,11 @@
+@font-face {
+font-family: pixelated;
+src: url(04B_30__.TTF);
+}
+body{
+  font-family: pixelated;
+  font-size: 2em;
+}
+.initial{
 
+}
