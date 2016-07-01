@@ -19,6 +19,7 @@ function unlockGraphic(lockedItemId, cost){
   if(currency.sunshine>=flowerCost){
     playSound("click")
     currency.sunshine = currency.sunshine - flowerCost;
+    updateEnergyAndSunshine();
     console.log(currency.sunshine);
     $("#" + lockedItemId + "01").show();
     $("#" + lockedItemId).hide();
@@ -79,7 +80,7 @@ for (var x = 0; x < boardLength; x++){
     //Gives each cell the attribute to have things able to be dropped on it.
     $("#" + id).droppable({
       drop: itemDropped, //drop is a function, when it's done, it calls the function John wrote
-      hoverClass: "dragHover" //makes each cell "pop" out a bit for user?; needs written or needs deleted
+      hoverClass: "dragHover" //makes each cell "pop" out a bit for user.
     });
   }
   $(".gameboard").append("<br/>");
@@ -123,6 +124,7 @@ function harvestPlant(x,y,id){
     gameBoard[x][y].harvest = true;
     gameBoard[x][y].growthPoints = 0;
     currency.sunshine += 10;
+    updateEnergyAndSunshine();
   }
 }
 
@@ -143,6 +145,7 @@ function fertilizePlant(x, y, id){
     gameBoard[x][y].needFertilizer = false;
     playSound("jingle")
     currency.energy = currency.energy - actionEnergyAmount;
+    updateEnergyAndSunshine()
     gameBoard[x][y].nextFertilizer=Date.now() + 5 * (ticksPerMinute);
     if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
     {
@@ -164,6 +167,7 @@ function terraformCell(x,y,id) {
     gameBoard[x][y].needTerraform = false;
     playSound("rake")
     currency.energy = currency.energy - actionEnergyAmount;
+    updateEnergyAndSunshine()
   }
   else if(currency.energy>= actionEnergyAmount && gameBoard[x][y].type!= "blank" && gameBoard[x][y].usable == true && gameBoard[x][y].stateId != 2){
     gameBoard[x][y].objectId = 0;
@@ -182,7 +186,7 @@ function playEffect(x, y, id)
 function placeGraphic(x,y,id, dropped){
   if(gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount){
     if(dropped=="house"){
-      $(".toolbar").css("width", "42%");
+      $(".toolbar").css("width", "50%");
       gameBoard[x][y].type = "house";
       playSound("jingle");
       gameBoard[x][y].objectId = 4;
@@ -208,6 +212,7 @@ function placeGraphic(x,y,id, dropped){
       gameBoard[x][y].stateId = 0;
     }
     currency.energy = currency.energy - actionEnergyAmount;
+    updateEnergyAndSunshine();
   }
 }
 
@@ -244,6 +249,17 @@ function nextDay(x,y){
     else if (gameBoard[x][y].stateId < maxstateId && gameBoard[x][y].growthPoints >= adultPoints){
       gameBoard[x][y].stateId=2;
       drawCell(x, y, id)
+
+    if (gameBoard[x][y].stateId==2)
+    {
+        var rndNum = Math.floor((Math.random() * 10) + 1);
+        if (rndNum>6) //effects display only about 1/3 of the time
+        {
+          gameBoard[x][y].effects=true;
+          drawCell(x, y, id)
+        }
+    }
+
     }
   }
 }
@@ -346,10 +362,14 @@ function harvestHelper(){
   return "<img src='./assets/glove.png' class='dragged'>"
 }
 
-function gameLoop ()
-{
+function updateEnergyAndSunshine(){
   document.getElementById("energy").innerHTML = "Energy: " + currency.energy + " | Sunshine: " + currency.sunshine;
   document.getElementById("energy").style.fontFamily = "pixelated";
+}
+
+function gameLoop ()
+{
+  updateEnergyAndSunshine();
   for (var x = 0; x < boardLength; x++)
   {
     for (var y = 0; y < boardWidth; y++)
@@ -452,6 +472,7 @@ function accomplish() {
     if (currency.energy > energyMax){
       currency.energy = energyMax;
     }
+    updateEnergyAndSunshine();
     playSound('checkmark');
 
     return false;
@@ -516,6 +537,7 @@ function addJournal() {
     if (fullEntry.entry !== ""){
       fullEntries.push(fullEntry);
       currency.sunshine += journalSunshine;
+      updateEnergyAndSunshine();
       localStorage.setItem('fullEntry', JSON.stringify(fullEntries));
       playSound('tada');
     }
