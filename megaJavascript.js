@@ -182,7 +182,7 @@ function playEffect(x, y, id)
 function placeGraphic(x,y,id, dropped){
   if(gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount){
     if(dropped=="house"){
-      $(".toolbar").css("width", "42%");
+      $(".toolbar").css("width", "50%");
       gameBoard[x][y].type = "house";
       playSound("jingle");
       gameBoard[x][y].objectId = 4;
@@ -244,6 +244,17 @@ function nextDay(x,y){
     else if (gameBoard[x][y].stateId < maxstateId && gameBoard[x][y].growthPoints >= adultPoints){
       gameBoard[x][y].stateId=2;
       drawCell(x, y, id)
+
+    if (gameBoard[x][y].stateId==2)
+    {
+        var rndNum = Math.floor((Math.random() * 10) + 1);
+        if (rndNum>6) //effects display only about 1/3 of the time
+        {
+          gameBoard[x][y].effects=true;
+          drawCell(x, y, id)
+        }
+    }
+
     }
   }
 }
