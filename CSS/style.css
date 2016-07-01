@@ -7,6 +7,10 @@ button {
   font-family: pixelated;
 }
 
+#addJournal{
+margin: 0px auto 0px auto;
+}
+
 #energy {
   font-size: 40px;
   width: 85%;
@@ -38,11 +42,13 @@ body {
 #journalField {
   display: none;
   font-family: pixelated;
+  width: 750px;
 }
 
 #toDoField {
   display: none;
   font-family: pixelated;
+  height: 300px;
 }
 
 #journal {
@@ -54,10 +60,9 @@ body {
   cursor: url('../assets/cursor.png'), default;
 }
 
-.dragHover {
-  -webkit-transform: scale(1.05);
-  transform: scale(1.05);
-  z-index:100;
+.dragHover img{
+  background: rgba(255,255,255,.5);
+  z-index: 100;
 }
 .gameboard{
   font-size: 0;
