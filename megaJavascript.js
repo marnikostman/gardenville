@@ -446,11 +446,14 @@ function accomplish() {
     todos.splice(id, 1);
     localStorage.setItem('todo', JSON.stringify(todos));
 
+
     show();
     currency.energy+=toDoListEnergy;
     if (currency.energy > energyMax){
       currency.energy = energyMax;
     }
+    playSound('checkmark');
+
     return false;
 }
 
