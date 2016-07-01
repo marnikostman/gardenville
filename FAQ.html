@@ -10,100 +10,116 @@
     <link rel="stylesheet" href="./CSS/faqStyle.css"
   </head>
   <body>
-    <h1 class="title">Welcome to Zen Garden</h1>
-    <h3 class="initial" id="0">Ready to Begin?</h3>
-    <div id="1"> Before you do anything, you should pick where you want to put your house.<span><img src="./assets/house.png"></span>
-      <br>Click on the browser window that has your garden and drag your house onto a tile.<span><img src="./assets/un_terraformed_dirt.png"></span>
-    </div>
-    <div id="2"> There are a few rules for planting plants.
-      <p class="list">
+    <div class="wrapper">
+      <div class="content">
+        <h2>Contents</h2>
+        <button onclick="houseRoute()">Housing</button><br>
+        <button onclick="plantingRoute()">Your First Plant</button><br>
+        <button onclick="energyRoute()">Energy</button><br>
+        <button onclick="growingRoute()">Growth</button><br>
+        <button onclick="harvestAndRemoveRoute()">Harvest/Removal</button><br>
+        <button onclick="UnlockRoute()">Unlocking</button><br>
+        <button onclick="toDoRoute()">To Do List</button><br>
+        <button onclick="journalRoute()">Journal</button><br>
+      </div>
+      <h1 class="title">Welcome to Zen Garden</h1>
+      <h3 class="initial" id="0">Ready to Begin?</h3>
+      <div id="h1" class="hidden">
+        Before you do anything, you should pick where you want to put your house.<span><img src="./assets/house.png"></span>
+        <br>Click on the browser window that has your garden and drag your house onto a tile.<span><img src="./assets/un_terraformed_dirt.png"></span>
+      </div>
+      <div id="h2" class="hidden">
+        There are a few rules for planting plants.
+        <li>You must prepare the dirt by shoveling<span><img src="./assets/spade.png"></span>before you can plant.</li>
+            <li>You can only water<span><img src="./assets/waterCan.png"></span>or fertilize<span><img src="./assets/fertilizer_bag.png"></span> a plant. <br>
+              Doing so to plain dirt would just be wasteful!</li>
+          </ul>
+        </p>
+        Go back to your garden and drag the shovel<span><img src="./assets/spade.png"></span>onto a patch of dirt <span><img src="./assets/un_terraformed_dirt.png"></span> ,<br>
+        then drag an unlocked plant<span><img src="./assets/tulip_icon.png"></span> onto the newly prepared dirt <span><img src="./assets/terraformed_dirt.png"></span>.
+      </div>
+
+      <div id="h3" class="hidden">
+        Now you have a baby plant in the ground and ready to be cared for.<br>
+        Watering your plant will help it grow to the next stage<span><img src="./assets/waterCan.png"></span>.<br>
+        You can use fertilizer<span><img src="./assets/fertilizer_bag.png"></span>to help your plant grow quickly, but fertilizer will cost you energy.
+      </div>
+
+      <div id="h4" class="hidden">
+        <h3><strong>All items below will take energy to do.</strong></h3>
         <ul>
-          <li>You must prepare the dirt by shoveling<span><img src="./assets/spade.png"></span>before you can plant.</li>
-          <li>You can only water<span><img src="./assets/waterCan.png"></span>or fertilize<span><img src="./assets/fertilizer_bag.png"></span> a plant. Doing so to plain dirt would just be wasteful!</li>
+          <li>Placing your house<span><img src="./assets/house.png"></span></li>
+          <li>Preparing dirt<span><img src="./assets/spade.png"></span></li>
+          <li>Planting a plant<span><img src="./assets/tulip_icon.png"></span></li>
+          <li>Pertilizing a plant<span><img src="./assets/fertilizer_bag.png"></span></li>
+          <li>Harvesting a plant<span><img src="./assets/glove.png"></span></li>
         </ul>
-      </p>
-      Go back to your garden and drag the shovel<span><img src="./assets/spade.png"></span>onto a patch of dirt <span><img src="./assets/un_terraformed_dirt.png"></span> , then drag an unlocked plant<span><img src="./assets/tulip_icon.png"></span> onto the newly prepared dirt <span><img src="./assets/terraformed_dirt.png"></span>.
-    </div>
+        Your energy will refill as time goes by, so don’t worry if you run out.<br>
+        Water<span><img src="./assets/waterCan.png"></span>is free so you can water your plants whenever you want to!
+      </div>
 
-    <div id="3"> Now you have a baby plant in the ground and ready to be cared for.
-      Watering your plant will help it grow to the next stage<span><img src="./assets/waterCan.png"></span>.<br>
-      You can use fertilizer<span><img src="./assets/fertilizer_bag.png"></span>to help your plant grow quickly, but fertilizer will cost you energy.
-    </div>
+      <div id="h5" class="hidden">
+        <h3>How to grow your plants</h3><br>
+        Just water<span><img src="./assets/waterCan.png"></span> and fertilize<span><img src="./assets/fertilizer_bag.png"></span> it!<br>
+        We hope that you’ll enjoy the game, but take some breaks!<br>
+        <br>Hint: Maybe you’ll see the next level of plant when you come back!
+      </div>
 
-    <div id="4"> If you were paying attention to your energy, you would have seen that your energy has decreased.
-      <ul>
-        <li>Placing your house<span><img src="./assets/house.png"></span></li>
-        <li>Preparing dirt<span><img src="./assets/spade.png"></span></li>
-        <li>Planting a plant<span><img src="./assets/tulip_icon.png"></span></li>
-        <li>Pertilizing a plant<span><img src="./assets/fertilizer_bag.png"></span></li>
-        <li>Harvesting a plant<span><img src="./assets/glove.png"></span></li>
-      </ul>
-      <h4><strong>All of the above will all take energy to do.</strong></h4>
+      <div id="h6" class="hidden">
+        <h3>Harvesting</h3><br>
+        If you really want to harvest<br>
+        just drag the gardening glove<span><img src="./assets/glove.png"></span>down to the <span style="text-decoration: underline;">fully grown plant.<span><br>
+      </div>
 
-      Your energy will slowly refill as time goes by, so don’t worry if you run out.
-      Water<span><img src="./assets/waterCan.png"></span>is free so you can water your plants whenever you want to!
-    </div>
+      <div id="h7" class="hidden">
+        You can remove plants that aren't at their final stage too.<br>
+        Use the shovel<span><img src="./assets/spade.png"></span> and prepare the dirt again.<br>
+        <br>Be careful! You won’t get any sunshine for this.
+      </div>
 
-    <div id="5">
-      You might notice as you play that your plants aren’t growing.
-      To grow your plant to the next stage you must water<span><img src="./assets/waterCan.png"></span> and fertilize<span><img src="./assets/fertilizer_bag.png"></span>it enough and then you need to sign out of the game and come back to see the plant grow.
-      We hope that you’ll enjoy the game, but we don’t want you to spend all day in your beautiful virtual garden.
-      So take some breaks and maybe you’ll see the next level of plant when you come back!
-    </div>
+      <div id="h8" class="hidden">
+        <h3>Unlocking New Plants</h3><br>
+        Using sunshine, you can unlock new plants to plant in your garden.<br>
+        Just click on the plant you would like to unlock<span><img src="./assets/rose_icon_locked.png"></span>.<br>
+        If you have enough sunshine the plant will become available.
+      </div>
 
-    <div id="6">
-      Once you do get a plant all the way to it’s final stage you can harvest<span><img src="./assets/glove.png"></span>the plant for sunshine!
-      To harvest, just drag the gardening glove<span><img src="./assets/glove.png"></span>down to the fully grown plant.
-      You can’t harvest any plants but the fully grown ones. Have patience, they’ll make it!
-      Also, don’t be too quick to harvest your plants.
-      There may be some cool effects that will show up from time to time on fully grown plants.
-      You don’t want to miss those!
-    </div>
+      <div id="h9" class="hidden">
+        <h3>To Do List</h3><br>
+        There are even better ways of refilling your energy or getting more sunshine.<br>
+        If you click on your house<span><img src="./assets/house.png"></span>, you can add to your to-do list.<br>
+        Try it now!
+      </div>
 
-    <div id="7">If you have a plant you want to remove, but it’s not at it’s final stage, just use the shovel<span><img src="./assets/spade.png"></span> and prepare the dirt again.
-      Be careful! You won’t get any sunshine for this.
-    </div>
+      <div id="h10" class="hidden">
+        When you finish a task click the check mark to complete you task.<br>
+        You’ll notice that it will also restore some of your energy!<br>
+        <br>If you need to remove an item on the list click the X to remove it.<br>
+      </div>
 
-    <div id="8">Using sunshine, you can unlock new plants to plant in your garden.
-      Just click on the plant you would like to unlock<span><img src="./assets/rose_icon_locked.png"></span>.
-      If you have enough sunshine the plant will become available.
+      <div id="h11" class="hidden">
+        <h3>Journaling</h3><br>
+        To increase your sunshine click on the journal <span><img src="./assets/journal.png"></span>.<br>
+        Simply type your thoughts in the box and use the sliders to describe your emotions.<br>
+        Once you have submitted you'll have more sunshine!
+      </div>
+      <div id="h12" class="hidden">
+        Now go out and tend to your garden!
+      </div>
+      <div class="buttons">
+        <button id="previous" onclick="showLast()">Previous</button>
+        <button id="next" onclick="showNext()">Next</button>
+        <button class="home" onclick="startOver()">Start Over</button>
+      </div>
     </div>
-
-    <div id="9">There are even better ways of refilling your energy or getting more sunshine.
-      If you click on your house<span><img src="./assets/house.png"></span>, you can add to your to-do list.
-      You can fill it with anything you want.
-      Perhaps you need to do laundry, remember to thank someone, or even remember to come back to the Zen Garden game tomorrow.
-      You can easily add them all to you To-Do List.
-    </div>
-
-    <div id="10">Once you finish a task on the list, you can click the check mark to complete you task.
-      You’ll notice that it will also restore some of your energy!
-      If you need to remove an item on the list, you can click the X next to the item to remove it.
-      Once you’re finished with your To-Do list, just click the X in the upper right of that window and you’ll be back in your garden.
-    </div>
-
-    <div id="11">To increase your sunshine, you just need to fill out a journal entry.
-      Click on the journal <span><img src="./assets/journal.png"></span> in the toolbar. This will bring up the journal window.
-      Simply write down your thoughts and anything else you need to in the box, and then use the sliders to describe your emotions.
-      Then you just hit submit. Once you have submitted, you can click the X in the upper right of that window to go back to your garden.
-      Now you have more sunshine as well!
-    </div>
-    <div id="12">
-      Now go out and tend to your garden!
-    </div>
-    <div class="buttons">
-      <button id="previous" onclick="showLast()">Previous</button>
-      <button id="next" onclick="showNext()">Next</button>
-      <button class="home" onclick="startOver()">Start Over</button>
-    </p>
   </body>
   <script>
     var currentId = 0;
     function showNext() {
       $(".initial").hide();
-      $("#" + currentId).hide();
+      $("#h" + currentId).hide();
       currentId++;
-      $("#" + currentId).show();
+      $("#h" + currentId).show();
 
       $("#previous").show();
 
@@ -112,14 +128,15 @@
         $(".home").show();
       }
     }
+
     function showLast() {
       if(currentId==12){
         $("#next").show();
         $(".home").hide();
       }
-      $("#" + currentId).hide();
+      $("#h" + currentId).hide();
       currentId=currentId-1;
-      $("#" + currentId).show();
+      $("#h" + currentId).show();
       if(currentId==0){
         $("#previous").hide();
       }
@@ -129,7 +146,7 @@
     }
 
     function startOver(){
-      $("#" + currentId).hide();
+      $("#h" + currentId).hide();
       currentId=1;
       showLast();
       $(".home").hide();

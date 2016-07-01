@@ -9,10 +9,11 @@ body{
 .initial{
   text-align: center;
 }
-div{
+div #h1, div #h2, div #h3, div #h4, div #h5, div #h6, div #h7, div #h8, div #h9, div #h10, div #h11, div #h12{
   display: none;
   margin-bottom: 40px;
   margin-left: 25%;
+  min-width: 100px;
 }
 #previous{
   display: none;
@@ -35,6 +36,22 @@ div{
 .list{
   margin: auto;
 }
-ul li{
-  display: inline-block;
+#id2{
+  margin: auto;
+}
+#id4{
+  margin: auto;
+}
+.content{
+  margin-left: -200px;
+  left: 250px;
+  width: 250px;
+  position: fixed;
+  height: 100%;
+}
+.main{
+  width: 100%;
+}
+.wrapper{
+  padding-left: 250px;
 }
