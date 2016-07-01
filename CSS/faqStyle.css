@@ -7,15 +7,34 @@ body{
   font-size: 2em;
 }
 .initial{
-
+  text-align: center;
 }
 div{
   display: none;
-  justify-content: center;
+  margin-bottom: 40px;
+  margin-left: 25%;
 }
 #previous{
   display: none;
 }
 .home{
   display: none;
+}
+.buttons{
+  display: block;
+  align-items: center;
+  margin-left: 46%
+}
+.title{
+  text-align: center;
+  font-weight: bolder;
+  text-decoration: underline;
+  margin-bottom: 60px;
+  font-size: 3em;
+}
+.list{
+  margin: auto;
+}
+ul li{
+  display: inline-block;
 }

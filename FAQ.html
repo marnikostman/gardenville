@@ -10,16 +10,18 @@
     <link rel="stylesheet" href="./CSS/faqStyle.css"
   </head>
   <body>
-    <h1>Welcome to Zen Garden</h1>
-    <h3 class="inital" id="0">Ready to Begin?</h3>
+    <h1 class="title">Welcome to Zen Garden</h1>
+    <h3 class="initial" id="0">Ready to Begin?</h3>
     <div id="1"> Before you do anything, you should pick where you want to put your house.<span><img src="./assets/house.png"></span>
-      Click on the browser window that has your garden and drag your house onto a tile.<span><img src="./assets/un_terraformed_dirt.png"></span>
+      <br>Click on the browser window that has your garden and drag your house onto a tile.<span><img src="./assets/un_terraformed_dirt.png"></span>
     </div>
     <div id="2"> There are a few rules for planting plants.
-      <ul>
-        <li>You must prepare the dirt by shoveling<span><img src="./assets/spade.png"></span>before you can plant.</li>
-        <li>You can only water<span><img src="./assets/waterCan.png"></span>or fertilize<span><img src="./assets/fertilizer_bag.png"></span> a plant. Doing so to plain dirt would just be wasteful!</li>
-      </ul>
+      <p class="list">
+        <ul>
+          <li>You must prepare the dirt by shoveling<span><img src="./assets/spade.png"></span>before you can plant.</li>
+          <li>You can only water<span><img src="./assets/waterCan.png"></span>or fertilize<span><img src="./assets/fertilizer_bag.png"></span> a plant. Doing so to plain dirt would just be wasteful!</li>
+        </ul>
+      </p>
       Go back to your garden and drag the shovel<span><img src="./assets/spade.png"></span>onto a patch of dirt <span><img src="./assets/un_terraformed_dirt.png"></span> , then drag an unlocked plant<span><img src="./assets/tulip_icon.png"></span> onto the newly prepared dirt <span><img src="./assets/terraformed_dirt.png"></span>.
     </div>
 
@@ -89,9 +91,11 @@
     <div id="12">
       Now go out and tend to your garden!
     </div>
-    <button id="previous" onclick="showLast()">Previous</button>
-    <button id="next" onclick="showNext()">Next</button>
-    <button class="home" onclick="startOver()">Start Over</button>
+    <div class="buttons">
+      <button id="previous" onclick="showLast()">Previous</button>
+      <button id="next" onclick="showNext()">Next</button>
+      <button class="home" onclick="startOver()">Start Over</button>
+    </p>
   </body>
   <script>
     var currentId = 0;
