@@ -19,6 +19,7 @@ function unlockGraphic(lockedItemId, cost){
   if(currency.sunshine>=flowerCost){
     playSound("click")
     currency.sunshine = currency.sunshine - flowerCost;
+    updateEnergyAndSunshine();
     console.log(currency.sunshine);
     $("#" + lockedItemId + "01").show();
     $("#" + lockedItemId).hide();
@@ -460,6 +461,7 @@ function accomplish() {
     if (currency.energy > energyMax){
       currency.energy = energyMax;
     }
+    updateEnergyAndSunshine();
     playSound('checkmark');
 
     return false;
@@ -524,6 +526,7 @@ function addJournal() {
     if (fullEntry.entry !== ""){
       fullEntries.push(fullEntry);
       currency.sunshine += journalSunshine;
+      updateEnergyAndSunshine();
       localStorage.setItem('fullEntry', JSON.stringify(fullEntries));
       playSound('tada');
     }
