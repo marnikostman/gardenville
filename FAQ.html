@@ -11,7 +11,7 @@
   </head>
   <body>
     <h1>Welcome to Zen Garden</h1>
-    <h3 class="inital">Ready to Begin?</h3>
+    <h3 class="inital" id="0">Ready to Begin?</h3>
     <div id="1"> Before you do anything, you should pick where you want to put your house.<span><img src="./assets/house.png"></span>
       Click on the browser window that has your garden and drag your house onto a tile.<span><img src="./assets/un_terraformed_dirt.png"></span>
     </div>
@@ -86,6 +86,51 @@
       Then you just hit submit. Once you have submitted, you can click the X in the upper right of that window to go back to your garden.
       Now you have more sunshine as well!
     </div>
-
+    <div id="12">
+      Now go out and tend to your garden!
+    </div>
+    <button id="previous" onclick="showLast()">Previous</button>
+    <button id="next" onclick="showNext()">Next</button>
+    <button class="home" onclick="startOver()">Start Over</button>
   </body>
+  <script>
+    var currentId = 0;
+    function showNext() {
+      $(".initial").hide();
+      $("#" + currentId).hide();
+      currentId++;
+      $("#" + currentId).show();
+
+      $("#previous").show();
+
+      if(currentId==12){
+        $("#next").hide();
+        $(".home").show();
+      }
+    }
+    function showLast() {
+      if(currentId==12){
+        $("#next").show();
+        $(".home").hide();
+      }
+      $("#" + currentId).hide();
+      currentId=currentId-1;
+      $("#" + currentId).show();
+      if(currentId==0){
+        $("#previous").hide();
+      }
+      if(currentId==0){
+        $(".initial").show();
+      }
+    }
+
+    function startOver(){
+      $("#" + currentId).hide();
+      currentId=1;
+      showLast();
+      $(".home").hide();
+      $("#next").show();
+    }
+
+  </script>
 </html>

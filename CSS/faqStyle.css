@@ -1,6 +1,6 @@
 @font-face {
 font-family: pixelated;
-src: url(04B_30__.TTF);
+src: url(FreePixel.TTF);
 }
 body{
   font-family: pixelated;
@@ -8,4 +8,14 @@ body{
 }
 .initial{
 
+}
+div{
+  display: none;
+  justify-content: center;
+}
+#previous{
+  display: none;
+}
+.home{
+  display: none;
 }
