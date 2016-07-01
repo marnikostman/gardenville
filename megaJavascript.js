@@ -79,7 +79,7 @@ for (var x = 0; x < boardLength; x++){
     //Gives each cell the attribute to have things able to be dropped on it.
     $("#" + id).droppable({
       drop: itemDropped, //drop is a function, when it's done, it calls the function John wrote
-      hoverClass: "dragHover" //makes each cell "pop" out a bit for user?; needs written or needs deleted
+      hoverClass: "dragHover" //makes each cell "pop" out a bit for user.
     });
   }
   $(".gameboard").append("<br/>");
@@ -123,6 +123,7 @@ function harvestPlant(x,y,id){
     gameBoard[x][y].harvest = true;
     gameBoard[x][y].growthPoints = 0;
     currency.sunshine += 10;
+    updateEnergyAndSunshine();
   }
 }
 
@@ -143,6 +144,7 @@ function fertilizePlant(x, y, id){
     gameBoard[x][y].needFertilizer = false;
     playSound("jingle")
     currency.energy = currency.energy - actionEnergyAmount;
+    updateEnergyAndSunshine()
     gameBoard[x][y].nextFertilizer=Date.now() + 5 * (ticksPerMinute);
     if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
     {
@@ -164,6 +166,7 @@ function terraformCell(x,y,id) {
     gameBoard[x][y].needTerraform = false;
     playSound("rake")
     currency.energy = currency.energy - actionEnergyAmount;
+    updateEnergyAndSunshine()
   }
   else if(currency.energy>= actionEnergyAmount && gameBoard[x][y].type!= "blank" && gameBoard[x][y].usable == true && gameBoard[x][y].stateId != 2){
     gameBoard[x][y].objectId = 0;
@@ -208,6 +211,7 @@ function placeGraphic(x,y,id, dropped){
       gameBoard[x][y].stateId = 0;
     }
     currency.energy = currency.energy - actionEnergyAmount;
+    updateEnergyAndSunshine();
   }
 }
 
@@ -346,10 +350,14 @@ function harvestHelper(){
   return "<img src='./assets/glove.png' class='dragged'>"
 }
 
-function gameLoop ()
-{
+function updateEnergyAndSunshine(){
   document.getElementById("energy").innerHTML = "Energy: " + currency.energy + " | Sunshine: " + currency.sunshine;
   document.getElementById("energy").style.fontFamily = "pixelated";
+}
+
+function gameLoop ()
+{
+  updateEnergyAndSunshine();
   for (var x = 0; x < boardLength; x++)
   {
     for (var y = 0; y < boardWidth; y++)
