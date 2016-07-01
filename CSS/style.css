@@ -60,10 +60,9 @@ body {
   cursor: url('../assets/cursor.png'), default;
 }
 
-.dragHover {
-  -webkit-transform: scale(1.05);
-  transform: scale(1.05);
-  z-index:100;
+.dragHover img{
+  background: rgba(255,255,255,.5);
+  z-index: 100;
 }
 .gameboard{
   font-size: 0;
