@@ -26,16 +26,14 @@ body {
   background-color: black;
   opacity: 1;
 }
-.extraspace{
-  min-width: 100%;
-  min-height: 40px;
-}
+
 .gameArea{
   padding-top: 20px;
   background-image: url(../assets/grass_tile.png);
   font-family: pixelated;
   cursor: url('../assets/cursor.png'), default;
-  min-width: 1270px;
+  min-width: 800px;
+  margin: 0 auto;
   border: 10px solid green;
 }
 
@@ -87,9 +85,9 @@ background: rgba(255,255,255,.5);
   font-size: 0;
   border: 8px #696969;
   border-style: outset;
-  width: 912px;  /*width and height must change as gameboard size changes */
-  height: 523px;
-  margin-bottom: 20px;
+  width: 716px;  /*width and height must change as gameboard size changes */
+  height: 416px;
+  margin: 0 auto 20px auto;
 }
 .cell
 {
@@ -97,8 +95,8 @@ background: rgba(255,255,255,.5);
     display: inline-block;
     margin: 0px;
     padding: 0px;
-    width: 128px;
-    height: 128px;
+    width: 100px;
+    height: 100px;
 }
 
 .cell img
@@ -108,8 +106,8 @@ background: rgba(255,255,255,.5);
     position: absolute;
     top: 0px;
     left: 0px;
-    width: 128px;
-    height: 128px;
+    width: 100px;
+    height: 100px;
 }
 img {
     image-rendering: pixelated;
