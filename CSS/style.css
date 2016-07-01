@@ -61,14 +61,28 @@ body {
 }
 
 .toolbarItems:hover {
-    background: rgba(255,255,255,.5);
-    z-index: 100;
+  animation: pulse 2s infinite;
+  z-index: 100;
 }
 
 .dragHover img{
-  background: rgba(255,255,255,.5);
+  animation: pulse 2s infinite;
   z-index: 100;
 }
+
+@keyframes pulse{
+  0%{
+background: rgba(255,255,255,.5);
+  }
+
+  50%{
+background: rgba(255,255,255,.7);
+  }
+  100%{
+background: rgba(255,255,255,.5);
+  }
+}
+
 .gameboard{
   font-size: 0;
   border: 8px #696969;
