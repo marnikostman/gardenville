@@ -58,11 +58,6 @@ body {
   cursor: url('../assets/cursor.png'), default;
 }
 
-.toolbarItems:hover {
-    background: rgba(255,255,255,.5);
-    z-index: 100;
-}
-
 .dragHover img{
   background: rgba(255,255,255,.5);
   z-index: 100;
