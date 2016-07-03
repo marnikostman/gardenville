@@ -4,16 +4,25 @@ src: url(FreePixel.TTF);
 }
 body{
   font-family: pixelated;
-  font-size: 2em;
+  font-size: 2.5em;
+  margin: 0;
+  padding: 0;
+  background-image: url(../assets/grass_tile.png);
 }
 .initial{
   text-align: center;
+  margin-bottom: 40px;
+  font-size: 2.2em;
 }
-div #h1, div #h2, div #h3, div #h4, div #h5, div #h6, div #h7, div #h8, div #h9, div #h10, div #h11, div #h12{
+.unseen{
   display: none;
   margin-bottom: 40px;
-  margin-left: 25%;
+  margin-left: 20%;
+  margin-right: 20px;
   min-width: 100px;
+}
+.unseen h3{
+  font-size: 2.1em;
 }
 #previous{
   display: none;
@@ -30,8 +39,8 @@ div #h1, div #h2, div #h3, div #h4, div #h5, div #h6, div #h7, div #h8, div #h9,
   text-align: center;
   font-weight: bolder;
   text-decoration: underline;
-  margin-bottom: 60px;
-  font-size: 3em;
+  margin-bottom: 30px;
+  font-size: 3.3em;
 }
 .list{
   margin: auto;
@@ -43,15 +52,38 @@ div #h1, div #h2, div #h3, div #h4, div #h5, div #h6, div #h7, div #h8, div #h9,
   margin: auto;
 }
 .content{
-  margin-left: -200px;
+  margin-left: -250px;
   left: 250px;
-  width: 250px;
+  width: 20%;
   position: fixed;
+  padding: 0;
+  overflow: auto;
   height: 100%;
+  background-color: black
+}
+.content ul{
+  list-style-type: none;
+}
+.content ul li{
+  font-size: 25px;
+}
+.content h2{
+  font-size: 50px;
+  color: orange;
 }
 .main{
   width: 100%;
 }
 .wrapper{
-  padding-left: 250px;
+  padding-left: 200px;
+}
+html{
+  margin: -20px;
+}
+img{
+  min-width: 60px;
+  min-height: 60px;
+}
+.gameLink{
+  
 }

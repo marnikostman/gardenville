@@ -10,43 +10,52 @@
     <link rel="stylesheet" href="./CSS/faqStyle.css"
   </head>
   <body>
+    <div class="content">
+      <h2>Contents</h2>
+      <ul>
+        <li><a id="hRoute">Housing</a><br></li>
+        <li><a id="pRoute">Your First Plant</a><br></li>
+        <li><a id="eRoute">Energy</a><br></li>
+        <li><a id="gRoute">Growth</a><br></li>
+        <li><a id="hrRoute">Harvest/Removal</a><br></li>
+        <li><a id="uRoute">Unlocking</a><br></li>
+        <li><a id="tdRoute">To Do List</a><br></li>
+        <li><a id="jRoute">Journal</a><br></li>
+      </ul>
+      <a class="gameLink" href="file:///Users/marcsalo/Documents/AcademyPGH/Y1S1-Health-Garden/MarcVersion.html">Zen Garden</a>
+    </div>
     <div class="wrapper">
-      <div class="content">
-        <h2>Contents</h2>
-        <button onclick="houseRoute()">Housing</button><br>
-        <button onclick="plantingRoute()">Your First Plant</button><br>
-        <button onclick="energyRoute()">Energy</button><br>
-        <button onclick="growingRoute()">Growth</button><br>
-        <button onclick="harvestAndRemoveRoute()">Harvest/Removal</button><br>
-        <button onclick="UnlockRoute()">Unlocking</button><br>
-        <button onclick="toDoRoute()">To Do List</button><br>
-        <button onclick="journalRoute()">Journal</button><br>
-      </div>
       <h1 class="title">Welcome to Zen Garden</h1>
-      <h3 class="initial" id="0">Ready to Begin?</h3>
-      <div id="h1" class="hidden">
+      <h3 class="initial" id="h0">Ready to Begin?</h3>
+      <div id="h1" class="unseen">
+        <h3><strong>Housing</h3></strong>
         Before you do anything, you should pick where you want to put your house.<span><img src="./assets/house.png"></span>
         <br>Click on the browser window that has your garden and drag your house onto a tile.<span><img src="./assets/un_terraformed_dirt.png"></span>
       </div>
-      <div id="h2" class="hidden">
-        There are a few rules for planting plants.
-        <li>You must prepare the dirt by shoveling<span><img src="./assets/spade.png"></span>before you can plant.</li>
-            <li>You can only water<span><img src="./assets/waterCan.png"></span>or fertilize<span><img src="./assets/fertilizer_bag.png"></span> a plant. <br>
-              Doing so to plain dirt would just be wasteful!</li>
-          </ul>
+      <div id="h2" class="unseen">
+        <h3><strong>Planting</h3></strong>
+        <p>
+          There are a few rules for planting plants.
         </p>
-        Go back to your garden and drag the shovel<span><img src="./assets/spade.png"></span>onto a patch of dirt <span><img src="./assets/un_terraformed_dirt.png"></span> ,<br>
-        then drag an unlocked plant<span><img src="./assets/tulip_icon.png"></span> onto the newly prepared dirt <span><img src="./assets/terraformed_dirt.png"></span>.
+        <ul>
+          <li>You must prepare the dirt by shoveling<span><img src="./assets/spade.png"></span>before you can plant.</li>
+          <li>You can only water<span><img src="./assets/waterCan.png"></span>or fertilize<span><img src="./assets/fertilizer_bag.png"></span> a plant.</li>
+        </ul>
+        <p>
+          Go back to your garden and drag the shovel<span><img src="./assets/spade.png"></span>onto a patch of dirt <span><img src="./assets/un_terraformed_dirt.png"></span> ,<br>
+          then drag an unlocked plant<span><img src="./assets/tulip_icon.png"></span> onto the newly prepared dirt <span><img src="./assets/terraformed_dirt.png"></span>.
+        </p>
       </div>
 
-      <div id="h3" class="hidden">
+      <div id="h3" class="unseen">
         Now you have a baby plant in the ground and ready to be cared for.<br>
         Watering your plant will help it grow to the next stage<span><img src="./assets/waterCan.png"></span>.<br>
         You can use fertilizer<span><img src="./assets/fertilizer_bag.png"></span>to help your plant grow quickly, but fertilizer will cost you energy.
       </div>
 
-      <div id="h4" class="hidden">
-        <h3><strong>All items below will take energy to do.</strong></h3>
+      <div id="h4" class="unseen">
+        <h3><strong>Energy</strong></h3>
+        <p>Things that take energy</p>
         <ul>
           <li>Placing your house<span><img src="./assets/house.png"></span></li>
           <li>Preparing dirt<span><img src="./assets/spade.png"></span></li>
@@ -58,52 +67,52 @@
         Water<span><img src="./assets/waterCan.png"></span>is free so you can water your plants whenever you want to!
       </div>
 
-      <div id="h5" class="hidden">
-        <h3>How to grow your plants</h3><br>
+      <div id="h5" class="unseen">
+        <h3><strong>Growing your plants</strong></h3><br>
         Just water<span><img src="./assets/waterCan.png"></span> and fertilize<span><img src="./assets/fertilizer_bag.png"></span> it!<br>
         We hope that you’ll enjoy the game, but take some breaks!<br>
         <br>Hint: Maybe you’ll see the next level of plant when you come back!
       </div>
 
-      <div id="h6" class="hidden">
-        <h3>Harvesting</h3><br>
+      <div id="h6" class="unseen">
+        <h3><strong>Harvesting</strong></h3><br>
         If you really want to harvest<br>
         just drag the gardening glove<span><img src="./assets/glove.png"></span>down to the <span style="text-decoration: underline;">fully grown plant.<span><br>
       </div>
 
-      <div id="h7" class="hidden">
+      <div id="h7" class="unseen">
         You can remove plants that aren't at their final stage too.<br>
         Use the shovel<span><img src="./assets/spade.png"></span> and prepare the dirt again.<br>
         <br>Be careful! You won’t get any sunshine for this.
       </div>
 
-      <div id="h8" class="hidden">
-        <h3>Unlocking New Plants</h3><br>
+      <div id="h8" class="unseen">
+        <h3><strong>Unlocking New Plants</strong></h3><br>
         Using sunshine, you can unlock new plants to plant in your garden.<br>
         Just click on the plant you would like to unlock<span><img src="./assets/rose_icon_locked.png"></span>.<br>
         If you have enough sunshine the plant will become available.
       </div>
 
-      <div id="h9" class="hidden">
-        <h3>To Do List</h3><br>
+      <div id="h9" class="unseen">
+        <h3><strong>To Do List</strong></h3><br>
         There are even better ways of refilling your energy or getting more sunshine.<br>
         If you click on your house<span><img src="./assets/house.png"></span>, you can add to your to-do list.<br>
         Try it now!
       </div>
 
-      <div id="h10" class="hidden">
+      <div id="h10" class="unseen">
         When you finish a task click the check mark to complete you task.<br>
         You’ll notice that it will also restore some of your energy!<br>
         <br>If you need to remove an item on the list click the X to remove it.<br>
       </div>
 
-      <div id="h11" class="hidden">
-        <h3>Journaling</h3><br>
+      <div id="h11" class="unseen">
+        <h3><strong>Journaling</strong></h3><br>
         To increase your sunshine click on the journal <span><img src="./assets/journal.png"></span>.<br>
         Simply type your thoughts in the box and use the sliders to describe your emotions.<br>
         Once you have submitted you'll have more sunshine!
       </div>
-      <div id="h12" class="hidden">
+      <div id="h12" class="unseen">
         Now go out and tend to your garden!
       </div>
       <div class="buttons">
@@ -152,6 +161,85 @@
       $(".home").hide();
       $("#next").show();
     }
+
+    $('#hRoute').click(function() {
+      $("#h" + currentId).hide();
+      currentId=2;
+      showLast();
+      $(".home").hide();
+      $("#next").show();
+
+    })
+    $('#pRoute').click(function() {
+      if(currentId<=1){
+        $("#previous").show();
+      }
+      $("#h" + currentId).hide();
+      currentId=3;
+      showLast();
+      $(".home").hide();
+      $("#next").show();
+    })
+    $('#eRoute').click(function() {
+      if(currentId<=1){
+        $("#previous").show();
+      }
+      $("#h" + currentId).hide();
+      currentId=5;
+      showLast();
+      $(".home").hide();
+      $("#next").show();
+    })
+    $('#gRoute').click(function() {
+      if(currentId<=1){
+        $("#previous").show();
+      }
+      $("#h" + currentId).hide();
+      currentId=6;
+      showLast();
+      $(".home").hide();
+      $("#next").show();
+    })
+    $('#hrRoute').click(function() {
+      if(currentId<=1){
+        $("#previous").show();
+      }
+      $("#h" + currentId).hide();
+      currentId=7;
+      showLast();
+      $(".home").hide();
+      $("#next").show();
+    })
+    $('#uRoute').click(function() {
+      if(currentId<=1){
+        $("#previous").show();
+      }
+      $("#h" + currentId).hide();
+      currentId=9;
+      showLast();
+      $(".home").hide();
+      $("#next").show();
+    })
+    $('#tdRoute').click(function() {
+      if(currentId<=1){
+        $("#previous").show();
+      }
+      $("#h" + currentId).hide();
+      currentId=10;
+      showLast();
+      $(".home").hide();
+      $("#next").show();
+    })
+    $('#jRoute').click(function() {
+      if(currentId<=1){
+        $("#previous").show();
+      }
+      $("#h" + currentId).hide();
+      currentId=12;
+      showLast();
+      $(".home").hide();
+      $("#next").show();
+    })
 
   </script>
 </html>
