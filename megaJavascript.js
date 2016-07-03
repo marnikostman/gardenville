@@ -119,10 +119,12 @@ function harvestPlant(x,y,id){
     playSound("pop");
     gameBoard[x][y].type = "blank";
     gameBoard[x][y].stateId = 0;
+    gameBoard[x][y].objectId = 0;
     console.log(gameBoard[x][y].stateId);
     console.log(gameBoard[x][y].type);
     gameBoard[x][y].harvest = true;
     gameBoard[x][y].growthPoints = 0;
+    gameBoard[x][y].effects = false;
     currency.sunshine += 10;
     updateEnergyAndSunshine();
   }
