@@ -242,7 +242,7 @@ function nextDay(x,y){
       gameBoard[x][y].needWater = true;
       gameBoard[x][y].nextWater = Date.now();
       gameBoard[x][y].needFertilizer=true;
-      gameBoard[x][y].nextFertilizer=Date.now();
+      gameBoard[x][y].needFertilizer= Date.now();
     if (gameBoard[x][y].stateId < midstateId && gameBoard[x][y].growthPoints >= teenPoints)
     {
       gameBoard[x][y].stateId=1;
@@ -252,16 +252,15 @@ function nextDay(x,y){
       gameBoard[x][y].stateId=2;
       drawCell(x, y, id)
 
-    if (gameBoard[x][y].stateId==2)
-    {
-        var rndNum = Math.floor((Math.random() * 10) + 1);
-        if (rndNum>6) //effects display only about 1/3 of the time
-        {
-          gameBoard[x][y].effects=true;
-          drawCell(x, y, id)
-        }
-    }
-
+      if (gameBoard[x][y].stateId==2)
+      {
+          var rndNum = Math.floor((Math.random() * 10) + 1);
+          if (rndNum>6) //effects display only about 1/3 of the time
+          {
+            gameBoard[x][y].effects=true;
+            drawCell(x, y, id)
+          }
+      }
     }
   }
 }
@@ -279,6 +278,7 @@ function drawCell(x,y,id)
       $("#" + id).append("<img src='./assets/watered.png'>");
     }
   if (gameBoard[x][y].needFertilizer != true){
+    gameBoard[x][y].nextFertilizer = Date.now();
     $("#" + id).append("<img src='./assets/fertilized.png'>");
     }
 
