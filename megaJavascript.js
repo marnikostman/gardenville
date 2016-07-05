@@ -188,7 +188,7 @@ function playEffect(x, y, id)
 function placeGraphic(x,y,id, dropped){
   if(gameBoard[x][y].type=="blank" && currency.energy >= actionEnergyAmount){
     if(dropped=="house"){
-      $(".toolbar").css("width", "50%");
+      $(".toolbar").css("width", "42%");
       gameBoard[x][y].type = "house";
       playSound("jingle");
       gameBoard[x][y].objectId = 4;

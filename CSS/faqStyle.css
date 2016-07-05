@@ -4,18 +4,96 @@ src: url(FreePixel.TTF);
 }
 body{
   font-family: pixelated;
-  font-size: 2em;
+  font-size: 2.5em;
+  margin: 0;
+  padding: 0;
+  background-image: url(../assets/grass_tile.png);
 }
 .initial{
-
+  text-align: center;
+  margin-bottom: 40px;
+  font-size: 2.2em;
 }
-div{
+.unseen{
   display: none;
-  justify-content: center;
+  margin-bottom: 40px;
+  margin-left: 20%;
+  margin-right: 20px;
+  min-width: 100px;
+  color: black;
+}
+.unseen h3{
+  font-size: 2.1em;
 }
 #previous{
   display: none;
 }
 .home{
   display: none;
+}
+.buttons{
+  display: block;
+  align-items: center;
+  margin-left: 46%
+}
+.title{
+  text-align: center;
+  font-weight: bolder;
+  text-decoration: underline;
+  margin-bottom: 30px;
+  font-size: 3.3em;
+}
+.list{
+  margin: auto;
+}
+#id2{
+  margin: auto;
+}
+#id4{
+  margin: auto;
+}
+.content{
+  margin-left: -250px;
+  left: 250px;
+  width: 20%;
+  position: fixed;
+  padding: 0;
+  overflow: auto;
+  height: 100%;
+  background-color: black;
+  cursor: url('../assets/cursor.png'), default;
+}
+.content ul{
+  list-style-type: none;
+}
+.content ul li{
+  font-size: 25px;
+}
+.content ul li a:hover{
+  background-color: grey;
+}
+.content h2{
+  font-size: 50px;
+  color: orange;
+  margin-left: 20px;
+}
+.main{
+  width: 100%;
+}
+.wrapper{
+  padding-left: 200px;
+}
+html{
+  margin: -20px;
+}
+img{
+  min-width: 60px;
+  min-height: 60px;
+}
+.gameLink{
+  position: absolute;
+  bottom: 0;
+  margin-left: 40px;
+  font-size: 30px;
+  color: red;
 }
