@@ -1,6 +1,7 @@
 function updateGame(){
   playTransition("rooster", "song1");
   currency.energy = 100;
+  updateEnergyAndSunshine();
   for(var i=0; i<boardLength; i++){
     for(var j=0; j<boardWidth; j++){
     setTimeout(nextDay, 1000, i, j);
