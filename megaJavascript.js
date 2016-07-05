@@ -226,7 +226,7 @@ function updateGame(){
   currency.energy = 100;
   for(var i=0; i<boardLength; i++){
     for(var j=0; j<boardWidth; j++){
-    nextDay(i,j);
+    setTimeout(nextDay, 1000, i, j);
     }
   }
 }
