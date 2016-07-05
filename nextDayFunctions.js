@@ -1,6 +1,6 @@
 function updateGame(){
   playTransition("rooster", "song1");
-  currency.energy = 100;
+  currency.energy = energyMax;
   updateEnergyAndSunshine();
   for(var i=0; i<boardLength; i++){
     for(var j=0; j<boardWidth; j++){
@@ -19,6 +19,7 @@ function nextDay(x,y){
       gameBoard[x][y].nextWater = Date.now();
       gameBoard[x][y].needFertilizer=true;
       gameBoard[x][y].nextFertilizer= Date.now();
+      drawCell(x, y, id);  
     if (gameBoard[x][y].stateId < midstateId && gameBoard[x][y].growthPoints >= teenPoints)
     {
       gameBoard[x][y].stateId=1;

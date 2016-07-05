@@ -81,7 +81,7 @@ function placeGraphic(x,y,id, dropped){
       gameBoard[x][y].objectId = 1;
       gameBoard[x][y].stateId = 0;
     }
-    else if (dropped=="tulip") {
+    else if (dropped=="tulip") { 
       gameBoard[x][y].type = "tulip";
       gameBoard[x][y].objectId = 2;
       gameBoard[x][y].stateId = 0;
@@ -91,6 +91,7 @@ function placeGraphic(x,y,id, dropped){
       gameBoard[x][y].objectId = 3;
       gameBoard[x][y].stateId = 0;
     }
+    /*You would need to add in new "else if" statements here if you wanted to include new flowers or decorations.*/
     currency.energy = currency.energy - actionEnergyAmount;
     updateEnergyAndSunshine();
   }

@@ -19,8 +19,8 @@ for (var x = 0; x < boardLength; x++){
     drawCell(x, y, id);
     //Gives each cell the attribute to have things able to be dropped on it.
     $("#" + id).droppable({
-      drop: itemDropped, //drop is a function, when it's done, it calls the function John wrote
-      hoverClass: "dragHover" //makes each cell "pop" out a bit for user.
+      drop: itemDropped, //drop is a function, when it's done, it calls itemDropped
+      hoverClass: "dragHover" //Highlights the selected cell.
     });
   }
   $(".gameboard").append("<br/>");
@@ -39,7 +39,6 @@ function drawCell(x,y,id)
       $("#" + id).append("<img src='./assets/watered.png'>");
     }
   if (gameBoard[x][y].needFertilizer != true){
-    //gameBoard[x][y].nextFertilizer = Date.now() + 5 * ticksPerMinute;
     $("#" + id).append("<img src='./assets/fertilized.png'>");
     }
   var i = 0;
