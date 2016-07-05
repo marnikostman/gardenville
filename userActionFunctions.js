@@ -2,7 +2,7 @@ function waterPlant(x,y,id){
   if(gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
     gameBoard[x][y].needWater=false;
     playSound("water")
-    gameBoard[x][y].nextWater=Date.now() + 5 * (ticksPerMinute);
+    gameBoard[x][y].nextWater=Date.now() + waterTimer;
     if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
       { gameBoard[x][y].growthPoints += 1;}
     if (gameBoard[x][y].stateId == 1)
@@ -27,7 +27,7 @@ function harvestPlant(x,y,id){
 function fertilizePlant(x, y, id){
   if(currency.energy >= actionEnergyAmount && gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
     gameBoard[x][y].needFertilizer = false;
-    gameBoard[x][y].nextFertilizer = Date.now() + 5 * (ticksPerMinute);
+    gameBoard[x][y].nextFertilizer = Date.now() + fertilizerTimer;
     playSound("jingle");
     currency.energy = currency.energy - actionEnergyAmount;
     updateEnergyAndSunshine();

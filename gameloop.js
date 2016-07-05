@@ -10,7 +10,6 @@ function gameLoop ()
         var id = x.toString() + "-" + y.toString();
         gameBoard[x][y].needWater = true;
         drawCell(x, y, id);
-        gameBoard[x][y].nextWater = Date.now() + 5 * (ticksPerMinute);
       }
       if (gameBoard[x][y].nextFertilizer < Date.now() && gameBoard[x][y].needFertilizer == false)
       {

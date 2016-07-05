@@ -3,6 +3,13 @@ function getId(x, y)
   return x.toString() + "-" + y.toString();
 }
 
+function playEffect(x, y, id)
+{
+  gameBoard[x][y].effects == "true";
+}
+
+/*This creates the visible player board. To change the length and width of the board, go to the "models and variables" file and change
+boardLength and boardWidth*/
 for (var x = 0; x < boardLength; x++){
   for (var y = 0; y < boardWidth; y++){
     var id = getId(x, y);
@@ -32,7 +39,7 @@ function drawCell(x,y,id)
       $("#" + id).append("<img src='./assets/watered.png'>");
     }
   if (gameBoard[x][y].needFertilizer != true){
-    gameBoard[x][y].nextFertilizer = Date.now() + 5 * ticksPerMinute;
+    //gameBoard[x][y].nextFertilizer = Date.now() + 5 * ticksPerMinute;
     $("#" + id).append("<img src='./assets/fertilized.png'>");
     }
   var i = 0;

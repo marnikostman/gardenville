@@ -1,3 +1,30 @@
+function itemDropped(event, ui){
+  var id = this.id
+  var dropped = ui.draggable.attr("data-id");
+  //Splits the idea up into the coordinate locations in the array of arrays
+  var location = id.split("-");
+  var x = location[0];
+  var y = location[1];
+  switch (dropped){
+    case "terraform":
+      terraformCell(x, y, id)
+      break;
+    case "water":
+      waterPlant(x, y, id)
+      break;
+    case "fertilize":
+      fertilizePlant(x, y, id)
+      break;
+    case "harvest":
+      harvestPlant(x, y, id)
+      break;
+    default:
+      placeGraphic(x, y, id, dropped)
+      break;
+      }
+  drawCell(x, y, id);
+  gameBoard[x][y].harvest = false;
+}
 
 $("#house01").draggable({
   container: document,

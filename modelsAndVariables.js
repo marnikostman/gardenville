@@ -10,6 +10,8 @@ var boardWidth = 7;
 var boardLength = 4;
 var teenPoints = 20;
 var adultPoints = 50;
+var waterTimer = 1 * ticksPerMinute; // the higher the number, the longer it'll take for water to "evaporate."
+var fertilizerTimer = 3 * ticksPerMinute; // the higher the number, the longer it'll take for fertilizer to disappear.
 
 var graphicId = [
   {name:"blank", state:[]},
@@ -32,8 +34,9 @@ graphicId[3].state[2] = "<img src='./assets/stage_3_sunflower.png'>";
 graphicId[4].state[0] = "<img src='./assets/house.png'>";
 graphicId[5].state[0] = "<img src='./assets/exclamation_alert.png'>";
 
-gameBoard = new Array(boardLength);
-for (var i = 0; i < boardLength; i++) //This is essentially the model
+//This is the default cell state at the beginning of the game.
+gameBoard = new Array(boardLength); 
+for (var i = 0; i < boardLength; i++) 
 {
   gameBoard[i] = new Array(boardWidth);
   for (var j = 0; j < boardWidth; j++)
