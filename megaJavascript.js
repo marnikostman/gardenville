@@ -20,7 +20,6 @@ function unlockGraphic(lockedItemId, cost){
     playSound("click")
     currency.sunshine = currency.sunshine - flowerCost;
     updateEnergyAndSunshine();
-    console.log(currency.sunshine);
     $("#" + lockedItemId + "01").show();
     $("#" + lockedItemId).hide();
   }
@@ -120,8 +119,6 @@ function harvestPlant(x,y,id){
     gameBoard[x][y].type = "blank";
     gameBoard[x][y].stateId = 0;
     gameBoard[x][y].objectId = 0;
-    console.log(gameBoard[x][y].stateId);
-    console.log(gameBoard[x][y].type);
     gameBoard[x][y].harvest = true;
     gameBoard[x][y].growthPoints = 0;
     gameBoard[x][y].effects = false;
@@ -143,12 +140,13 @@ function waterPlant(x,y,id){
 }
 
 function fertilizePlant(x, y, id){
-  if(currency.energy >= actionEnergyAmount && (gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house")){
+  if(currency.energy >= actionEnergyAmount && gameBoard[x][y].type!="blank" && gameBoard[x][y].type!="house"){
     gameBoard[x][y].needFertilizer = false;
-    playSound("jingle")
+    gameBoard[x][y].nextFertilizer = Date.now() + 5 * (ticksPerMinute);
+    playSound("jingle");
     currency.energy = currency.energy - actionEnergyAmount;
-    updateEnergyAndSunshine()
-    gameBoard[x][y].nextFertilizer=Date.now() + 5 * (ticksPerMinute);
+    updateEnergyAndSunshine();
+
     if (gameBoard[x][y].stateId == 0 && gameBoard[x][y].growthPoints <= teenPoints)
     {
       gameBoard[x][y].growthPoints += 10;
@@ -228,7 +226,7 @@ function updateGame(){
   currency.energy = 100;
   for(var i=0; i<boardLength; i++){
     for(var j=0; j<boardWidth; j++){
-      nextDay(i,j)
+    setTimeout(nextDay, 1000, i, j);
     }
   }
 }
@@ -242,26 +240,24 @@ function nextDay(x,y){
       gameBoard[x][y].needWater = true;
       gameBoard[x][y].nextWater = Date.now();
       gameBoard[x][y].needFertilizer=true;
-      gameBoard[x][y].nextFertilizer=Date.now();
+      gameBoard[x][y].nextFertilizer= Date.now();
     if (gameBoard[x][y].stateId < midstateId && gameBoard[x][y].growthPoints >= teenPoints)
     {
       gameBoard[x][y].stateId=1;
-      drawCell(x, y, id)
+      drawCell(x, y, id);  
     }
     else if (gameBoard[x][y].stateId < maxstateId && gameBoard[x][y].growthPoints >= adultPoints){
       gameBoard[x][y].stateId=2;
-      drawCell(x, y, id)
-
-    if (gameBoard[x][y].stateId==2)
-    {
-        var rndNum = Math.floor((Math.random() * 10) + 1);
-        if (rndNum>6) //effects display only about 1/3 of the time
-        {
-          gameBoard[x][y].effects=true;
-          drawCell(x, y, id)
-        }
-    }
-
+      drawCell(x, y, id);  
+      if (gameBoard[x][y].stateId==2)
+      {
+          var rndNum = Math.floor((Math.random() * 10) + 1);
+          if (rndNum>6) //effects display only about 1/3 of the time
+          {
+            gameBoard[x][y].effects=true;
+            drawCell(x, y, id);   
+          }
+      }
     }
   }
 }
@@ -279,6 +275,7 @@ function drawCell(x,y,id)
       $("#" + id).append("<img src='./assets/watered.png'>");
     }
   if (gameBoard[x][y].needFertilizer != true){
+    gameBoard[x][y].nextFertilizer = Date.now() + 5 * ticksPerMinute;
     $("#" + id).append("<img src='./assets/fertilized.png'>");
     }
 
