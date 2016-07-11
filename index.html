@@ -1,55 +1,159 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML>
 <html>
   <head>
-    <title>"Garden App"</title>
-    <meta charset="utf-8">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.2/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap-theme.min.css" integrity="sha384-fLW2N01lMqjakBkx3l/M9EahuwpSfeNvV63J5ezn3uZzapT0u7EYsXMjQV+0En5r" crossorigin="anonymous">
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-    <link rel="stylesheet" type="text/css" href="styles.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+    <link rel="stylesheet" href="./fancyBox/jquery.fancybox.css" type="text/css" media="screen" />
+    <link rel="stylesheet" href="./CSS/style.css">
   </head>
-  <body onload="drawLayers()">
-    <div id="garden">
-      <div class="row">
-        <div class="tile dirt"><img src="house.png" id="showToDo"></div>
-        <div class="tile dirt"></div>
-        <div class="tile dirt"></div>
+
+  <body onload="loadSound();">
+    <div class="gameArea">
+      <div class="wholeMenuArea">
+        <div class="leftside"><button class="clock" onclick="updateGame();" title="Sleepies...Zzz" id="nextday"></button>
+          <p style="text-align: left;"><strong>Next Day</strong></p>
+          <a class="fancybox" href="#journalField"><img src='./assets/journal.png' title="Dear Diary..." id="journal"></a>
+          <p style="text-align: left;"><strong>Journal</strong></p>
+        </div>
+        <p id = "energy" title="How much gusto you got!!"></p>
+        <p class="h"></p>
+
+        <div class="section toolbar">
+          <div class="corner tl">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+          <div class="corner tr">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+
+          <!--
+          The id associated with each graphic MUST be the name with "01" added at the end.
+          The locked plants must be the name without the "01".
+          This is necessary for unlockGraphic() to function correctly.
+
+          The parameters that unlockGraphic has are: the id of the plant that is locked (sunflower NOT sunflower01),
+          and the amount of sunshine it costs to buy that plant
+        -->
+          <img class="toolbarItems" title="Your Home: Place this anywhere" src='./assets/house.png' id="house01" data-id="house">
+          <img class="toolbarItems" title="Shovel: Use this to prepare dirt for planting" src='./assets/spade.png' id="spade01" data-id="terraform" >
+          <img class="toolbarItems" title="Watering Can: Keep your plants hydrated" src='./assets/waterCan.png' id="water01" data-id="water" >
+          <img class="toolbarItems" title="Fertilizer: Help your plants grow with these nutrients" src='./assets/fertilizer_bag.png' id="fertilize01" data-id="fertilize" >
+          <img class="toolbarItems" title="Tulip: Pretty, but quite normal" src='./assets/tulip_icon.png' id="tulip01" data-id="tulip" >
+          <img class="toolbarItems lockedItem" title="Rose: Very pretty, but don't get pricked by thorns!" src='./assets/rose_icon.png' id="rose01" data-id="rose">
+          <img class="toolbarItems" title="Costs 10 sunshine" src='./assets/rose_icon_locked.png' id="rose" data-id="rose" onclick="unlockGraphic('rose', 10)">
+          <img class="toolbarItems lockedItem" title="Sunflower: Look how happy!" src='./assets/sunflower_icon.png' id="sunflower01" data-id="sunflower">
+          <img class="toolbarItems" title="Costs 20 sunshine" src='./assets/sunflower_icon_locked.png' id="sunflower" data-id="sunflower" onclick="unlockGraphic('sunflower', 20)">
+          <img class="toolbarItems" title="Harvests plants that are fully grown" src='./assets/glove.png' id="harvest01" data-id="harvest" >
+
+
+          <div class="corner bl">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
+          <div class="corner br">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
+        </div>
+        <div class="section betweenBtns">
+          <div class="corner tl">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+          <div class="corner tr">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+
+          <button class="section_content" title="Shhh. I want to listen to my own music." onclick='muteSound();' id="mute">Mute Music</button>
+
+          <div class="corner bl">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
+          <div class="corner br">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
+        </div>
+        <div class="section">
+          <div class="corner tl">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+          <div class="corner tr">
+            <div class="a"></div>
+            <div class="b"></div>
+            <div class="c"></div>
+          </div>
+          <button class="section_content" title="SILENCE!!! (But just the sound effects)" onclick='muteEffects();' id="mute">Mute FX</button>
+
+          <div class="corner bl">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
+          <div class="corner br">
+            <div class="a"></div>
+            <div class="c"></div>
+            <div class="b"></div>
+          </div>
+        </div>
+        <div style="clear: left;"></div>
       </div>
-      <div class="row">
-        <div class="tile dirt"></div>
-        <div class="tile dirt"></div>
-        <div class="tile dirt"></div>
-      </div>
-      <div class="row">
-        <div class="tile dirt"></div>
-        <div class="tile dirt"></div>
-        <div class="tile dirt"></div>
-      </div>
-    </div>
-    <div id="toDoField">
-      <p>Enter to-do items below:</p>
-      <input id="task" type="text"><button id="add">Add</button>
-      <div id="todos"></div>
-      <button id="hideToDo">Exit list</button>
-      <script src="todo.js"></script>
-    </div>
-    <div id="journalField">
-      <p>Enter your journal entry below:</p>
-      <textarea name="entry" maxlength="250" rows="5" cols="50"></textarea><br>
-      <label for="uneasiness">Uneasiness</label>
-      <input type="range" name="uneasiness" min="0" max="10">
-      <label for="anger">Anger</label>
-      <input type="range" name="anger" min="0" max="10">
-      <label for="anxiety">Anxiety</label>
-      <input type="range" name="anxiety" min="0" max="10">
-      <label for="apathy">Apathy</label>
-      <input type="range" name="apathy" min="0" max="10">
-      <label for="serenity">Serenity</label>
-      <input type="range" name="serenity" min="0" max="10">
-      <label for="euphoria">Euphoria</label>
-      <input type="range" name="euphoria" min="0" max="10">
-      <input type="submit"><button id="hideJournal">Exit</button>
+        <div class="gameboard"></div>
+
+        <div id="toDoField">
+          <p>Enter to-do items below:</p>
+          <span class="errors"><p id="task_error"></p></span>
+          <input id="task" type="text"><button id="add" title="Put it on the list ya'll!">Add</button>
+          <div id="todos"></div>
+        </div>
+        <form id="journalField">
+          <p>Enter your journal entry below:</p>
+          <textarea name="entry" maxlength="250" rows="5" cols="50" id="entry"></textarea><br>
+          <span class="errors"><p id="entry_error"></p></span>
+          <label for="uneasiness">Uneasiness</label>
+          <input type="range" name="uneasiness" min="0" max="10" id="uneasiness" class="stat">
+          <label for="anger">Anger</label>
+          <input type="range" name="anger" min="0" max="10" id="anger" class="stat">
+          <label for="anxiety">Anxiety</label>
+          <input type="range" name="anxiety" min="0" max="10" id="anxiety" class="stat"><br/>
+          <label for="apathy">Apathy</label>
+          <input type="range" name="apathy" min="0" max="10" id="apathy" class="stat">
+          <label for="serenity">Serenity</label>
+          <input type="range" name="serenity" min="0" max="10" id="serenity" class="stat">
+          <label for="euphoria">Euphoria</label>
+          <input type="range" name="euphoria" min="0" max="10" id="euphoria" class="stat"><br/>
+          <input type="button" id="addJournal" value="Submit" style="margin: 0px auto 0px auto;">
+        </form>
     </div>
   </body>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+  <script src="https://code.jquery.com/ui/1.11.4/jquery-ui.min.js"   integrity="sha256-xNjb53/rY+WmG+4L6tTl9m6PpqknWZvRt0rO1SRnJzw="   crossorigin="anonymous"></script>
+  <script src="https://code.createjs.com/soundjs-0.6.2.min.js"></script>
+  <script type="text/javascript" src="./fancyBox/jquery.mousewheel.pack.js"></script>
+  <script type="text/javascript" src="./fancyBox/jquery.fancybox.pack.js"></script>
+  <script type="text/javascript" src="./modelsAndVariables.js"></script>
+  <script type="text/javascript" src="./sound.js"></script>
+  <script type="text/javascript" src="./fadeIn.js"></script>
+  <script type="text/javascript" src="./interactivityFunctions.js"></script>
+  <script type="text/javascript" src="./nextDayFunctions.js"></script>
+  <script type="text/javascript" src="./journalAndToDoFunctions.js"></script>
+  <script type="text/javascript" src="./userActionFunctions.js"></script>
+  <script type="text/javascript" src="./displayFunctions.js"></script>
+  <script type="text/javascript" src="./gameloop.js"></script>
+
 </html>
