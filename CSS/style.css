@@ -127,6 +127,21 @@ img {
   cursor: url('../assets/hand.png'), default;
   border: none;
 }
+
+.info {
+  image-rendering: pixelated;
+  background:url(../assets/questionMark.png) no-repeat;
+  background-size: 64px 64px;
+  background-position: center;
+  width: 64px;
+  height: 64px;
+  color: black;
+  padding: 50px 0px 0px 0px;
+  cursor: url('../assets/hand.png'), default;
+  border: none;
+  display: block;
+}
+
 button:focus{
   outline: 0;
 }

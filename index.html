@@ -9,11 +9,15 @@
   <body onload="loadSound();">
     <div class="gameArea">
       <div class="wholeMenuArea">
-        <div class="leftside"><button class="clock" onclick="updateGame();" title="Sleepies...Zzz" id="nextday"></button>
+        <div class="leftside">
+          <button class="clock" onclick="updateGame();" title="Sleepies...Zzz" id="nextday"></button>
           <p style="text-align: left;"><strong>Next Day</strong></p>
           <a class="fancybox" href="#journalField"><img src='./assets/journal.png' title="Dear Diary..." id="journal"></a>
           <p style="text-align: left;"><strong>Journal</strong></p>
+          <a href="faq.html" target="_blank" class="button info" title="Game Info an Directions" id="info"></a>
+          <p style="text-align: left;"><strong>Game Info</strong></p>
         </div>
+        <div class="rightside">
         <p id = "energy" title="How much gusto you got!!"></p>
         <p class="h"></p>
 
@@ -109,6 +113,7 @@
             <div class="b"></div>
           </div>
         </div>
+      </div>
         <div style="clear: left;"></div>
       </div>
         <div class="gameboard"></div>
